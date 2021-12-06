@@ -96,7 +96,7 @@ router.post('/login', async function(req, res, next) {
                 var newer = userSess.sessions[Object.keys(userSess.sessions)[earliest]]
                 var item = userSess.sessions[Object.keys(userSess.sessions)[i]]
                 if(item.date < newer.date) {
-                  earliest = item
+                  earliest = i
                 }
               }
 
