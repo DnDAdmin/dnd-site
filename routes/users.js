@@ -91,22 +91,28 @@ router.post('/login', async function(req, res, next) {
                 permissions: user.access
               }
             } else {
-              userSess.sessions.sort(function(a, b){
-                if(a.date < b.date) { return -1; }
-                if(a.date > b.date) { return 1; }
-                return 0;
-              });
+              var earliest = 0
+              for(var i = 0; i < Object.keys(userSess.sessions).length; i++) {
+                var newer = userSess.sessions[Object.keys(userSess.sessions)[earliest]]
+                var item = userSess.sessions[Object.keys(userSess.sessions)[i]]
+                if(item.date < newer.date) {
+                  earliest = item
+                }
+              }
+
+              console.log('Replacing session ' + earliest)
+
+              userSess.sessions[Object.keys(userSess.sessions)[earliest]] = tempUser
 
               req.session.user = {
                 userName: user.userName,
                 id: userSess._id,
                 key: key,
-                index: Object.keys(userSess.sessions)[0],
+                index: earliest,
                 profileImage: user.profileImage,
                 permissions: user.access
               }
 
-              userSess.sessions[Object.keys(userSess.sessions)[0]] = tempUser
 
               // for(var i = 0; i < Object.keys(userSess.sessions).length; i++) {
               //   var ses = info[Object.keys(userSess.sessions)[i]]
