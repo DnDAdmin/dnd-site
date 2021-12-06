@@ -78,15 +78,27 @@ router.post('/login', async function(req, res, next) {
           }
 
           if(userSess) {
-            if(Object.keys(userSess.sessions).length < 2) {
+            if(Object.keys(userSess.sessions).length < 3) {
               console.log('Adding new session.')
-              userSess.sessions[Object.keys(userSess.sessions).length] = tempUser
+
+              var index = [0, 1, 2]
+              for(var i = 0; i < index.length; i++) {
+                var number = index[i]
+                console.log(number)
+                if(!userSess.sessions[number]) {
+                  index = i
+                  console.log('Index is ' + index)
+                  break
+                }
+              }
+
+              userSess.sessions[index] = tempUser
 
               req.session.user = {
                 userName: user.userName,
                 id: userSess._id,
                 key: key,
-                index: Object.keys(userSess.sessions).length - 1,
+                index: index,
                 profileImage: user.profileImage,
                 permissions: user.access
               }
@@ -196,9 +208,20 @@ router.post('/login', async function(req, res, next) {
 
 // Logs User out
 router.get('/logout', async function(req, res, next) {
-  await ops.deleteItem(req.db.db('users'), 'userSessions', {_id: req.session.user.id})
-  req.session.user = null
-  res.redirect('/users/login')
+  var user = req.session.user
+  var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(user.id)})
+
+  delete userSess.sessions[user.index]
+
+  var out = await ops.updateItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(user.id)}, {$set: userSess})
+
+  if(out) {
+    req.session.user = null
+    res.redirect('/users/login')
+  } else {
+    res.send('Error removing session from database.')
+  }
+  
 })
 
 // ------ Pages ------

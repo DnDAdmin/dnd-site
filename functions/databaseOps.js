@@ -34,7 +34,7 @@ function authUser(access) {
                 } else {
                     console.log('Key mismatch')
                     req.session.user = null
-                    req.session.errors = 'User session credentials do not match. Please log in again.'
+                    req.session.errors = 'User session keys do not match. Please log in again.'
                     req.session.sub = true
                     res.redirect('/users/login')
                 }
