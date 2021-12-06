@@ -12,8 +12,8 @@ function authUser(access) {
             if(user) {
                 console.log(loggedUser)
                 console.log(user)
-                console.log(hash.verify(loggedUser.key, user.key))
-                if(hash.verify(loggedUser.key, user.key)) {
+                console.log(hash.verify(loggedUser.key, user.sessions[loggedUser.index].key))
+                if(hash.verify(loggedUser.key, user.sessions[loggedUser.index].key)) {
                     if(user.access.includes('super')) {
                         console.log('Super-User Access')
                         next()
@@ -33,18 +33,21 @@ function authUser(access) {
                     }
                 } else {
                     console.log('Key mismatch')
+                    req.session.user = null
                     req.session.errors = 'User session credentials do not match. Please log in again.'
                     req.session.sub = true
                     res.redirect('/users/login')
                 }
             } else {
                 console.log('No userSession')
+                req.session.user = null
                 req.session.errors = 'Session Expired, please log in.'
                 req.session.sub = true
                 res.redirect('/users/login')
             }
         } else {
             console.log('No user.')
+            req.session.user = null
             req.session.errors = 'You must be logged in to view that page.'
             req.session.sub = true
             res.redirect('/users/login')

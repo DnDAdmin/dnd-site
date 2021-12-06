@@ -15,10 +15,14 @@ router.get('/login', async function(req, res, next) {
     if(userSess) {
       res.redirect('/users/dashboard/user=' + userSess.user)
     } else {
-      res.redirect('/users/login')
+      req.session.user = null
+      loadPage()
     }
-    
   } else {
+    loadPage()
+  }
+
+  function loadPage() {
     if(req.session.sub) {
       console.log('form has been submitted.')
       req.session.sub = null
@@ -47,7 +51,6 @@ router.get('/login', async function(req, res, next) {
         fields: {}
       })
     }
-    
   }
   
 });
@@ -62,43 +65,110 @@ router.post('/login', async function(req, res, next) {
       if(user) {
         if(hash.verify(fields.pass, user.password)) {
         // if(fields.pass == user.password) {
-          var tempId = new ObjectId()
+
+          var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {user: ObjectId(user._id)})
+
           var key = Math.floor(100000 + Math.random() * 900000).toString()
           var hashedKey = hash.generate(key)
           var date = new Date(Date.now())
 
           var tempUser = {
-            name: user.name,
-            _id: tempId,
-            user: new ObjectId(user._id),
             key: hashedKey,
-            access: user.access,
             date: date
           }
 
-          await ops.deleteItem(req.db.db('dndgroup'), 'userSessions', {user: ObjectId(user._id)})
-          console.log('Any old session removed from database.')
-          
-          var dbUserSession = await ops.addToDatabase(req.db.db('dndgroup'), 'userSessions', [tempUser])
-          if(dbUserSession) {
-            console.log('User session made.')
+          if(userSess) {
+            if(Object.keys(userSess.sessions).length < 2) {
+              console.log('Adding new session.')
+              userSess.sessions[Object.keys(userSess.sessions).length] = tempUser
+
+              req.session.user = {
+                userName: user.userName,
+                id: userSess._id,
+                key: key,
+                index: Object.keys(userSess.sessions).length - 1,
+                profileImage: user.profileImage,
+                permissions: user.access
+              }
+            } else {
+              userSess.sessions.sort(function(a, b){
+                if(a.date < b.date) { return -1; }
+                if(a.date > b.date) { return 1; }
+                return 0;
+              });
+
+              req.session.user = {
+                userName: user.userName,
+                id: userSess._id,
+                key: key,
+                index: Object.keys(userSess.sessions)[0],
+                profileImage: user.profileImage,
+                permissions: user.access
+              }
+
+              userSess.sessions[Object.keys(userSess.sessions)[0]] = tempUser
+
+              // for(var i = 0; i < Object.keys(userSess.sessions).length; i++) {
+              //   var ses = info[Object.keys(userSess.sessions)[i]]
+
+              //   if(item != org) {
+              //       changed = true
+              //   }
+
+              // }
+              // userSess.sessions[0] = tempUser
+
+              
+            }
+
+            var newSess = await ops.updateItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(userSess._id)}, {$set: userSess})
+
+            if(newSess) {
+              console.log('User session made.')
+              // res.send(req.session.user)
+              res.redirect('/users/dashboard/user=' + user._id)
+            } else {
+              console.log('error adding session to db')
+              error('Error adding session to database.')
+            }
+
+
             
+          } else {
+            console.log('Creating new session.')
+            var tempId = new ObjectId()
+            var session = {
+              name: user.userName,
+              _id: tempId,
+              user: new ObjectId(user._id),
+              access: user.access,
+              sessions: {0: tempUser}
+            }
+
             req.session.user = {
               userName: user.userName,
               id: tempId,
               key: key,
+              index: 0,
               profileImage: user.profileImage,
               permissions: user.access
             }
-            console.log('User session made.')
-            // res.send(req.session.user)
-            res.redirect('/users/dashboard/user=' + user._id)
 
+            var dbUserSession = await ops.addToDatabase(req.db.db('dndgroup'), 'userSessions', [session])
 
-          } else {
-            console.log('error making db session.')
-            error('Error trying to find user in database.')
+            if(dbUserSession) {
+              console.log('User session made.')
+              // res.send(req.session.user)
+              res.redirect('/users/dashboard/user=' + user._id)
+            } else {
+              console.log('error making db session.')
+              error('Error trying to find user in database.')
+            }
+
+            
           }
+
+          
         } else {
           console.log('error matching passwords.')
           error('Invalid password.')
