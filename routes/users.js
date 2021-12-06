@@ -12,7 +12,12 @@ var mainHeader = 'Lore Seekers | '
 router.get('/login', async function(req, res, next) {
   if(req.session.user) {
     var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
-    res.redirect('/users/dashboard/user=' + userSess.user)
+    if(userSess) {
+      res.redirect('/users/dashboard/user=' + userSess.user)
+    } else {
+      res.redirect('/users/login')
+    }
+    
   } else {
     if(req.session.sub) {
       console.log('form has been submitted.')
