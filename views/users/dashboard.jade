@@ -43,11 +43,12 @@ block content
                 if message
                     div#formMessage(class='success mb-2')
                         p= message
-                div(class='w-100 text-around siteCont')
+                div(class='w-100 siteCont')
                     if user.access.includes('super') || user.access.includes('admin')
                         input#name(type='text' class='m-0 editableText text-right' style='' spellcheck="false" onfocusin='setInfo(this)' onfocusout='updateInfo(this)' placeholder='Name' data-req='true' data-orig=thisUser.name value=thisUser.name)
                     else
-                        p#name(class='w-100 text-right' style='font-size: 1.75vmin;')=thisUser.name
+                        div(class='text-right')
+                            p#name(style='margin-left: auto; font-size: 1.75vmin; width: 100px; white-space: nowrap; cursor: help;' data-tip='Your name can only be changed by a site admin')=thisUser.name
 
                     div(class='mx-auto mt-3' style='height: 120px; width: 120px; position: relative;')
                         button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeNewImage()' style='display: none;') X
@@ -97,7 +98,7 @@ block content
                             p(class='text-right mb-2')
                                 a(class='' href='/admin/invite') Invite New User
                             for mem in allUsers
-                                a(class='userId' href='/users/dashboard/user=' + mem._id)
+                                a(class='userId mt-1' href='/users/dashboard/user=' + mem._id)
                                     div(class='profileImageCont' style='height: 35px; width: 35px;')
                                         if mem.profileImage
                                             img(class='profileImage' src=mem.profileImage)
@@ -105,6 +106,7 @@ block content
                                             p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()
 
                                     p(class='idUserName')= mem.userName
+                                br
         else 
             div#profile(class='col-11 col-md-7 col-lg-6 mx-auto' )
                 div(class='w-100 text-around siteCont')

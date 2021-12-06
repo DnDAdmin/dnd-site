@@ -1,28 +1,46 @@
 var aws = require('aws-sdk')
 var fs = require('fs');
+const {ObjectId} = require('mongodb');
+const hash = require('password-hash')
 
 function authUser(access) {
-    return (req, res, next) => {
+    return async (req, res, next) => {
         console.log('Checking user access.')
-        var user = req.session.user
-        if(user) {
-            if(user.permissions.includes('super')) {
-                console.log('Super-User Access')
-                next()
-            } else {
-                if(access) {
-                    if(user.permissions.includes(access)) {
-                        console.log('Access Permitted')
+        var loggedUser = req.session.user
+        if(loggedUser) {
+            var user = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(loggedUser.id)})
+            if(user) {
+                console.log(loggedUser)
+                console.log(user)
+                if(hash.verify(loggedUser.key, user.key)) {
+                    if(user.access.includes('super')) {
+                        console.log('Super-User Access')
                         next()
                     } else {
-                        console.log('User does not have access.')
-                        res.send('Access Denied')
+                        if(access) {
+                            if(user.access.includes(access)) {
+                                console.log('Access Permitted')
+                                next()
+                            } else {
+                                console.log('User does not have access.')
+                                res.send('Access Denied')
+                            }
+                        } else {
+                            console.log('Access beyond user login not needed.')
+                            next()
+                        }
                     }
                 } else {
-                    console.log('Access beyond user login not needed.')
-                    next()
+                    console.log('Key mismatch')
+                    req.session.errors = 'User session credentials do not match. Please log in again.'
+                    req.session.sub = true
+                    res.redirect('/users/login')
                 }
-                
+            } else {
+                console.log('No userSession')
+                req.session.errors = 'Session Expired, please log in.'
+                req.session.sub = true
+                res.redirect('/users/login')
             }
         } else {
             console.log('No user.')

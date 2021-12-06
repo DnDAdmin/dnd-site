@@ -67,8 +67,8 @@ router.post('/login', async function(req, res, next) {
             _id: tempId,
             user: new ObjectId(user._id),
             key: hashedKey,
-            date: date,
-            nrj: true
+            access: user.access,
+            date: date
           }
 
           await ops.deleteItem(req.db.db('dndgroup'), 'userSessions', {$and: [{user: ObjectId(user._id)}, {nrj: true}]})
