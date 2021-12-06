@@ -1,0 +1,85 @@
+div#toolTip
+    p Here is tooltip text to show whats happening!
+
+if user
+    div#userMenWindow
+        div#userMenuBack(class='d-none d-sm-block' onclick='toggleUserMen()')
+        div#userMenMain(class='d-none d-sm-block')
+            div#userMenu
+                div(class='userMenLink')
+                    a(href='/users/dashboard' class='menDeskLink') User Dashboard
+                div(class='userMenLink')
+                    a(href='/users/logout' class='menDeskLink cation') Logout
+                div#userMenHead
+                    hr
+                    div#userMenName
+                        h5= user.userName
+                    
+        
+        
+    div#userMenIcon(class='d-none d-sm-block' onclick='toggleUserMen()')
+        div(class='d-none d-sm-block')
+            div#userMenArrow(class='userMenArrowCont')
+                svg(height="10" width="10")
+                    polygon(points="0,0 10,0 5,10" class='userMenArrow')
+            div(class='profileImageCont userMenImg' style='height: 35px; width: 35px;')
+                if user.profileImage
+                    img(src=user.profileImage class='profileImage')
+                else
+                    p#profileImageLetter(class='profileImageLetter' style='margin: -1px -1px;')= user.userName.substring(0,1).toUpperCase()
+            
+else
+    div(class='loginDeskBut d-none d-sm-block' style='')
+        a(href='/users/login' class='menDeskLink') Login
+
+if data
+div#header(class='row w-100 mx-auto font-Merriweather')    
+    div#headerLogoMain(class='mx-auto mx-sm-0')
+        a(href='/' title='Home')
+            div#headerLogoCont()
+                img#headerLogoImg(class='image' alt='NRJohnson' src='https://dndgroup-site-files.s3.us-east-2.amazonaws.com/Logo.png')
+    div#headerSiteTitle(class='h-100 d-none d-md-block')
+        div(onclick='window.location.href="/"')
+            p(class='m-0')
+                strong Lore Seekers
+    
+
+    div#menuDesk(class='d-none d-sm-block ml-auto')
+        a(href='/' class='menDeskLink') Home
+        //- a(href='/map' class='menDeskLink') Map
+        //- a(href='/features' class='menDeskLink') Features
+
+    
+    div#menuMobile(class='d-sm-none')
+        div#mobileToggle(class='ml-3 d-inline' style='z-index: 1;')
+            div#mobileBut(class="mobileMen" onclick="toggleMobileMenu()")
+                div(class="bar1")
+                div(class="bar2")
+                div(class="bar3")
+        div#mobileMenBox(class='hiddenMen')
+            div#mobileMenBack(onclick='toggleMobileMenu()')
+            div#mobileMenList
+                
+                div#mobileMenListTop
+                    if user
+                        div#mobUserIcon(onclick='window.location.href="/users/dashboard"')
+                            div(class='profileImageCont' style='height: 35px; width: 35px;')
+                                img(src=user.profileImage class='profileImage')
+                            p= user.userName
+                                //- &#x1f517;
+                div#mobileMenListItems
+                    button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick='window.location.href="/"')
+                        div(class='buttonText')
+                            p#saveText() Home
+                    if !user
+                        button#formButton(class='buttonMain button w-100 col-md-4 mt-3' style='right: 0;' onclick='window.location.href="/users/login"')
+                            div(class='buttonText')
+                                p#saveText() Log In
+                        //- div(class='mobileMenListLinkCont mt-1' onclick='window.location.href="/users/login"')
+                        //-     p(class='mobileMenListLink') Login
+                    //- div(class='mobileMenListLinkCont mt-1' onclick='window.location.href="/"')
+                    //-     p(class='mobileMenListLink') Home
+                    //- div(class='mobileMenListLinkCont mt-1' onclick='window.location.href="/features"')
+                    //-     p(class='mobileMenListLink') Features
+        
+        

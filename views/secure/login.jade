@@ -1,0 +1,32 @@
+extends ../layout
+
+block head
+  title= title + 'Login'
+
+block content
+  div(class='row mt-5')
+    div(class='col-12 col-md-6 mx-auto')
+      h1(class='headingText text-center') Login
+      hr
+      if errors
+        div#formMessage(class='error')
+            h4 Oops...
+            ul
+              li= errors
+      else
+        div#formMessage
+            h4
+            ul
+      form(class='formMain mx-auto' action='/users/login'  method='post' enctype="multipart/form-data" onsubmit='return checkForErrors()')
+        div(class='formItem')
+          p(class='formLabel') Username or Email:
+          input#inputName(class='formTextInput' type='text' data-req='true' name='name' value=fields.name)
+        
+        div(class='formItem')
+          p(class='formLabel') Password:
+          input#inputPass(class='formTextInput' type='password' data-req='true' name='pass' value=fields.pass)
+        
+        div(class='formItem text-right my-4')
+          button#formButton(class='buttonMain button col-12 col-md-4')
+            div(class='buttonText mx-2')
+              p Login

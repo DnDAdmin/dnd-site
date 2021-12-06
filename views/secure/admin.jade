@@ -1,0 +1,50 @@
+extends ../layout
+
+block head
+  title= title + 'Admin'
+
+block content
+  div(class='row mt-5')
+    div(class='col-12 col-md-10 mx-auto')
+      h1(class='headingText text-center') Admin
+      hr
+
+      div(class='body-text')
+        div(class='text-center')
+            p Commission Status: 
+                -var options = ['Open', 'Limited', 'Closed']
+                select#setStat
+                    for op in options
+                        if op == data.commStatus
+                            option(value=op selected)= op
+                        else
+                            option(value=op)= op
+            div(class='text-center')
+                button#formButton(class='buttonMain button col-12 col-md-4' onclick='updateCommStat()')
+                    div(class='buttonText mx-2')
+                        p Update
+    
+    div(class='col-12 col-md-10 mx-auto mt-5' style='position: relative; bottom: 0;')
+        hr
+        form(class='w-100 text-right' action='/users/logout'  method='post' enctype="multipart/form-data" )
+            button#formButton(class='buttonMain button col-12 col-md-2 red')
+                div(class='buttonText mx-2')
+                    p Logout
+    
+    script.
+        function updateCommStat() {
+            var stat = document.getElementById('setStat').value
+            var statText = document.getElementById('commStat')
+            var xhr = new XMLHttpRequest()
+            
+            xhr.open('POST', '/admin/commstat/' + stat, true)
+            xhr.onload = function() {
+                if(this.status == 200) {
+                    statText.innerHTML = stat
+                    alert('Status Updated!')
+                } else {
+                    alert('Error submitting data. Code: ' + this.status)
+                }
+            }
+            xhr.send()
+        }

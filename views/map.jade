@@ -1,0 +1,20 @@
+extends layout
+
+block head
+  title= title + 'Map'
+  style.
+
+block content
+  div(class='row mt-5')
+    div(class='col-12')
+      h1(class='headingText text-center') My Interactive Fantasy Map
+      hr
+
+      div(class='bodyText')
+        p This is the map I made for the novel I want to write. The information included here is pretty limited. I have a more full version on my website.
+        p The map draws data from an online database to determine location names,  coordinates, type, information, and any potential photos. All interactivity is vanilla JavaScript and CSS.
+        strong *Note: I built this map for desktop computers using mouse and keyboard. It is currently not compatible with mobile, touch screen devices.
+      hr
+      div#map
+        iframe#mapFrame(src="https://www.nrjohnson.net/public/mymap" data-blockRight='© Copyright NRJohnson' title="NRJohnson's Interactive Map" onmouseover='disableScroll()' onmouseout='enableScroll()')
+      hr
