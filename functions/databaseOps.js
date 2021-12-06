@@ -12,6 +12,7 @@ function authUser(access) {
             if(user) {
                 console.log(loggedUser)
                 console.log(user)
+                console.log(hash.verify(loggedUser.key, user.key))
                 if(hash.verify(loggedUser.key, user.key)) {
                     if(user.access.includes('super')) {
                         console.log('Super-User Access')

@@ -71,7 +71,7 @@ router.post('/login', async function(req, res, next) {
             date: date
           }
 
-          await ops.deleteItem(req.db.db('dndgroup'), 'userSessions', {$and: [{user: ObjectId(user._id)}, {nrj: true}]})
+          await ops.deleteItem(req.db.db('dndgroup'), 'userSessions', {user: ObjectId(user._id)})
           console.log('Any old session removed from database.')
           
           var dbUserSession = await ops.addToDatabase(req.db.db('dndgroup'), 'userSessions', [tempUser])
