@@ -31,19 +31,37 @@ router.get('/login', async function(req, res, next) {
       err = req.session.errors
       req.session.errors = null
 
+      var msg
+      msg = req.session.message
+      req.session.message = null
+
       var fields = {}
       if(req.session.fields) {
         fields = req.session.fields
         req.session.fields = null
       }
 
-      console.log(err)
+      if(msg) {
+        console.log(msg)
 
-      res.render('secure/login', {
-        title: mainHeader,
-        fields: fields,
-        errors: err
-      })
+        res.render('secure/login', {
+          title: mainHeader,
+          fields: fields,
+          message: msg
+        })
+      } else {
+        console.log(err)
+
+        res.render('secure/login', {
+          title: mainHeader,
+          fields: fields,
+          errors: err
+        })
+      }
+
+      
+
+      
 
     } else {
       res.render('secure/login',{
@@ -78,6 +96,7 @@ router.post('/login', async function(req, res, next) {
           }
 
           if(userSess) {
+            userSess.date = date
             if(Object.keys(userSess.sessions).length < 3) {
               console.log('Adding new session.')
 
@@ -160,7 +179,8 @@ router.post('/login', async function(req, res, next) {
               _id: tempId,
               user: new ObjectId(user._id),
               access: user.access,
-              sessions: {0: tempUser}
+              sessions: {0: tempUser},
+              date: date
             }
 
             req.session.user = {
@@ -211,17 +231,26 @@ router.get('/logout', async function(req, res, next) {
   var user = req.session.user
   var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(user.id)})
 
-  delete userSess.sessions[user.index]
-
-  var out = await ops.updateItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(user.id)}, {$set: userSess})
-
-  if(out) {
+  if(Object.keys(userSess.sessions).length < 3) {
+    await ops.deleteItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(userSess._id)})
+    console.log('Main user session deleted.')
     req.session.user = null
+    req.session.message = 'You have been logged out'
+    req.session.sub = true
     res.redirect('/users/login')
   } else {
-    res.send('Error removing session from database.')
+    delete userSess.sessions[user.index]
+    var out = await ops.updateItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(user.id)}, {$set: userSess})
+    if(out) {
+      req.session.user = null
+      req.session.message = 'You have been logged out'
+      req.session.sub = true
+      console.log('Removed current user session.')
+      res.redirect('/users/login')
+    } else {
+      res.send('Error removing session from database.')
+    }
   }
-  
 })
 
 // ------ Pages ------

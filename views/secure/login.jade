@@ -8,11 +8,16 @@ block content
     div(class='col-12 col-md-6 mx-auto')
       h1(class='headingText text-center') Login
       hr
-      if errors
-        div#formMessage(class='error')
-            h4 Oops...
-            ul
-              li= errors
+      if errors || message
+        if message
+          div#formMessage(class='success')
+              ul
+                li= message
+        else
+          div#formMessage(class='error')
+              h4 Oops...
+              ul
+                li= errors
       else
         div#formMessage
             h4
