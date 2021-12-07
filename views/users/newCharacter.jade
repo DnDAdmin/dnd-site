@@ -122,8 +122,8 @@ block content
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Proficiency Bonus:
                         input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
-            div(class='formItem text-right my-4')
-                button#formButton(class='buttonMain button col-12 col-md-4' onclick="updateInput()")
+            div(class='formItem text-right my-4' )
+                button#formButton(class='buttonMain button col-12 col-md-3 disabled' disabled=true onclick="updateInput()" )
                     div(class='buttonText mx-2')
                         p Create
                     

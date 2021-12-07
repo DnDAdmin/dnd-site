@@ -449,7 +449,7 @@ hr {
     background-color: #444444;
     position: absolute;
     bottom: 0;
-    height: 140px;
+    height: 120px;
     width: 100%;
     left: 0;
     padding: 12px;
@@ -496,7 +496,7 @@ hr {
     color: rgba(255, 255, 255, 0.856);
   }
   .siteVersion {
-    position: absolute;
+    position: fixed;
     font-size: 8pt;
     bottom: 0;
     right: 0;
