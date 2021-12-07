@@ -1,0 +1,46 @@
+extends ../layout
+
+block head
+  title= title + 'New Character'
+
+
+block content
+    div(class='row mt-5')
+        form#passForm(class='col-11 col-md-6 mx-auto' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
+            div(class='siteCont')
+                h2(class='text-center') New Character
+                    
+        
+      
+    
+    script.
+        var info = {}
+        var orig = {}
+        var img
+        var origImg
+        var form = document.querySelector('form')
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+        });
+
+
+        async function updateDataBase() {
+            await checkForErrors(false)
+            document.getElementById('passForm').submit()
+        }
+
+        function togglePass(show) {
+            var passCont = document.getElementById('newPass')
+            var passBut = document.getElementById('passBut')
+            var fields = passCont.children
+            if(show) {
+                passCont.style.display = 'block'
+                passBut.classList.remove('saveButtonVisible')
+            } else {
+                passCont.style.display = 'none'
+                passBut.classList.add('saveButtonVisible')
+                fields[0].value = ''
+                fields[1].value = ''
+            }
+        }

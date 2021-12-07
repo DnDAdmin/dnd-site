@@ -39,7 +39,7 @@ block head
 block content
     div(class='row mt-5')
         if loggedUser || user.access.includes('super') || user.access.includes('admin')
-            form#profile(class='col-11 col-md-7 col-lg-6 mx-auto' method="POST" enctype="multipart/form-data" onload='setFields()')
+            form#profile(class='col-11 col-md-8 mx-auto' method="POST" enctype="multipart/form-data" onload='setFields()')
                 if message
                     div#formMessage(class='success mb-2')
                         p= message
@@ -63,20 +63,29 @@ block content
                                 svg(xmlns="http://www.w3.org/2000/svg" class="bi bi-camera" viewBox="0 0 16 16")
                                     path(style='color: white;' d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z")
                                     path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
-                        
+                            if thisUser.access.includes('super')
+                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill profIn ml-1" viewBox="0 0 16 16" data-tip='Site Manager')
+                                    path(style='color: gold;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
+                            else
+                                if thisUser.access.includes('admin')
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill profIn ml-1" viewBox="0 0 16 16" data-tip='Admin User')
+                                        path(style='color: green;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
                     div#fields(class='w-100 mx-auto text-center mt-2 font-Alegreya')
                         
                         input#userName(type='text' class='m-0 editableText titleText' style='' spellcheck="false" onfocusin='setInfo(this)' oninput='updateInfo(this)' placeholder='Username' data-req='true' data-orig=thisUser.userName value=thisUser.userName)
+                        
                         input#email(type='text' class='m-0 mt-1 editableText titleText' style='' spellcheck="false" onfocusin='setInfo(this)' oninput='updateInfo(this)' placeholder='Email' data-req='true' data-orig=thisUser.email value=thisUser.email)
                     
                     div(class='mt-2')
                         ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
 
                     div#saveButton(class='text-right profileSaveButton mt-2')
-                        button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                        button(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                            
                             div(class='buttonText')
-                                p#saveText() Save
-                                img#loadingGif(class='loadingGif' src='/images/loading.gif')
+                                img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
+                                p#saveText Save
+                            
 
                     //- div#saveButton(class='text-left passBut')
                     //-     button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick='window.location.href="/users/newpass"')
@@ -90,27 +99,34 @@ block content
                             div(class='buttonText')
                                 p#saveText() Log Out
 
-            if user.access.includes('admin') || user.access.includes('super')
-                if allUsers 
-                    div(class='col-11 col-md-7 col-lg-6 mx-auto')
-                        div(class='siteCont')
-                            h3(class='titleText text-center') All Users
+            
+            if allUsers 
+                div(class='col-11 col-md-4 mx-auto')
+                    div(class='siteCont')
+                        h3(class='titleText text-center') All Users
+                        if user.access.includes('admin') || user.access.includes('super')
                             p(class='text-right mb-2')
                                 a(class='' href='/admin/invite') Invite New User
-                            for mem in allUsers
-                                a(class='userId' href='/users/dashboard/user=' + mem._id)
-                                    div(class='profileImageCont' style='height: 35px; width: 35px;')
-                                        if mem.profileImage
-                                            img(class='profileImage' src=mem.profileImage)
-                                        else
-                                            p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()
+                        for mem in allUsers
+                            div(class='userId' onclick='window.location.href="/users/dashboard/user=' + mem._id + '"')
+                                div(class='profileImageCont' style='height: 35px; width: 35px;')
+                                    if mem.profileImage
+                                        img(class='profileImage' src=mem.profileImage)
+                                    else
+                                        p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()
 
-                                    p(class='idUserName')= mem.userName
-                                br
+                                p(class='idUserName')= mem.userName
+                                    if mem.access.includes('super')
+                                        svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill ml-1" viewBox="0 0 16 16" data-tip='Site Manager')
+                                            path(style='color: gold;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
+                                    else
+                                        if mem.access.includes('admin')
+                                            svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill ml-1" viewBox="0 0 16 16" data-tip='Admin User')
+                                                path(style='color: green;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
         else 
             div#profile(class='col-11 col-md-7 col-lg-6 mx-auto' )
                 div(class='w-100 text-around siteCont')
-                    if user.access.includes('super') || users.access.includes('admin')
+                    if user.access.includes('admin') || user.access.includes('super')
                         p#name(class='w-100 text-right' style='font-size: 1.75vmin;')=thisUser.name
 
                     div(class='mx-auto mt-3' style='height: 120px; width: 120px; position: relative;')
@@ -119,10 +135,24 @@ block content
                                 img#profileImage(src=thisUser.profileImage class='profileImage' data-orig=thisUser.profileImage style='display: block;')
                             else
                                 p#profileImageLetter(class='profileImageLetter' style='font-size: 48pt;')= thisUser.userName.substring(0,1).toUpperCase()
-                        
+
+                                
                     div#fields(class='w-100 mx-auto text-center mt-2 font-Alegreya')
                         p#userName(type='text' class='m-0 titleText' style='')= thisUser.userName
+                            if thisUser.access.includes('super')
+                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill prof ml-1" viewBox="0 0 16 16" data-tip='Site Manager')
+                                    path(style='color: gold;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
+                            else
+                                if thisUser.access.includes('admin')
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill prof ml-1" viewBox="0 0 16 16" data-tip='Admin User')
+                                        path(style='color: green;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
                         p#email(type='text' class='m-0 mt-1 titleText' style='')= thisUser.email
+
+    div(class='col-11 col-md-12 mx-auto mt-2 siteCont')
+        h3(class='titleText text-center') User Chatacters
+        if loggedUser || user.access.includes('admin') || user.access.includes('super')
+            p(class='text-right mb-2')
+                a(class='' href='/users/newcharacter/user=' + user._id) New Character
       
     
     script.
@@ -263,7 +293,7 @@ block content
                 formData.append(Object.keys(info)[i], item)
             }
 
-            var updated = await updateDB('/forms/updateprofile/' + id, formData)
+            var updated = await updateDB('/users/updateprofile/' + id, formData)
             
             if(updated) {
                 if(img) {

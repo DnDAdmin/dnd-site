@@ -266,9 +266,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
   var allUsers = null
 
   if(thisUser._id.toString() == userSess.user.toString()) {
-    if(user.access.includes('super') || user.access.includes('admin')) {
-      allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {_id: {$not: {$eq: ObjectId(req.params.id)}}})
-    }
+    allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {_id: {$not: {$eq: ObjectId(req.params.id)}}})
 
     if(req.session.sub) {
       console.log('form has been submitted.')
@@ -315,8 +313,48 @@ router.get('/dashboard', authUser(), async function(req, res, next) {
 
 })
 
-// Dashboard Redir
-router.get('/newpass/user=:id', authUser(), async function(req, res, next) {
+
+// Updates profile information
+router.post('/updateprofile/:id', ops.authUser('userId'), async function(req, res, next) {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+      var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+
+      for(var i = 0; i < Object.keys(fields).length; i++) {
+          var item = fields[Object.keys(fields)[i]]
+          var key = Object.keys(fields)[i]
+          if(key != 'profileImage') {
+              user[key] = item
+              console.log(key)
+          }
+      }
+
+      if(files.profileImage) {
+          var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+          var oldpath = fs.readFileSync(files.profileImage.path)
+          var data = await ops.uploadFile(s3User, 'dndgroup-user-images', user._id + '-profileImage' + path.extname(files.profileImage.name), oldpath, 'public-read')
+          if(data) {
+              console.log('Profile image uploaded.')
+              user.profileImage = data.Location
+              user.profileImageKey = data.Key
+          }
+          req.session.user.profileImage = data.Location
+      }
+
+      var newUser = await ops.updateItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)}, {$set: user})
+
+      if(newUser) {
+          console.log('Profile update')
+          res.send('success')
+      } else {
+          console.log('Error updating profile')
+          res.send('error')
+      }
+  })
+})
+
+// New Password Pages
+router.get('/newpass/user=:id', authUser('userId'), async function(req, res, next) {
   var currUser = req.session.user
   var thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   
@@ -328,7 +366,7 @@ router.get('/newpass/user=:id', authUser(), async function(req, res, next) {
   })
 })
 
-router.post('/newpass/user=:id', authUser(), async function(req, res, next) {
+router.post('/newpass/user=:id', authUser('userId'), async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
 
   var form = new formidable.IncomingForm()
@@ -355,6 +393,19 @@ router.post('/newpass/user=:id', authUser(), async function(req, res, next) {
   })
   
 
+})
+
+
+// New user character form
+router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
+  var thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+
+
+  res.render('users/newCharacter', {
+    title: mainHeader,
+    thisUser: thisUser,
+    user: req.session.user
+  })
 })
 
 

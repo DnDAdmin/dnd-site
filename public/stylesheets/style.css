@@ -267,27 +267,31 @@ hr {
     }
 
     .userId {
-      display: inline-block;
       color: rgba(255, 255, 255, 0.856);
-      margin-top: 10px;
-      vertical-align: baseline;
+      margin-bottom: 20px;
+      cursor: pointer;
     }
     .userId:hover .idUserName {
       color: rgba(255, 255, 255, 0.856);
       text-decoration: underline;
     }
-    .userId div {
-      display: inline-block;
-      margin-right: 8px;
-      
-    }
     .userId .idUserName {
-      position: relative;
-      display: inline-block;
-      top: 50%;
       padding: 0;
-      margin: 0;
+      margin: -30px 0 0 45px;
       font-family: 'Alegreya', serif;
+    }
+    .bi-key-fill {
+      transform: rotate(45deg);
+    }
+    .bi-key-fill.prof {
+      position: relative;
+      top: -5px;
+    }
+    .bi-key-fill.profIn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      transform: rotate(-45deg) scaleX(-1);
     }
 
   /* DESKTOP MENU */
@@ -521,6 +525,7 @@ hr {
       color: rgba(255, 255, 255, 0.856);
       border-radius: 2px;
       cursor: pointer;
+      overflow: hidden;
       transition: .5s;
       height: 50px;
     }
@@ -695,10 +700,12 @@ hr {
     }
   /*  --VV-- LOADING GIF --VV-- */
     .loadingGif {
-      display: none;
       width: 100%;
-      mix-blend-mode: screen;
-      transform: translateY(-40%) scale(-1);
+      mix-blend-mode: normal;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(-1);
       transition: .5s;
     }
 
@@ -895,6 +902,12 @@ hr {
   .ql-toolbar.ql-snow + .ql-container.ql-snow.error {
     border-color: red;
   }
+  .errorText {
+    position: relative;
+    color: red;
+    font-size: 11pt;
+    transition: .5s;
+  }
 
 /*  --VV-- DASHBOARD PROFILE --VV-- */
   .siteCont {
@@ -941,6 +954,7 @@ hr {
     visibility: hidden;
     margin-top: 0;
     margin-left: auto;
+    overflow: hidden;
   }
   .profileSaveButton button div{
     opacity: 0;

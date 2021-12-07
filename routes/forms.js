@@ -125,47 +125,5 @@ router.post('/checkfordbitem', async function(req, res, next) {
     }
 })
 
-// Updates profile information
-router.post('/updateprofile/:id', ops.authUser(), async function(req, res, next) {
-    var form = new formidable.IncomingForm()
-    form.parse(req, async function (err, fields, files) {
-        var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-
-        for(var i = 0; i < Object.keys(fields).length; i++) {
-            var item = fields[Object.keys(fields)[i]]
-            var key = Object.keys(fields)[i]
-            if(key != 'profileImage') {
-                user[key] = item
-                console.log(key)
-            }
-        }
-
-        if(files.profileImage) {
-            var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
-            var oldpath = fs.readFileSync(files.profileImage.path)
-            var data = await ops.uploadFile(s3User, 'dndgroup-user-images', user._id + '-profileImage' + path.extname(files.profileImage.name), oldpath, 'public-read')
-            if(data) {
-                console.log('Profile image uploaded.')
-                user.profileImage = data.Location
-                user.profileImageKey = data.Key
-            }
-            req.session.user.profileImage = data.Location
-        }
-
-        var newUser = await ops.updateItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)}, {$set: user})
-
-        if(newUser) {
-            console.log('Profile update')
-            res.send('success')
-        } else {
-            console.log('Error updating profile')
-            res.send('error')
-        }
-
-      
-  
-    })
-  })
-
 
 module.exports = router;

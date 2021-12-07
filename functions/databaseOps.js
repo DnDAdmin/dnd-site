@@ -19,13 +19,37 @@ function authUser(access) {
                         next()
                     } else {
                         if(access) {
-                            if(user.access.includes(access)) {
-                                console.log('Access Permitted')
-                                next()
-                            } else {
-                                console.log('User does not have access.')
-                                res.send('Access Denied')
+                            if(access != 'super') {
+                                if(user.access.includes('admin')) {
+                                    console.log('Admin-User Access')
+                                    next()
+                                }
                             }
+                            if(access == 'userId') {
+                                // var currUrl = req.params.id
+                                // var id = currUrl.substring(currUrl.length - 24)
+
+                                var id = req.params.id
+
+                                userSess = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
+
+                                if(userSess.user.toString() == id) {
+                                    console.log('User ID Access Permitted')
+                                    next()
+                                } else {
+                                    console.log('User does not have access.')
+                                    res.send('Access Denied')
+                                }
+                            } else {
+                                if(user.access.includes(access)) {
+                                    console.log('Access Permitted')
+                                    next()
+                                } else {
+                                    console.log('User does not have access.')
+                                    res.send('Access Denied')
+                                }
+                            }
+                            
                         } else {
                             console.log('Access beyond user login not needed.')
                             next()
