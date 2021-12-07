@@ -400,9 +400,15 @@ router.post('/newpass/user=:id', authUser('userId'), async function(req, res, ne
 router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
   var thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
 
+  var fields = {}
+  if(req.session.fields) {
+    fields = req.session.fields
+    req.session.fields = null
+  }
 
   res.render('users/newCharacter', {
     title: mainHeader,
+    fields: fields,
     thisUser: thisUser,
     user: req.session.user
   })

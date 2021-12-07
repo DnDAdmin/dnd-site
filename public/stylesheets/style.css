@@ -327,6 +327,8 @@ hr {
       padding: 8px;
       box-shadow: 0 0 4px black;
       cursor: pointer;
+      font-size: 4vmin;
+      white-space: nowrap;
     }
     #mobUserIcon p {
       position: absolute;
@@ -499,7 +501,18 @@ hr {
     bottom: 0;
     right: 0;
     text-align: end;
-    padding: 0 12px 0 0;
+    padding: 0;
+    z-index: 20;
+  }
+  .siteVersion svg {
+    filter: drop-shadow(0 0 4px black);
+  }
+  .siteVersion p {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 12px
   }
 
 /*  --VV-- MAP --VV--  */
@@ -600,6 +613,19 @@ hr {
     box-shadow: 0 0 2px rgba(0,0,0,1);
     background-color: rgba(255, 255, 255, 0.856);
     transition: .5s;
+  }
+  .formTextArea {
+    width: 100%;
+    border-radius: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.856);
+    background-color: #a9a9a9;
+    box-shadow: 0 0 2px rgba(0,0,0,0);
+    min-height: 210px;
+  }
+  .formTextArea:focus {
+    outline: none;
+    box-shadow: 0 0 2px rgba(0,0,0,1);
+    background-color: rgba(255, 255, 255, 0.856);
   }
   .formSelInput {
     width: 100%;
@@ -999,6 +1025,9 @@ hr {
     box-shadow: 0 0 4px black;
     overflow: hidden;
     transition: .5s;
+  }
+  .profileImageCont.mobMen {
+    box-shadow: none;
   }
   .userMenImg {
     position: absolute;

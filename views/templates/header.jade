@@ -32,7 +32,6 @@ else
     div(class='loginDeskBut d-none d-sm-block' style='')
         a(href='/users/login' class='menDeskLink') Login
 
-if data
 div#header(class='row w-100 mx-auto font-Merriweather')    
     div#headerLogoMain(class='mx-auto mx-sm-0')
         a(href='/' title='Home')
@@ -63,7 +62,7 @@ div#header(class='row w-100 mx-auto font-Merriweather')
                 div#mobileMenListTop
                     if user
                         div#mobUserIcon(onclick='window.location.href="/users/dashboard"')
-                            div(class='profileImageCont' style='height: 35px; width: 35px;')
+                            div(class='profileImageCont mobMen' style='height: 35px; width: 35px;')
                                 img(src=user.profileImage class='profileImage')
                             p= user.userName
                                 //- &#x1f517;
