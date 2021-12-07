@@ -447,7 +447,7 @@ hr {
     background-color: #444444;
     position: absolute;
     bottom: 0;
-    height: 120px;
+    height: 140px;
     width: 100%;
     left: 0;
     padding: 12px;
@@ -492,6 +492,14 @@ hr {
   }
   .featuredMainText h3 a {
     color: rgba(255, 255, 255, 0.856);
+  }
+  .siteVersion {
+    position: absolute;
+    font-size: 8pt;
+    bottom: 0;
+    right: 0;
+    text-align: end;
+    padding: 0 12px 0 0;
   }
 
 /*  --VV-- MAP --VV--  */
