@@ -10,39 +10,14 @@ block head
         font-size: 11pt;
         transition: .5s;
     }
-    .profileImageCont.error {
-        border: 2px solid red;
-    }
-    .passBut {
-        font-size: 12pt;
-        color: rgba(255, 255, 255, 0.856);
-    }
-    .passBut:hover {
-        color: rgba(255, 255, 255, 0.514);
-    }
-    #userName {
-        font-size: 8vmin;
-    }
-    #email {
-        font-size: 5vmin;
-    }
-    /* small screen */
-    @media (min-width: 768px) {
-      #userName {
-        font-size: 4vmin;
-    }
-    #email {
-        font-size: 3vmin;
-    }
-    }
 
 block content
     div(class='row mt-5')
         form#inviteForm(class='col-11 col-md-6 mx-auto' name='invitation' action='/seninvite' method="POST" enctype="multipart/form-data")
             div(class='siteCont')
                 h2(class='text-center') New Member Invitation
-                input#pass1(class='formTextInput' type='text' name='name' placeholder='Name (optional)')
-                input#pass1(class='formTextInput mt-2' type='text' data-req='true' name='email' placeholder='Email Address')
+                input#name(class='formTextInput' type='text' name='name' placeholder='Name (optional)')
+                input#email(class='formTextInput mt-2' type='text' data-req='true' name='email' placeholder='Email Address')
                 
                 div(class='w-100 text-right mt-2')
                     button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")

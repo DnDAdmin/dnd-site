@@ -1,0 +1,111 @@
+extends ../layout
+
+block head
+  title= title + 'New Event'
+
+  style.
+    .errorText {
+        position: relative;
+        color: red;
+        font-size: 11pt;
+        transition: .5s;
+    }
+
+block content
+    div(class='row mt-5')
+        -var url = '/admin/saveevent'
+        if event._id
+            -url = '/admin/edit/event=' + event._id
+        form#form(class='col-11 col-md-12 mx-auto' name='invitation' action=url method="POST" enctype="multipart/form-data" onload='setFields()')
+            div(class='siteCont')
+                h2(class='text-center') New Event
+
+                div(class='row')
+                    div(class='formItem col-md-6')
+                        p(class='formLabel') Event Name
+                        input#name(class='formTextInput' type='text' data-req='true' name='name' tabindex='1' value=event.name)
+
+                    div(class='formItem col-md-6')
+                        p(class='formLabel') Event Date
+                        if event.date
+                            input#date(class='formTextInput' type='date' data-req='true' name='date' tabindex='2' value=event.date.toISOString().substring(0,10))
+                        else
+                            input#date(class='formTextInput' type='date' data-req='true' name='date' tabindex='2')
+
+                div(class='formItem')
+                    p(class='formLabel') Location
+                    input#location(class='formTextInput' type='text' data-req='true' name='location' tabindex='3' value=event.location)
+                
+                div(class='formItem')
+                    p(class='formLabel') Event Details:
+                    div#editor-container(name='cont')
+                    input#details(style='display: none;' data-req='true' name='details' type='text' value=event.details)
+                
+                div(class='w-100 text-right mt-2')
+                    button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                        div(class='buttonText')
+                            p#saveText() Save
+            div(class='mt-2')
+                ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
+                    
+        
+      
+    
+    script.
+        var info = {}
+        var orig = {}
+        var img
+        var origImg
+        var form = document.querySelector('form')
+
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline'],
+                    
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],                       
+
+            [{ 'color': [] }, { 'background': [] }],
+
+            ['link','image']
+        ];
+
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: toolbarOptions,
+                    handlers: {
+                        image: imageHandler
+                    }
+                }
+            },
+            placeholder: 'What we going to do?'
+        });
+
+        function imageHandler() {
+            var range = this.quill.getSelection();
+            var value = prompt('What is the image URL');
+            if(value){
+                this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+            }
+        }
+        
+        document.getElementById('editor-container').children[0].tabIndex = 4;
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+        });
+
+
+        async function updateDataBase() {
+            await updateInput()
+            await checkForErrors(false)
+            document.getElementById('form').submit()
+        }
+
+        document.getElementById('details').addEventListener("load", setFields());
+
+        function setFields(item) {
+            var editor = document.getElementById('editor-container').children[0]
+            var details = document.getElementById('details')
+            editor.innerHTML = details.value
+        }

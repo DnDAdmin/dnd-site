@@ -263,10 +263,16 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
   var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(currUser.id)})
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(userSess.user)})
 
-  var allUsers = null
 
   if(thisUser._id.toString() == userSess.user.toString()) {
-    allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {_id: {$not: {$eq: ObjectId(req.params.id)}}})
+    var allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {_id: {$not: {$eq: ObjectId(req.params.id)}}})
+    
+    var events = await ops.findMany(req.db.db('dndgroup'), 'events', {})
+    events.sort(function(a, b){
+      if(a.date < b.date) { return -1; }
+      if(a.date > b.date) { return 1; }
+      return 0;
+    });
 
     if(req.session.sub) {
       console.log('form has been submitted.')
@@ -282,6 +288,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
         message: msg,
         allUsers: allUsers,
         thisUser: thisUser,
+        events: events,
         user: user
       })
     } else {
@@ -290,6 +297,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
         loggedUser: true,
         allUsers: allUsers,
         thisUser: thisUser,
+        events: events,
         user: user
       })
     }

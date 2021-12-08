@@ -3,12 +3,50 @@ extends layout
 block head
   title= title + 'Home'
 
+  style.
+    #bannerTextMain{
+      position: absolute;
+      left: 0;
+      top: 70px;
+      left: 50%;
+      height: 40vmin;
+      transform: translateX(-50%);
+      text-shadow: 0 0 12px black;
+      
+    }
+    #bannerText {
+      border-left: 2px solid;
+      padding-left: 12px;
+    }
+    #bannerText p {
+      margin: 0;
+      padding: 0;
+    }
+    #bannerText h1 {
+      margin: 0;
+      padding: 0;
+    }
+    #bannerText a {
+      color: inherit;
+      cursor: pointer;
+    }
+    
+
 block content
   div(class='row mb-4' style='height: 40vmin;')
+    if event
+      div#bannerTextMain(class='textWhite font-Alegreya')
+        div(style='position: relative; top: 50%; transform: translateY(-50%);')
+          p Next Event:
+          div#bannerText
+            a(href='/event/' + event._id)
+              h1= event.name
+              p= event.date.toLocaleString('default', {timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
     div(class='topImageCont')
       img(src='/images/Backdrop.png' class='image center')
-      div(class='textMiddle textWhite font-Alegreya')
-        h1 Come, let's explore!
+      if !event
+        div(class='textMiddle textWhite font-Alegreya')
+            h1 Come, let's explore!
     
   div(class='row')
     div(class='col-10 mx-auto bodyText')

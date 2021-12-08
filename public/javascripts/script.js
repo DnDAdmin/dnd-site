@@ -126,9 +126,13 @@ function getFileNames(input) {
 }
 
 function updateInput() {
-    var contInput = document.getElementById('editor-container').children[0]
-    var cont = document.getElementById('mainInput')
-    cont.value = contInput.innerHTML
+    return new Promise(resolve => {
+        var contInput = document.getElementById('editor-container').children[0]
+        var cont = document.getElementById('details')
+        cont.value = contInput.innerHTML
+        resolve()
+    })
+    
 }
 
 function compDB(db, col, key, value, exempt) {
@@ -160,11 +164,13 @@ function checkForErrors(user) {
         }
         var errors = []
 
-        var name = document.getElementById('inputName')
+        var name = document.getElementById('name')
+        var location = document.getElementById('location')
+        var date = document.getElementById('date')
         var userName = document.getElementById('userName')
         var email = document.getElementById('email')
         var selects = document.getElementsByClassName('formSelInput')
-        var mainInput = document.getElementById('mainInput')
+        var details = document.getElementById('details')
         var files = document.getElementsByClassName('file')
         var terms = document.getElementById('terms')
         var password = document.getElementById('inputPass')
@@ -175,10 +181,38 @@ function checkForErrors(user) {
         // Checks if items exist, then if they have content, then if they are required, then checks for potential format errors.
         if(name) {
             name.classList.remove('error')
-            if(name.getAttribute('data-req') == 'true') {
-                if(name.value.length < 1) {
+            if(name.value.length < 1) {
+                if(name.getAttribute('data-req') == 'true') {
                     name.classList.add('error')
-                    errors.push('Name cannot be empty.')
+                    errors.push('Name required')
+                }
+            } else {
+                if(name.value.length < 3) {
+                    name.classList.add('error')
+                    errors.push('Name must be at least three characters')
+                }
+            }
+        }
+        if(location) {
+            location.classList.remove('error')
+            if(location.value.length < 1) {
+                if(location.getAttribute('data-req') == 'true') {
+                    location.classList.add('error')
+                    errors.push('Location required')
+                }
+            } else {
+                if(location.value.length < 3) {
+                    location.classList.add('error')
+                    errors.push('Location must be at least three characters')
+                }
+            }
+        }
+        if(date) {
+            date.classList.remove('error')
+            if(date.value.length < 1) {
+                if(date.getAttribute('data-req') == 'true') {
+                    date.classList.add('error')
+                    errors.push('Date required')
                 }
             }
         }
@@ -235,16 +269,16 @@ function checkForErrors(user) {
                 }
             }
         }
-        if(mainInput) {
+        if(details) {
             var editor = document.getElementById('editor-container')
             editor.classList.remove('error')
             editor.previousSibling.classList.remove('error')
 
-            if(mainInput.getAttribute('data-req') == 'true') {
-                if(mainInput.value.length < 12) {
+            if(details.value.length < 12) {
+                if(details.getAttribute('data-req') == 'true') {
                     editor.classList.add('error')
                     editor.previousSibling.classList.add('error')
-                    errors.push('Main content body cannot be empty.')
+                    errors.push('Main body cannot be empty.')
                 }
             }
         }

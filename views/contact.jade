@@ -23,18 +23,18 @@ block content
         div(class='formItem')
           p(class='formLabel') Your Name:
             span  *
-          input#inputName(class='formTextInput' type='text' data-req='true' name='name' placeholder='ext. John Doe' tabindex='1')
+          input#name(class='formTextInput' type='text' data-req='true' name='name' placeholder='ext. John Doe' tabindex='1')
         
         div(class='formItem')
           p(class='formLabel') Your Email:
             span  *
-          input#inputEmail(class='formTextInput' type='text' data-req='true' name='email' placeholder='ext. johndoe@site.com' tabindex='2')
+          input#email(class='formTextInput' type='text' data-req='true' name='email' placeholder='ext. johndoe@site.com' tabindex='2')
         
         div(class='formItem')
           p(class='formLabel') Message:
             span  *
           div#editor-container(name='cont')
-          input#mainInput(style='display: none;' data-req='true' type='text' name='details')
+          input#details(style='display: none;' data-req='true' type='text' name='details')
         
         div(class='formItem text-right my-4')
           button#formButton(class='buttonMain button col-12 col-md-4' onclick="updateInput()")
