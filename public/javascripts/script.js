@@ -127,16 +127,26 @@ function getFileNames(input) {
 
 function updateInput() {
     return new Promise(resolve => {
-        var contInput = document.getElementById('editor-container').children[0]
-        var cont = document.getElementById('details')
-        cont.value = contInput.innerHTML
+        var editors = document.getElementsByClassName('richEdit')
+        for(var i = 0; i < editors.length; i++) {  
+            var thisEdit = editors[i]
+            
+            var input = document.getElementById(thisEdit.getAttribute('data-name'))
+            if(thisEdit.children[0].innerHTML.length > 12) {
+                input.value = thisEdit.children[0].innerHTML 
+            } else {
+                input.value = ''
+            }
+                 
+            
+        }
         resolve()
     })
-    
 }
 
 function compDB(db, col, key, value, exempt) {
     return new Promise(resolve => {
+        
         var xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function() {
@@ -175,7 +185,6 @@ function checkForErrors(user) {
         var terms = document.getElementById('terms')
         var password = document.getElementById('inputPass')
         var pass1 = document.getElementById('pass1')
-        
         errors = []
 
         // Checks if items exist, then if they have content, then if they are required, then checks for potential format errors.

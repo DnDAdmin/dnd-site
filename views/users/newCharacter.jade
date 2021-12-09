@@ -27,6 +27,18 @@ block head
             font-size: 12pt;
             transition: .5s;
         }
+        .artImage {
+            position: absolute;
+
+            width: 102%;
+            height: 102%;
+            object-fit: cover;
+
+            border:none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
         .bi-camera {
             border-radius: unset;
         }
@@ -43,7 +55,7 @@ block content
                 div(class='row')
                     div(class='formItem col-sm-6')
                         p(class='formLabel') Character Name:
-                        input#characterName(class='formTextInput' type='text' data-req='true' name='characterName' value=fields.characterName)
+                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name)
                     div(class='formItem col-sm-6')
                         p(class='formLabel') Race:
                         input#race(class='formTextInput' type='text' name='race' value=fields.race)
@@ -67,10 +79,10 @@ block content
                         p(class='formLabel' style='white-space: nowrap;') Experience Points:
                         input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience)
                 div(class='row')
-                    div(class='col-sm-6 col-lg-4 pt-4' style='min-height: 220px;')
+                    div(class='col-sm-6 col-lg-4 pt-4' style='min-height: 200px; max-height: 405px;')
                         button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeNewImage()' style='right: -40px; display: none;') X
                         label(class='w-100 h-100')
-                            input#artWork(type='file' name='artWork' class='d-none file' data-type='image' onchange='')
+                            input#artWork(type='file' name='artWork' class='d-none file' data-type='image' onchange='setImage(this)')
                             div#artWorkCont(class='h-100 w-100 imageEdit' )
                                 if fields.artWork
                                     img#artImage(src=fields.artWork class='artImage' data-orig=fields.artWork style='display: block;')
@@ -83,59 +95,74 @@ block content
                     div(class='col-sm-6 col-lg-8')
                         div(class='formItem')
                             p(class='formLabel') Character History:
-                            div#editor-container(name='cont')
-                            input#history(style='display: none;' data-req='true' name='history' type='text')
+                            div(data-name='history' data-placeHolder="Tell us of your journey." class='richEdit')
+                            input#history(style='display: none;' data-req='true' name='history' type='text' value=fields.history)
                 
                 div(class='row')
-                    div(class='formItem col-sm-6')
-                        p(class='formLabel') Personality:
-                        textarea#class(class='formTextArea' name='class')=fields.class
-                    div(class='formItem col-sm-6')
-                        p(class='formLabel') Ideals:
-                        textarea#class(class='formTextArea' name='class')=fields.class
-                    div(class='formItem col-sm-6')
-                        p(class='formLabel') Bonds:
-                        textarea#class(class='formTextArea' name='class')=fields.class
-                    div(class='formItem col-sm-6')
-                        p(class='formLabel') Flaws:
-                        textarea#class(class='formTextArea' name='class')=fields.class
+                    div(class='col-sm-6')
+                        div(class='formItem')
+                            p(class='formLabel') Personality:
+                            div(data-name='personality' data-placeHolder="So, how crazy are you?" class='richEdit')
+                            input#personality(style='display: none;' name='personality' type='text' value=fields.personality)
+                    div(class='col-sm-6')
+                        div(class='formItem')
+                            p(class='formLabel') Ideals:
+                            div(data-name='ideals' data-placeHolder="What is your code?" class='richEdit')
+                            input#ideals(style='display: none;' name='ideals' type='text' value=fields.ideals)
+                div(class='row')
+                    div(class='col-sm-6')
+                        div(class='formItem')
+                            p(class='formLabel') Bonds:
+                            div(data-name='bonds' data-placeHolder="What keeps you ticking?" class='richEdit')
+                            input#bonds(style='display: none;' name='bonds' type='text' value=fields.bonds)
+                    div(class='col-sm-6')
+                        div(class='formItem')
+                            p(class='formLabel') Flaws:
+                            div(data-name='flaws' data-placeHolder="How will you mess things up, I wonder?" class='richEdit')
+                            input#flaws(style='display: none;' name='flaws' type='text' value=fields.flaws)
                 div(class='row')
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Strength:
-                        input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
+                        input#strength(class='formTextInput' type='number' name='strength' value=fields.strength)
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Dexterity:
-                        input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
+                        input#dexterity(class='formTextInput' type='number' name='dexterity' value=fields.dexterity)
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Constitution:
-                        input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
+                        input#constitution(class='formTextInput' type='number' name='constitution' value=fields.constitution)
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Intelligence:
-                        input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
+                        input#intelligence(class='formTextInput' type='number' name='intelligence' value=fields.intelligence)
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Wisdom:
-                        input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
+                        input#wisdom(class='formTextInput' type='number' name='wisdom' value=fields.wisdom)
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Charisma:
-                        input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
+                        input#charisma(class='formTextInput' type='number' name='charisma' value=fields.charisma)
                 div(class='row')
                     div(class='formItem col-4 col-sm-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Proficiency Bonus:
-                        input#experience(class='formTextInput' type='number' name='experience' value=fields.experience)
-            div(class='formItem text-right my-4' )
-                button#formButton(class='buttonMain button col-12 col-md-3 disabled' disabled=true onclick="updateInput()" )
-                    div(class='buttonText mx-2')
-                        p Create
+                        input#proficiencyBonus(class='formTextInput' type='number' name='proficiencyBonus' value=fields.proficiencyBonus)
+            
+                div(class='row')
+                    div(class='col-12')
+                        div(class='formItem')
+                            p(class='formLabel') Notes:
+                            div(data-name='notes' data-placeHolder="What doesn't quite fit?" class='richEdit')
+                            input#notes(style='display: none;' name='notes' type='text' value=fields.notes)
+            
+                div(class='formItem text-right my-4' )
+                    button#formButton(class='buttonMain button col-12 col-md-3' onclick="updateDataBase(); return false;" )
+                        div(class='buttonText mx-2')
+                            p Create
+            div(class='mt-2')
+                ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
                     
         
       
     
     script.
-        var info = {}
-        var orig = {}
         var img
-        var origImg
-        var form = document.querySelector('form')
 
         var toolbarOptions = [
             ['bold', 'italic', 'underline'],
@@ -145,37 +172,37 @@ block content
             [{ 'color': [] }, { 'background': [] }]
         ];
 
-        var quill = new Quill('#editor-container', {
-            theme: 'snow',
-            modules: {
-                toolbar: {
-                    container: toolbarOptions,
-                    handlers: {
-                        image: imageHandler
-                    }
-                }
-            },
-            placeholder: 'Tell us of your journey.'
-        });
 
-        function imageHandler() {
-            var range = this.quill.getSelection();
-            var value = prompt('What is the image URL');
-            if(value){
-                this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-            }
+        var editors = document.getElementsByClassName('richEdit')
+        for(var i = 0; i < editors.length; i++) {
+            var thisEdit = editors[i]
+            new Quill(thisEdit, {
+                theme: 'snow',
+                modules: {
+                    toolbar: {
+                        container: toolbarOptions
+                    }
+                },
+                placeholder: thisEdit.getAttribute('data-placeHolder')
+            })
         }
         
         document.getElementById('editor-container').children[0].tabIndex = 8;
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-        });
-
 
         async function updateDataBase() {
             await checkForErrors(false)
-            document.getElementById('passForm').submit()
+            var name = document.getElementById('name')
+            var taken = await compDB('dndgroup', 'characters_players', 'name', name.value, null)
+            if(taken) {
+                var errText = document.getElementById('errorText')
+                name.classList.add('error')
+                errText.innerHTML = 'Character name already taken.'
+                errText.style.display = 'block'
+            } else {
+                await updateInput()
+                document.getElementById('charForm').submit()
+            }
         }
 
         function togglePass(show) {
@@ -191,4 +218,21 @@ block content
                 fields[0].value = ''
                 fields[1].value = ''
             }
+        }
+
+        function setImage(files) {
+            var file = files.files[0];
+            var imgReader = new FileReader();
+            var imgCont =  document.getElementById('artImage')
+
+            imgReader.onloadend = function() {
+                
+                imgCont.src = imgReader.result
+                imgCont.style.display = 'block'
+
+                //- img = file
+
+                //- document.getElementById('removeImgBut').style.display = 'block'
+            }
+            imgReader.readAsDataURL(file);
         }

@@ -80,7 +80,7 @@ block content
                             p= message
                     div(class='w-100 siteCont')
                         if user.access.includes('super') || user.access.includes('admin')
-                            input#name(type='text' class='m-0 editableText text-right' style='' spellcheck="false" onfocusin='setInfo(this)' onfocusout='updateInfo(this)' placeholder='Name' data-req='true' data-orig=thisUser.name value=thisUser.name)
+                            input#name(type='text' class='m-0 editableText text-right' style='' spellcheck="false" onfocusin='setInfo(this)' oninput='updateInfo(this)' placeholder='Name' data-req='true' data-orig=thisUser.name value=thisUser.name)
                         else
                             div(class='text-right')
                                 p#name(style='margin-left: auto; font-size: 1.75vmin; width: 100px; white-space: nowrap; cursor: help;' data-tip='Your name can only be changed by a site admin')=thisUser.name
@@ -166,6 +166,8 @@ block content
                     if loggedUser || user.access.includes('admin') || user.access.includes('super')
                         p(class='text-right mb-2')
                             a(class='' href='/users/newcharacter/user=' + user._id) New Character
+                    for char in chars
+                        p= char.name
         
         if loggedUser
             div#rightPanel(class='col-11 col-md-4 mx-auto p-0')    
@@ -269,7 +271,7 @@ block content
             var err = document.getElementById('errorText')
             for(var i = 0; i < Object.keys(info).length; i++) {
                 var item = info[Object.keys(info)[i]]
-                var org = orig[Object.keys(info)[i]]
+                var org = document.getElementById(Object.keys(info)[i]).getAttribute('data-orig')
                 if(item != org) {
                     changed = true
                 }

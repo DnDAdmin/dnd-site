@@ -880,7 +880,7 @@ hr {
     margin: 0;
   }
 
-/* --VV-- RICH TEXT EDITOR --VV-- */
+/* --VV-- RICH TEXT EDITOR --VV-- */s
   .ql-toolbar.ql-snow {
     display: none;
     background-color: #444444;
@@ -893,7 +893,8 @@ hr {
     border-radius: 2px;
   }
   .ql-editor {
-    min-height: 320px;
+    min-height: 120px;
+    max-height: 320px;
     background-color: #a9a9a9;
     border-radius: 0 0 2px 2px;
     box-shadow: none;
@@ -1021,7 +1022,7 @@ hr {
     position: relative;
     border-radius: 50%;
     background-color: #0a3350;
-    border: 2px solid #0C3B5D;
+    /* border: 2px solid #0C3B5D; */
     color: white;
     box-shadow: 0 0 4px black;
     overflow: hidden;

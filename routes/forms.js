@@ -117,7 +117,7 @@ router.post('/commission', async function(req, res, next) {
 
 // Checks if item is already used
 router.post('/checkfordbitem', async function(req, res, next) {
-    var used = await ops.findItem(req.db.db('dndgroup'), 'users', {$and: [{[req.body.key]: req.body.value}, {_id: {$not: {$eq: ObjectId(req.body.exempt)}}}]})
+    var used = await ops.findItem(req.db.db(req.body.db), req.body.col, {$and: [{[req.body.key]: req.body.value}, {_id: {$not: {$eq: ObjectId(req.body.exempt)}}}]})
     if(used) {
       res.send('true')
     } else {

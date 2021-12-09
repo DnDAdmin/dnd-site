@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
 const formidable = require('formidable')
+const fs = require('fs')
+const path = require('path')
 const hash = require('password-hash')
 var ops = require('../functions/databaseOps')
 const {ObjectId} = require('mongodb');
-const { authUser, findItem } = require('../functions/databaseOps');
+const { authUser, findItem, addToDatabase } = require('../functions/databaseOps');
 
 var mainHeader = 'Lore Seekers | '
 
@@ -263,6 +265,8 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
   var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(currUser.id)})
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(userSess.user)})
 
+  var userChars = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {user: ObjectId(userSess.user)})
+
 
   if(thisUser._id.toString() == userSess.user.toString()) {
     var allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {_id: {$not: {$eq: ObjectId(req.params.id)}}})
@@ -289,6 +293,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
         allUsers: allUsers,
         thisUser: thisUser,
         events: events,
+        chars: userChars,
         user: user
       })
     } else {
@@ -298,6 +303,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
         allUsers: allUsers,
         thisUser: thisUser,
         events: events,
+        chars: userChars,
         user: user
       })
     }
@@ -307,6 +313,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
       title: mainHeader,
       loggedUser: false,
       thisUser: thisUser,
+      chars: userChars,
       user: user
     })
   }
@@ -422,5 +429,38 @@ router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res
   })
 })
 
+router.post('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
+  var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+  
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    var charId = new ObjectId()
+    
+    fields.user = ObjectId(user._id)
+    fields._id = charId
+
+    if(files.artWork) {
+      var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+      var oldpath = fs.readFileSync(files.artWork.path)
+      var data = await ops.uploadFile(s3User, 'dnd-character-images', charId + '-artWork' + path.extname(files.artWork.name), oldpath, 'public-read')
+      if(data) {
+          console.log('Profile image uploaded.')
+          fields.artWork = data.Location
+          fields.artWorkKey = data.Key
+      }
+    }
+
+    await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [fields])
+
+    req.session.message = 'Character Created!'
+    req.session.sub = true
+
+    res.redirect('/users/dashboard/user=' + req.params.id)
+
+    // res.send([fields, files])
+
+  })
+
+})
 
 module.exports = router;

@@ -66,14 +66,15 @@ div#header(class='row w-100 mx-auto font-Merriweather')
                                 img(src=user.profileImage class='profileImage')
                             p= user.userName
                                 //- &#x1f517;
-                div#mobileMenListItems
-                    button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick='window.location.href="/"')
-                        div(class='buttonText')
-                            p#saveText() Home
-                    if !user
-                        button#formButton(class='buttonMain button w-100 col-md-4 mt-3' style='right: 0;' onclick='window.location.href="/users/login"')
+                    else
+                        button#formButton(class='buttonMain button w-100 col-md-4 mt-3' style='height: 40px' onclick='window.location.href="/users/login"')
                             div(class='buttonText')
                                 p#saveText() Log In
+                div#mobileMenListItems
+                    button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0; left: 0;' onclick='window.location.href="/"')
+                        div(class='buttonText')
+                            p#saveText() Home
+                    
                         //- div(class='mobileMenListLinkCont mt-1' onclick='window.location.href="/users/login"')
                         //-     p(class='mobileMenListLink') Login
                     //- div(class='mobileMenListLinkCont mt-1' onclick='window.location.href="/"')

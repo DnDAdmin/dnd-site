@@ -21,7 +21,7 @@ block head
 block content
   div(class='row mt-5')
     div(class='col-12 col-md-8 mx-auto')
-      div(class='siteCont')
+      div(class='siteCont p-3')
         if user
           if user.permissions.includes('admin') || user.permissions.includes('super')
             div(class='w-100 text-right')
