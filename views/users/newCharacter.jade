@@ -55,29 +55,29 @@ block content
                 div(class='row')
                     div(class='formItem col-sm-6')
                         p(class='formLabel') Character Name:
-                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name)
+                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
                     div(class='formItem col-sm-6')
                         p(class='formLabel') Race:
-                        input#race(class='formTextInput' type='text' name='race' value=fields.race)
+                        input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
                 
                 div(class='row')
                     div(class='formItem col-8 col-sm-4 pr-0')
                         p(class='formLabel') Class:
-                        input#class(class='formTextInput' type='text' name='class' value=fields.class)
+                        input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
                     div(class='formItem col-4 col-sm-2 pl-1')
                         p(class='formLabel') Level:
-                        input#level(class='formTextInput' type='number' name='level' value=fields.level)
+                        input#level(class='formTextInput' type='number' name='level' value=fields.level tabindex='4')
                     div(class='formItem col-sm-6')
                         p(class='formLabel' style='white-space: nowrap;') Background:
-                        input#background(class='formTextInput' type='text' name='background' value=fields.background)
+                        input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
                 
                 div(class='row')
                     div(class='formItem col-sm-6')
                         p(class='formLabel') Alignment:
-                        input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment)
+                        input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
                     div(class='formItem col-4 col-sm-2')
                         p(class='formLabel' style='white-space: nowrap;') Experience Points:
-                        input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience)
+                        input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
                 div(class='row')
                     div(class='col-sm-6 col-lg-4 pt-4' style='min-height: 200px; max-height: 405px;')
                         button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeNewImage()' style='right: -40px; display: none;') X
@@ -95,7 +95,7 @@ block content
                     div(class='col-sm-6 col-lg-8')
                         div(class='formItem')
                             p(class='formLabel') Character History:
-                            div(data-name='history' data-placeHolder="Tell us of your journey." class='richEdit')
+                            div(data-name='history' data-placeHolder="Tell us of your journey." data-tab=8 class='richEdit')
                             input#history(style='display: none;' data-req='true' name='history' type='text' value=fields.history)
                 
                 div(class='row')
@@ -163,29 +163,6 @@ block content
     
     script.
         var img
-
-        var toolbarOptions = [
-            ['bold', 'italic', 'underline'],
-                    
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],                       
-
-            [{ 'color': [] }, { 'background': [] }]
-        ];
-
-
-        var editors = document.getElementsByClassName('richEdit')
-        for(var i = 0; i < editors.length; i++) {
-            var thisEdit = editors[i]
-            new Quill(thisEdit, {
-                theme: 'snow',
-                modules: {
-                    toolbar: {
-                        container: toolbarOptions
-                    }
-                },
-                placeholder: thisEdit.getAttribute('data-placeHolder')
-            })
-        }
         
         document.getElementById('editor-container').children[0].tabIndex = 8;
 

@@ -38,7 +38,7 @@ block content
                 
                 div(class='formItem')
                     p(class='formLabel') Event Details:
-                    div#editor-container(name='cont')
+                    div#editor-container(data-name='cont' data-placeHolder="What shall we get up to?" class='richEdit')
                     input#details(style='display: none;' data-req='true' name='details' type='text' value=event.details)
                 
                 div(class='w-100 text-right mt-2')
@@ -57,37 +57,6 @@ block content
         var img
         var origImg
         var form = document.querySelector('form')
-
-        var toolbarOptions = [
-            ['bold', 'italic', 'underline'],
-                    
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],                       
-
-            [{ 'color': [] }, { 'background': [] }],
-
-            ['link','image']
-        ];
-
-        var quill = new Quill('#editor-container', {
-            theme: 'snow',
-            modules: {
-                toolbar: {
-                    container: toolbarOptions,
-                    handlers: {
-                        image: imageHandler
-                    }
-                }
-            },
-            placeholder: 'What we going to do?'
-        });
-
-        function imageHandler() {
-            var range = this.quill.getSelection();
-            var value = prompt('What is the image URL');
-            if(value){
-                this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-            }
-        }
         
         document.getElementById('editor-container').children[0].tabIndex = 4;
 

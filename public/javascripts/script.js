@@ -435,3 +435,43 @@ function toggleUserMen() {
         arrow.classList.add('toggled')
     }
 }
+
+var toolbarOptions = [
+    ['bold', 'italic', 'underline'],
+            
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],                       
+
+    [{ 'color': [] }, { 'background': [] }],
+
+    ['link', 'image']
+];
+
+
+var editors = document.getElementsByClassName('richEdit')
+if(editors.length > 0) {
+    for(var i = 0; i < editors.length; i++) {
+        var thisEdit = editors[i]
+        new Quill(thisEdit, {
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: toolbarOptions,
+                    handlers: {
+                        image: imageHandler
+                    }
+                }
+            },
+            placeholder: thisEdit.getAttribute('data-placeHolder')
+        })
+        thisEdit.children[0].tabIndex = thisEdit.getAttribute('data-tab')
+    }
+}
+
+
+function imageHandler() {
+    var range = this.quill.getSelection();
+    var value = prompt('What is the image URL');
+    if(value){
+        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+    }
+}

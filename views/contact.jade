@@ -6,75 +6,52 @@ block head
 block content
   div(class='row mt-5')
     div(class='col-12 col-md-8 mx-auto')
-      h1(class='headingText text-center') Contact Form
-      hr
-      p(class='text-right')
-          span(style='color: red;') *
-          |  = required
       if success 
-        div#formMessage(class='success')
+        div#formMessage(class='success mb-2')
             h4 Success! 
             p Your message has been sent!
       else
-        div#formMessage
+        div#formMessage(class='mb-2')
             h4
             ul
-      form(class='formMain mx-auto' action='/forms/contact'  method='post' enctype="multipart/form-data" onsubmit='return checkForErrors()')
-        div(class='formItem')
-          p(class='formLabel') Your Name:
-            span  *
-          input#name(class='formTextInput' type='text' data-req='true' name='name' placeholder='ext. John Doe' tabindex='1')
-        
-        div(class='formItem')
-          p(class='formLabel') Your Email:
-            span  *
-          input#email(class='formTextInput' type='text' data-req='true' name='email' placeholder='ext. johndoe@site.com' tabindex='2')
-        
-        div(class='formItem')
-          p(class='formLabel') Message:
-            span  *
-          div#editor-container(data-name='details' class='richEdit')
-          input#details(style='display: none;' data-req='true' type='text' name='details')
-        
-        div(class='formItem text-right my-4')
-          button#formButton(class='buttonMain button col-12 col-md-4' onclick="updateInput()")
-            div(class='buttonText mx-2')
-              p Submit
+      div(class='siteCont')
+        h1(class='headingText text-center') Contact Form
+        hr
+        p(class='text-right')
+            span(style='color: red;') *
+            |  = required
+        form#form(class='formMain mx-auto' action='/forms/contact'  method='post' enctype="multipart/form-data" onsubmit='return checkForErrors()')
+          div(class='formItem')
+            p(class='formLabel') Your Name:
+              span  *
+            input#name(class='formTextInput' type='text' data-req='true' name='name' placeholder='ext. John Doe' tabindex='1')
+          
+          div(class='formItem')
+            p(class='formLabel') Your Email:
+              span  *
+            input#email(class='formTextInput' type='text' data-req='true' name='email' placeholder='ext. johndoe@site.com' tabindex='2')
+          
+          div(class='formItem')
+            p(class='formLabel') Message:
+              span  *
+            div#editor-container(data-name='details' data-placeHolder='Say what you need to say.' data-tab=3 class='richEdit')
+            input#details(style='display: none;' data-req='true' type='text' name='details')
+          
+          div(class='formItem text-right my-4')
+            button#formButton(class='buttonMain button col-12 col-md-4' onclick="sendMessage(); return false")
+              div(class='buttonText mx-2')
+                p Submit
+    
+      div(class='mt-2')
+        ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
 
 
   
   script.
-    var toolbarOptions = [
-        ['bold', 'italic', 'underline'],
-                
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],                       
-
-        [{ 'color': [] }, { 'background': [] }],
-
-        ['link', 'image']
-    ];
-
-    var quill = new Quill('#editor-container', {
-        theme: 'snow',
-        modules: {
-            toolbar: {
-                container: toolbarOptions,
-                handlers: {
-                    image: imageHandler
-                }
-            }
-        },
-        placeholder: 'What do you have to say?'
-    });
-
-    function imageHandler() {
-        var range = this.quill.getSelection();
-        var value = prompt('What is the image URL');
-        if(value){
-            this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-        }
+    async function sendMessage() {
+      await updateInput()
+      await checkForErrors()
+      document.getElementById('form').submit()
     }
-    
-    document.getElementById('editor-container').children[0].tabIndex = 3;
 
 

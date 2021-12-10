@@ -73,7 +73,7 @@ block head
 block content
     div(class='row mt-5')
         div#leftPanel(class='col-11 col-md-8 mx-auto p-0')
-            if loggedUser || user.access.includes('super') || user.access.includes('admin')
+            if loggedUser || ((user.access.includes('super') || user.access.includes('admin') && !thisUser.access.includes('super')))
                 form#profile(class='col-12' method="POST" enctype="multipart/form-data" onload='setFields()')
                     if message
                         div#formMessage(class='success mb-2')
@@ -136,38 +136,55 @@ block content
                                         p#saveText() Log Out
 
             else 
-                div(class='w-100 text-around siteCont')
-                    if user.access.includes('admin') || user.access.includes('super')
-                        p#name(class='w-100 text-right' style='font-size: 1.75vmin;')=thisUser.name
+                div(class='col-12')
+                    div(class='siteCont')
+                        if user.access.includes('admin') || user.access.includes('super')
+                            p#name(class='w-100 text-right' style='font-size: 1.75vmin;')=thisUser.name
 
-                    div(class='mx-auto mt-3' style='height: 120px; width: 120px; position: relative;')
-                        div#profileImageCont(class='profileImageCont h-100 w-100' )
-                            if thisUser.profileImage
-                                img#profileImage(src=thisUser.profileImage class='profileImage' data-orig=thisUser.profileImage style='display: block;')
-                            else
-                                p#profileImageLetter(class='profileImageLetter' style='font-size: 48pt;')= thisUser.userName.substring(0,1).toUpperCase()
+                        div(class='mx-auto mt-3' style='height: 120px; width: 120px; position: relative;')
+                            div#profileImageCont(class='profileImageCont h-100 w-100' )
+                                if thisUser.profileImage
+                                    img#profileImage(src=thisUser.profileImage class='profileImage' data-orig=thisUser.profileImage style='display: block;')
+                                else
+                                    p#profileImageLetter(class='profileImageLetter' style='font-size: 48pt;')= thisUser.userName.substring(0,1).toUpperCase()
 
-                                
-                    div#fields(class='w-100 mx-auto text-center mt-2 font-Alegreya')
-                        p#userName(type='text' class='m-0 titleText' style='')= thisUser.userName
-                            if thisUser.access.includes('super')
-                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill prof ml-1" viewBox="0 0 16 16" data-tip='Site Manager')
-                                    path(style='color: gold;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
-                            else
-                                if thisUser.access.includes('admin')
-                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill prof ml-1" viewBox="0 0 16 16" data-tip='Admin User')
-                                        path(style='color: green;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
-                        p#email(type='text' class='m-0 mt-1 titleText' style='')= thisUser.email
+                                    
+                        div#fields(class='w-100 mx-auto text-center mt-2 font-Alegreya')
+                            p#userName(type='text' class='m-0 titleText' style='')= thisUser.userName
+                                if thisUser.access.includes('super')
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill prof ml-1" viewBox="0 0 16 16" data-tip='Site Manager')
+                                        path(style='color: gold;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
+                                else
+                                    if thisUser.access.includes('admin')
+                                        svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill prof ml-1" viewBox="0 0 16 16" data-tip='Admin User')
+                                            path(style='color: green;' d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
+                            p#email(type='text' class='m-0 mt-1 titleText' style='')= thisUser.email
 
            
             div(class='col-12 mx-auto mt-2')
                 div(class='siteCont')
                     h3(class='titleText text-center') User Chatacters
-                    if loggedUser || user.access.includes('admin') || user.access.includes('super')
+                    if loggedUser || ((user.access.includes('super') || user.access.includes('admin') && !thisUser.access.includes('super')))
                         p(class='text-right mb-2')
                             a(class='' href='/users/newcharacter/user=' + user._id) New Character
-                    for char in chars
-                        p= char.name
+                    div(class='row w-100 mx-auto mb-1')
+                        if chars.length > 0
+                            div(class='w-100')
+                                hr
+                            for char in chars
+                                div(class='mx-auto mx-sm-0 col-8 col-sm-6 col-md-4 col-lg-3 mb-2 mb-sm-0 px-2')
+                                    div(class='charCard' onclick='window.location.href="/users/character=' + char._id + '"')
+                                        div(class='charCardInfo')
+                                            if char.artWork
+                                                img(class='charCardImg' src=char.artWork)
+                                                p(class='charCardTitle img')
+                                                    strong= char.name
+                                            else
+                                                p(class='charCardTitle')= char.name
+                        else
+                            div(class='text-center w-100 font-Alegreya')
+                                hr
+                                h1 No characters yet
         
         if loggedUser
             div#rightPanel(class='col-11 col-md-4 mx-auto p-0')    

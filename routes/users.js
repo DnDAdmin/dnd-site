@@ -265,7 +265,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
   var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(currUser.id)})
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(userSess.user)})
 
-  var userChars = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {user: ObjectId(userSess.user)})
+  var userChars = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {user: ObjectId(req.params.id)})
 
 
   if(thisUser._id.toString() == userSess.user.toString()) {
@@ -429,6 +429,7 @@ router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res
   })
 })
 
+// Creates new character
 router.post('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   
@@ -439,7 +440,7 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
     fields.user = ObjectId(user._id)
     fields._id = charId
 
-    if(files.artWork) {
+    if(files.artWork.size > 0) {
       var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
       var oldpath = fs.readFileSync(files.artWork.path)
       var data = await ops.uploadFile(s3User, 'dnd-character-images', charId + '-artWork' + path.extname(files.artWork.name), oldpath, 'public-read')
@@ -459,6 +460,27 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
 
     // res.send([fields, files])
 
+  })
+
+})
+
+// Loads character page
+router.get('/character=:id', authUser(), async function(req, res, next) {
+  var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)})
+  var owner = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.user)})
+  var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
+
+  var isOwner = false
+  if(char.user.toString() == userSess.user.toString()) {
+    isOwner = true
+  }
+
+  res.render('users/character', {
+    title: mainHeader,
+    char: char,
+    isOwner: isOwner,
+    owner: owner,
+    user: req.session.user
   })
 
 })

@@ -28,13 +28,13 @@ router.post('/contact', async function(req, res, next) {
     form.parse(req, async function (err, fields, files) {
         var mailOptions = {
             from: fields.name + ' - Via Site <' + fields.email + '>',
-            to: 'main.nrjohnson@gmail.com',
+            to: 'dndgroupsuper@gmail.com',
             subject: 'Message From ' + fields.name,
             html: '<p>From: ' + fields.name + ' (' + fields.email + ')<br>' + fields.details
         };
         await sendMail(mailOptions)
         req.session.success = true
-        res.redirect('/forms/contactme')
+        res.redirect('/forms/contact')
     })
 })
   
