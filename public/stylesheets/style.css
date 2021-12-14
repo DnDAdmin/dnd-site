@@ -953,13 +953,81 @@ hr {
     box-shadow: 0 0 2px rgba(0,0,0,.5);
     border-radius: 2px;
   }
+  .selSlideMain {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform:translateX(-50%);
+    width: 50%;
+    height: 75%;
+    transition: .25s;
+  }
+  .selSlideCont {
+    position: relative;
+    display: flex;
+    top: 0;
+    
+    height: 100%;
+    transition: .25s;
+  }
+  .slideItem {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    transition: .25s;
+  }
+  .slideItem.hide {
+    opacity: 0;
+    transition: .25s;
+  }
+  .slideImg {
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
 /*  --VV-- DASHBOARD PROFILE --VV-- */
   .siteCont {
     /* border: 2px solid rgba(255, 255, 255, 0.856); */
     border-radius: 2px;
     background-color: #444444;
-    padding: 1.25vmin;
+    padding: 2vmin;
+  }
+  .slideMain {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    transition: .5s;
+  }
+  .slideCont {
+    position: relative;
+    display: flex;
+    left: 50%;
+    transform: translate(-50%);
+    min-height: 320px;
+    transition: .5s;
+  }
+  .slideCont.in {
+    opacity: 1;
+    transition: .5s;
+  }
+  .slideCont.hide {
+    opacity: 0;
+    transition: .5s;
+  }
+
+  .slideCont .formItem {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .editableText {
     width: 100%;

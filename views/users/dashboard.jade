@@ -117,7 +117,6 @@ block content
 
                         div#saveButton(class='text-right profileSaveButton mt-2')
                             button(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
-                                
                                 div(class='buttonText')
                                     img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
                                     p#saveText Save
@@ -165,8 +164,14 @@ block content
                 div(class='siteCont')
                     h3(class='titleText text-center') User Chatacters
                     if loggedUser || ((user.access.includes('super') || user.access.includes('admin') && !thisUser.access.includes('super')))
-                        p(class='text-right mb-2')
-                            a(class='' href='/users/newcharacter/user=' + user._id) New Character
+                        div(class='col-12 text-right')
+                            button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'" data-tip='Add New Character')
+                                div(class='buttonText w-100 h-100')
+                                    svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
+                                        path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
+
+                        //- p(class='text-right mb-2')
+                        //-     a(class='' href='/users/newcharacter/user=' + user._id) New Character
                     div(class='row w-100 mx-auto mb-1')
                         if chars.length > 0
                             div(class='w-100')
