@@ -78,6 +78,10 @@ block content
                     if message
                         div#formMessage(class='success mb-2')
                             p= message
+                    else
+                        if error
+                            div#errorMessage(class='error mb-1')
+                                p= error
                     div(class='w-100 siteCont')
                         if user.access.includes('super') || user.access.includes('admin')
                             input#name(type='text' class='m-0 editableText text-right' style='' spellcheck="false" onfocusin='setInfo(this)' oninput='updateInfo(this)' placeholder='Name' data-req='true' data-orig=thisUser.name value=thisUser.name)
@@ -163,12 +167,20 @@ block content
             div(class='col-12 mx-auto mt-2')
                 div(class='siteCont')
                     h3(class='titleText text-center') User Chatacters
-                    if loggedUser || ((user.access.includes('super') || user.access.includes('admin') && !thisUser.access.includes('super')))
-                        div(class='col-12 text-right')
-                            button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'" data-tip='Add New Character')
-                                div(class='buttonText w-100 h-100')
-                                    svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
-                                        path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
+                    if (loggedUser && gameSession)
+                        if gameSession.activities.includes('newCharacters')
+                            div(class='col-12 text-right')
+                                button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'" data-tip='Add New Character')
+                                    div(class='buttonText w-100 h-100')
+                                        svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
+                                            path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
+                    else
+                        if user.access.includes('super') || (user.access.includes('admin') && !thisUser.access.includes('super'))
+                            div(class='col-12 text-right')
+                                button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'" data-tip='Add New Character')
+                                    div(class='buttonText w-100 h-100')
+                                        svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
+                                            path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
 
                         //- p(class='text-right mb-2')
                         //-     a(class='' href='/users/newcharacter/user=' + user._id) New Character
@@ -192,14 +204,27 @@ block content
                                 h1 No characters yet
         
         if loggedUser
-            div#rightPanel(class='col-11 col-md-4 mx-auto p-0')    
+            div#rightPanel(class='col-11 col-md-4 mx-auto p-0')  
+                if user.access.includes('admin') || user.access.includes('super')
+                    div(class='col-12 mt-2 mt-md-0 mb-md-2')
+                        div(class='siteCont')
+                            h3(class='titleText text-center') Game Session
+                            div#sessButton(class='text-center mt-2')
+                                button(class='buttonMain button col-12' onclick="")
+                                    div(class='buttonText')
+                                        p Start Game Session
                 if allUsers
                     div(class='col-12 mt-2 mt-md-0')
                         div(class='siteCont')
                             h3(class='titleText text-center') All Users
                             if user.access.includes('admin') || user.access.includes('super')
-                                p(class='text-right mb-2')
-                                    a(class='' href='/admin/invite') Invite New User
+                                //- p(class='text-right mb-2')
+                                //-     a(class='' href='/admin/invite') Invite New User
+                                div(class='col-12 pr-md-0 text-right')
+                                    button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/admin/invite'" data-tip='Invite New Player')
+                                        div(class='buttonText w-100 h-100')
+                                            svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
+                                                path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
                             for mem in allUsers
                                 div(class='userId' onclick='window.location.href="/users/dashboard/user=' + mem._id + '"')
                                     div(class='profileImageCont' style='height: 35px; width: 35px;')
@@ -222,8 +247,13 @@ block content
                         div(class='siteCont')
                             h3(class='titleText text-center') Upcoming Events
                             if user.access.includes('admin') || user.access.includes('super')
-                                p(class='text-right mb-2')
-                                    a(class='' href='/admin/newevent') New Event
+                                //- p(class='text-right mb-2')
+                                //-     a(class='' href='/admin/newevent') New Event
+                                div(class='col-12 pr-md-0 text-right')
+                                    button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/admin/newevent'" data-tip='Add New Event')
+                                        div(class='buttonText w-100 h-100')
+                                            svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
+                                                path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
                             div
                                 for evnt in events                                        
                                     div(class='event')
@@ -233,8 +263,10 @@ block content
                                         if user.access.includes('admin') || user.access.includes('super')
                                             hr(class='m-0 my-1 w-50')
                                             div(class='editLink')
-                                                span(onclick=href='window.location.href="/admin/edit/event=' + evnt._id + '"')  &#9998; 
-                                                    span Edit
+                                                span(onclick=href='window.location.href="/admin/edit/event=' + evnt._id + '"')
+                                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16")
+                                                        path(d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z")
+                                                    span  Edit
                                         
                                             
                                     
@@ -363,7 +395,7 @@ block content
             var currUrl = window.location.href
             id = currUrl.substring(currUrl.length - 24)
             
-            await checkForErrors(true)
+            await checkForErrors({id: id, field: 'userName'}, 'users')
 
             gif.style.display = 'block'
             saveText.style.display = 'none'
@@ -389,6 +421,14 @@ block content
                         thisImg.src = imgData
                     }
                     imageXBut.style.display = 'none'
+                }
+                if(info.userName) {
+                    document.getElementById('userMenName').children[0].innerHTML = info.userName
+                }
+                for(var i = 0; i < Object.keys(info).length; i++) {
+                    var key = Object.keys(info)[i]
+                    var item = document.getElementById(key)
+                    item.setAttribute('data-orig', info[key])
                 }
                 gif.style.display = 'none'
                 saveText.style.display = 'block'

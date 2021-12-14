@@ -286,10 +286,15 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
       msg = req.session.message
       req.session.message = null
 
+      var err
+      err = req.session.error
+      req.session.error = null
+
       res.render('users/dashboard', {
         title: mainHeader,
         loggedUser: true,
         message: msg,
+        error: err,
         allUsers: allUsers,
         thisUser: thisUser,
         events: events,
@@ -357,7 +362,7 @@ router.post('/updateprofile/:id', ops.authUser('userId'), async function(req, re
       }
 
       var newUser = await ops.updateItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)}, {$set: user})
-
+      
       if(newUser) {
           console.log('Profile update')
           res.send('success')
@@ -414,6 +419,10 @@ router.post('/newpass/user=:id', authUser('userId'), async function(req, res, ne
 // New user character form
 router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
   var thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+  var races = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'races'})
+  var classes = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'classes'})
+  var backgrounds = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'backgrounds'})
+  var alignments = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'alignments'})
 
   var fields = {}
   if(req.session.fields) {
@@ -424,6 +433,10 @@ router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res
   res.render('users/newCharacter', {
     title: mainHeader,
     fields: fields,
+    races: races,
+    classes: classes,
+    backgrounds: backgrounds,
+    alignments: alignments,
     thisUser: thisUser,
     user: req.session.user
   })
@@ -484,5 +497,47 @@ router.get('/character=:id', authUser(), async function(req, res, next) {
   })
 
 })
+
+// Loads character edit page
+router.get('/edit/character=:id', authUser(), async function(req, res, next) {
+  var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)})
+  var owner = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.user)})
+  var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
+
+  var isOwner = false
+  if(char.user.toString() == userSess.user.toString()) {
+    isOwner = true
+  }
+
+  if(isOwner) {
+    var races = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'races'})
+    var classes = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'classes'})
+    var backgrounds = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'backgrounds'})
+    var alignments = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'alignments'})
+
+    var gameSession = {activities:[]}
+
+    res.render('users/editCharacter', {
+      title: mainHeader,
+      fields: char,
+      owner: owner,
+      races: races,
+      classes: classes,
+      backgrounds: backgrounds,
+      alignments: alignments,
+      gameSession: gameSession,
+      user: req.session.user
+    })
+  } else {
+    req.session.error = 'You do not permission to edit that character.'
+    req.session.sub = true
+    res.redirect('/users/dashboard')
+
+  }
+
+  
+
+})
+
 
 module.exports = router;

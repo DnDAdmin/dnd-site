@@ -1,0 +1,321 @@
+extends ../layout
+
+block head
+    title= title + 'New Character'
+
+    style.
+        .slideButton {
+            position: absolute;
+            height: 45%;
+            width: 10%;
+            top: 50%;
+            left: 8px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+        .slideButton.right {
+            left: unset;
+            right: 8px;
+        }
+        #infoText {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            bottom: 0;
+            margin: 0;
+            padding: 8px;
+            font-size: 10pt;
+        }
+        .contMain {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+        .contMain #art {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        #artWorkCont {
+            position: relative;
+            border-radius: 4px;
+            background-color: #0a3350;
+            border: 2px solid #0C3B5D;
+            color: white;
+            box-shadow: 0 0 4px black;
+            overflow: hidden;
+            transition: .5s;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+        }
+        .artImageLetter {
+            margin: 0;
+            padding: 0;
+            font-family: "Alegreya", serif;
+            text-align: center;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12pt;
+            transition: .5s;
+        }
+        #fileName {
+            position: absolute;
+            bottom: 0;
+            right: 10px;
+            font-size: 8pt;
+            background-color: #0a3350;
+            padding: 8px;
+            display: none;
+        }
+        .artImage {
+            position: absolute;
+
+            max-width: 102%;
+            max-height: 102%;
+            object-fit: cover;
+
+            border:none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .bi-camera {
+            border-radius: unset;
+        }
+        .imageEdit:hover .artImageLetter {
+            opacity: .1;
+            transition: .5s;
+        }
+
+block content
+    div(class='row mt-5')
+        div(class='col-12')
+            h1(class='text-center') New Character
+        form#charForm(class='col-11 col-md-8 mx-auto p-0' style='overflow-x: hidden;' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
+            div#slide(class='slideMain')
+                div#0(class='siteCont slideCont in col-12' oninput='checkChange()')
+                    div(class='contMain')
+                        div(class='w-100 mt-0 formItem px-3')
+                            p(class='formLabel mb-2') Character Name:
+                            input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name)
+                div#1(class='siteCont slideCont col-12')
+                    div(class='contMain')
+                        button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeImage(); return false;' style='right: 10px; top: 10px; height: 25px; width: 25px; z-index: 1; display: none;') X
+                        label#art
+                            input#artWork(type='file' name='artWork' class='d-none file' data-type='image' onchange='setImage(this)')
+                            div#artWorkCont(class='imageEdit' )
+                                if fields.artWork
+                                    img#artImage(src=fields.artWork class='artImage' data-orig=fields.artWork style='display: block;')
+                                else
+                                    p#artImageLetter(class='artImageLetter' style='font-size: 12pt;') Art Work
+                                    img#artImage(src=null class='artImage' style='display: none;')
+                                svg(xmlns="http://www.w3.org/2000/svg" class="bi bi-camera" viewBox="0 0 16 16")
+                                    path(style='color: white;' d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z")
+                                    path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
+
+                            p#fileName
+                div#2(class='siteCont slideCont col-12')
+                    div(class='contMain')
+                        div(class='slideButton')
+                            div(class='buttonMain button h-100 w-100' onclick="prevOp(this); return false;" )
+                                div(class='buttonText mx-2')
+                                    p= '<'
+                        div(class='slideButton right')
+                            div(class='buttonMain button h-100 w-100' onclick="nextOp(this); return false;" )
+                                div(class='buttonText mx-2')
+                                    p= '>'
+                        div(class='w-100 mt-0 px-3')
+                            div#slideCont(class='selSlideMain')
+                                div(class='selSlideCont')
+                                    div#slide1(class='slideItem w-100' data-value='Dragonborn' data-info='Dragonborn look very much like dragons standing erect in humanoid form, though they lack wings or a tail.')
+                                        img(class='slideImg' src='/images/races/dragonborn.png')
+                                        p(class='text-center') Dragonborn
+                                    div#slide1(class='slideItem w-100 hide' data-value='Dwarf' data-info='Bold and hardy, dwarves are known as skilled warriors, miners, and workers of stone and metal.')
+                                        img(class='slideImg' src='/images/races/dwarf.png')
+                                        p(class='text-center') Dwarf
+                                    div#slide1(class='slideItem w-100 hide' data-value='Elf' data-info='Elves are a magical people of otherworldly grace, living in the world but not entirely part of it.')
+                                        img(class='slideImg' src='/images/races/elf.png')
+                                        p(class='text-center') Elf
+
+                        p#infoText Dragonborn look very much like dragons standing erect in humanoid form, though they lack wings or a tail.
+
+
+        div(class='col-11 col-md-8 mx-auto mt-2 p-0')
+            div(class='row w-100 mx-auto')
+                div(class='col-6 pl-0')
+                    button#backButton(class='buttonMain button col-12 col-md-6' style='display: none;' onclick="previous(); return false;" )
+                        div(class='buttonText mx-2')
+                            p Back
+                div(class='col-6 text-right pr-0')
+                    button#forButton(class='buttonMain button col-12 col-md-6' onclick="progress(); return false;" )
+                        div(class='buttonText mx-2')
+                            p Next
+    
+      
+    
+    script.
+        var slide = 0
+        var raceSlide = 0
+        var img
+
+        var form = document.querySelector('charForm')
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+        });
+        
+        function progress() {
+            var slideMain = document.getElementById('slide')
+            var thisSlide = document.getElementById(slide);
+            var nextSlide = document.getElementById((slide + 1));
+            var backBut = document.getElementById('backButton')
+            var forBut = document.getElementById('forButton')
+
+            if((slide + 1) == slideMain.children.length) {
+                updateDataBase()
+            } else {
+                slideMain.style.transform = 'translateX(-' + (100 * (slide + 1)) + '%)'
+
+                slide += 1
+
+                backButton.style.display = 'unset'
+                if((slide + 1) == slideMain.children.length) {
+                    forBut.children[0].children[0].innerHTML = 'Save'
+                }
+            }
+        }
+
+        function previous() {
+            var slideMain = document.getElementById('slide')
+            var thisSlide = document.getElementById(slide);
+            var nextSlide = document.getElementById((slide - 1));
+            var backBut = document.getElementById('backButton')
+            var forBut = document.getElementById('forButton')
+
+            slideMain.style.transform = 'translateX(-' + (100 * (slide - 1)) + '%)'
+
+            slide -= 1
+
+            forBut.style.display = 'unset'
+            forBut.children[0].children[0].innerHTML = 'Next'
+            if(slide == 0) {
+                backBut.style.display = 'none'
+            }
+        }
+
+        function checkChange() {
+
+        }
+
+        function nextOp(but) {
+            var slideMain = but.parentNode.parentNode.children[2].children[0].children[0]
+            var slides = slideMain.children
+            var text = but.parentNode.parentNode.children[3]
+            var slideIndex
+            for(var i = 0; i < slides.length; i++) {
+                var slide = slides[i]
+                if(!slide.classList.contains('hide')) {
+                    slideIndex = i
+                    break
+                }
+            }
+            var thisSlide = slides[slideIndex]
+            var nextSlide = slides[slideIndex + 1]
+            var nextNxtSlide = slides[slideIndex + 2]
+            var prevSlide = slides[slideIndex - 1]
+
+            var slideAmnt = 100 * (slideIndex + 1)
+
+            thisSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
+            nextSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
+
+            thisSlide.classList.add('hide')
+
+            nextSlide.classList.remove('hide')
+
+            text.innerHTML = nextSlide.getAttribute('data-info')
+        }
+
+        function prevOp(but) {
+            var slideMain = but.parentNode.parentNode.children[2].children[0].children[0]
+            var slides = slideMain.children
+            var slideIndex
+            var text = but.parentNode.parentNode.children[3]
+            for(var i = 0; i < slides.length; i++) {
+                var slide = slides[i]
+                if(!slide.classList.contains('hide')) {
+                    slideIndex = i
+                    break
+                }
+            }
+            var thisSlide = slides[slideIndex]
+            var nextSlide = slides[slideIndex + 1]
+            var nextNxtSlide = slides[slideIndex + 2]
+            var prevSlide = slides[slideIndex - 1]
+
+            var slideAmnt = 100 * (slideIndex - 1)
+
+            thisSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
+            prevSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
+
+            thisSlide.classList.add('hide')
+
+            prevSlide.classList.remove('hide')
+
+            text.innerHTML = prevSlide.getAttribute('data-info')
+        }
+
+
+        async function updateDataBase() {
+            await checkForErrors(false)
+            var name = document.getElementById('name')
+            var taken = await compDB('dndgroup', 'characters_players', 'name', name.value, null)
+            if(taken) {
+                var errText = document.getElementById('errorText')
+                name.classList.add('error')
+                slide = 1
+                errText.innerHTML = 'Character name already taken.'
+                errText.style.display = 'block'
+                previous()
+            } else {
+                //- await updateInput()
+                //- document.getElementById('charForm').submit()
+            }
+        }
+
+        function setImage(files) {
+            var file = files.files[0];
+            var imgReader = new FileReader();
+            var imgCont =  document.getElementById('artImage')
+
+            imgReader.onloadend = function() {
+                
+                imgCont.src = imgReader.result
+                imgCont.style.display = 'block'
+
+                img = file
+
+                document.getElementById('fileName').innerHTML = file.name
+                document.getElementById('fileName').style.display = 'block'
+                document.getElementById('removeImgBut').style.display = 'block'
+            }
+            imgReader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            var img =  document.getElementById('artImage')
+            var imgCont =  document.getElementById('artWorkCont')
+            var file = document.getElementById('artWork')
+
+            imgCont.classList.remove('error')
+            img.src = ''
+            document.getElementById('fileName').style.display = 'none'
+            document.getElementById('removeImgBut').style.display = 'none'
+
+
+        }

@@ -4,41 +4,6 @@ block head
     title= title + 'New Character'
 
     style.
-        .slideButton {
-            position: absolute;
-            height: 45%;
-            width: 10%;
-            top: 50%;
-            left: 8px;
-            transform: translateY(-50%);
-            z-index: 1;
-        }
-        .slideButton.right {
-            left: unset;
-            right: 8px;
-        }
-        #infoText {
-            position: absolute;
-            text-align: center;
-            width: 100%;
-            bottom: 0;
-            margin: 0;
-            padding: 8px;
-            font-size: 10pt;
-        }
-        .contMain {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-        }
-        .contMain #art {
-            position: relative;
-            height: 100%;
-            width: 100%;
-        }
         #artWorkCont {
             position: relative;
             border-radius: 4px;
@@ -49,8 +14,6 @@ block head
             overflow: hidden;
             transition: .5s;
             cursor: pointer;
-            height: 100%;
-            width: 100%;
         }
         .artImageLetter {
             margin: 0;
@@ -63,15 +26,6 @@ block head
             transform: translate(-50%, -50%);
             font-size: 12pt;
             transition: .5s;
-        }
-        #fileName {
-            position: absolute;
-            bottom: 0;
-            right: 10px;
-            font-size: 8pt;
-            background-color: #0a3350;
-            padding: 8px;
-            display: none;
         }
         .artImage {
             position: absolute;
@@ -92,24 +46,118 @@ block head
             opacity: .1;
             transition: .5s;
         }
+        .removeImgBut {
+            right: 20px;
+            top: 30px;
+            z-index: 1;
+        }
+        #fileName {
+            position: absolute;
+            bottom: -8px;
+            right: 17px;
+            font-size: 8pt;
+            border-radius: 4px 0 0 0;
+            background-color: #0a3350;
+            padding: 8px;
+            display: none;
+        }
 
 block content
     div(class='row mt-5')
-        div(class='col-12')
-            h1(class='text-center') New Character
-        form#charForm(class='col-11 col-md-8 mx-auto p-0' style='overflow-x: hidden;' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
-            div#slide(class='slideMain')
-                div#0(class='siteCont slideCont in col-12' oninput='checkChange()')
-                    div(class='contMain')
-                        div(class='w-100 mt-0 formItem px-3')
-                            p(class='formLabel mb-2') Character Name:
-                            input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name)
-                div#1(class='siteCont slideCont col-12')
-                    div(class='contMain')
-                        button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeImage(); return false;' style='right: 10px; top: 10px; height: 25px; width: 25px; z-index: 1; display: none;') X
-                        label#art
+        form#charForm(class='col-11 col-md-12 mx-auto' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
+            div(class='siteCont')
+                h2(class='text-center') New Character
+                div(class='row')
+                    div(class='formItem col-md-6')
+                        p(class='formLabel') Character Name:
+                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
+                    div(class='formItem col-md-6')
+                        p(class='formLabel') Race:  
+                            a(href='https://www.wargamer.com/dnd/races' target='_blank' data-tip='View Info on Races' style='color: white;')
+                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                    path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                        //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
+                        select#race(name='race' class='formTextInput')
+                            if fields.race
+                                for race in races.pureBlood
+                                    if race == fields.race
+                                        option(selected value=race)= race
+                                    else
+                                        option(value=race)= race
+                            else
+                                option(selected disabled) --- Select Race ---
+                                for race in races.pureBlood
+                                    option(value=race)= race
+                                
+
+                
+                div(class='row')
+                    div(class='formItem col-8 col-md-4 pr-0')
+                        p(class='formLabel') Class:  
+                            a(href='https://www.wargamer.com/dnd/classes' target='_blank' data-tip='View Info on Classes' style='color: white;')
+                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                    path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                        //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
+                        select#class(name='class' class='formTextInput')
+                            if fields.class
+                                for clas in classes.baseClasses
+                                    if clas == fields.class
+                                        option(selected value=clas)= clas
+                                    else
+                                        option(value=clas)= clas
+                            else
+                                option(selected disabled) --- Select Class ---
+                                for clas in classes.baseClasses
+                                    option(value=clas)= clas
+                                
+                    div(class='formItem col-4 col-md-2 pl-1')
+                        p(class='formLabel') Level:
+                        input#level(class='formTextInput' type='number' name='level' value=fields.level tabindex='4')
+                    div(class='formItem col-md-6')
+                        p(class='formLabel' style='white-space: nowrap;') Background:  
+                            a(href='https://www.wargamer.com/dnd/backgrounds-5e' target='_blank' data-tip='View Info on Backgrounds' style='color: white;')
+                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                    path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                        //- input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
+                        select#background(name='background' class='formTextInput' cursor='pointer')
+                            if fields.background
+                                for back in backgrounds.options
+                                    if back == fields.background
+                                        option(selected value=back)= back
+                                    else
+                                        option(value=back)= back
+                            else
+                                option(selected disabled) --- Select Background ---
+                                for back in backgrounds.options
+                                    option(value=back)= back
+                div(class='row')
+                    div(class='formItem col-md-6')
+                        p(class='formLabel') Alignment:
+                        //- input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
+                        select#alignment(name='alignment' class='formTextInput' cursor='pointer')
+                            if fields.alignment
+                                for align in alignments.options
+                                    if align == fields.alignment
+                                        option(selected value=align)= align
+                                    else
+                                        option(value=align)= align
+                            else
+                                option(selected disabled) --- Select Alignment ---
+                                for align in alignments.options
+                                    option(value=align)= align
+
+                    div(class='formItem col-4 col-md-2')
+                        p(class='formLabel' style='white-space: nowrap;') Experience Points:
+                        input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
+                div(class='row')
+                    div(class='col-md-6 col-lg-4 pt-4' style='min-height: 200px; max-height: 405px;')
+                        button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeImage(); return false;' style='display: none;') X
+                        label(class='w-100 h-100')
                             input#artWork(type='file' name='artWork' class='d-none file' data-type='image' onchange='setImage(this)')
-                            div#artWorkCont(class='imageEdit' )
+                            div#artWorkCont(class='h-100 w-100 imageEdit' )
                                 if fields.artWork
                                     img#artImage(src=fields.artWork class='artImage' data-orig=fields.artWork style='display: block;')
                                 else
@@ -118,50 +166,78 @@ block content
                                 svg(xmlns="http://www.w3.org/2000/svg" class="bi bi-camera" viewBox="0 0 16 16")
                                     path(style='color: white;' d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z")
                                     path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
-
-                            p#fileName
-                div#2(class='siteCont slideCont col-12')
-                    div(class='contMain')
-                        div(class='slideButton')
-                            div(class='buttonMain button h-100 w-100' onclick="prevOp(this); return false;" )
-                                div(class='buttonText mx-2')
-                                    p= '<'
-                        div(class='slideButton right')
-                            div(class='buttonMain button h-100 w-100' onclick="nextOp(this); return false;" )
-                                div(class='buttonText mx-2')
-                                    p= '>'
-                        div(class='w-100 mt-0 px-3')
-                            div#slideCont(class='selSlideMain')
-                                div(class='selSlideCont')
-                                    div#slide1(class='slideItem w-100' data-value='Dragonborn' data-info='Dragonborn look very much like dragons standing erect in humanoid form, though they lack wings or a tail.')
-                                        img(class='slideImg' src='/images/races/dragonborn.png')
-                                        p(class='text-center') Dragonborn
-                                    div#slide1(class='slideItem w-100 hide' data-value='Dwarf' data-info='Bold and hardy, dwarves are known as skilled warriors, miners, and workers of stone and metal.')
-                                        img(class='slideImg' src='/images/races/dwarf.png')
-                                        p(class='text-center') Dwarf
-                                    div#slide1(class='slideItem w-100 hide' data-value='Elf' data-info='Elves are a magical people of otherworldly grace, living in the world but not entirely part of it.')
-                                        img(class='slideImg' src='/images/races/elf.png')
-                                        p(class='text-center') Elf
-
-                        p#infoText Dragonborn look very much like dragons standing erect in humanoid form, though they lack wings or a tail.
-
-
-        div(class='col-11 col-md-8 mx-auto mt-2 p-0')
-            div(class='row w-100 mx-auto')
-                div(class='col-6 pl-0')
-                    button#backButton(class='buttonMain button col-12 col-md-6' style='display: none;' onclick="previous(); return false;" )
+                            p#fileName File
+                    div(class='col-md-6 col-lg-8')
+                        div(class='formItem')
+                            p(class='formLabel') Character History:
+                            div(data-name='history' data-placeHolder="Tell us of your journey." data-tab=8 class='richEdit')
+                            input#history(style='display: none;' data-req='true' name='history' type='text' value=fields.history)
+                
+                div(class='row')
+                    div(class='col-md-6')
+                        div(class='formItem')
+                            p(class='formLabel') Personality:
+                            div(data-name='personality' data-placeHolder="So, how crazy are you?" class='richEdit')
+                            input#personality(style='display: none;' name='personality' type='text' value=fields.personality)
+                    div(class='col-md-6')
+                        div(class='formItem')
+                            p(class='formLabel') Ideals:
+                            div(data-name='ideals' data-placeHolder="What is your code?" class='richEdit')
+                            input#ideals(style='display: none;' name='ideals' type='text' value=fields.ideals)
+                div(class='row')
+                    div(class='col-md-6')
+                        div(class='formItem')
+                            p(class='formLabel') Bonds:
+                            div(data-name='bonds' data-placeHolder="What keeps you ticking?" class='richEdit')
+                            input#bonds(style='display: none;' name='bonds' type='text' value=fields.bonds)
+                    div(class='col-md-6')
+                        div(class='formItem')
+                            p(class='formLabel') Flaws:
+                            div(data-name='flaws' data-placeHolder="How will you mess things up, I wonder?" class='richEdit')
+                            input#flaws(style='display: none;' name='flaws' type='text' value=fields.flaws)
+                div(class='row')
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        p(class='formLabel' style='white-space: nowrap;') Strength:
+                        input#strength(class='formTextInput' type='number' name='strength' value=fields.strength)
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        p(class='formLabel' style='white-space: nowrap;') Dexterity:
+                        input#dexterity(class='formTextInput' type='number' name='dexterity' value=fields.dexterity)
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        p(class='formLabel' style='white-space: nowrap;') Constitution:
+                        input#constitution(class='formTextInput' type='number' name='constitution' value=fields.constitution)
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        p(class='formLabel' style='white-space: nowrap;') Intelligence:
+                        input#intelligence(class='formTextInput' type='number' name='intelligence' value=fields.intelligence)
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        p(class='formLabel' style='white-space: nowrap;') Wisdom:
+                        input#wisdom(class='formTextInput' type='number' name='wisdom' value=fields.wisdom)
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        p(class='formLabel' style='white-space: nowrap;') Charisma:
+                        input#charisma(class='formTextInput' type='number' name='charisma' value=fields.charisma)
+                div(class='row')
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        p(class='formLabel' style='white-space: nowrap;') Proficiency Bonus:
+                        input#proficiencyBonus(class='formTextInput' type='number' name='proficiencyBonus' value=fields.proficiencyBonus)
+            
+                div(class='row')
+                    div(class='col-12')
+                        div(class='formItem')
+                            p(class='formLabel') Notes:
+                            div(data-name='notes' data-placeHolder="What doesn't quite fit?" class='richEdit')
+                            input#notes(style='display: none;' name='notes' type='text' value=fields.notes)
+            
+                div(class='formItem text-right my-4' )
+                    button#formButton(class='buttonMain button col-12 col-md-3' onclick="updateDataBase(); return false;" )
                         div(class='buttonText mx-2')
-                            p Back
-                div(class='col-6 text-right pr-0')
-                    button#forButton(class='buttonMain button col-12 col-md-6' onclick="progress(); return false;" )
-                        div(class='buttonText mx-2')
-                            p Next
-    
+                            img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
+                            p#saveText Create
+            div(class='mt-2')
+                ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
+                    
+        
       
     
     script.
-        var slide = 0
-        var raceSlide = 0
         var img
 
         var form = document.querySelector('charForm')
@@ -169,122 +245,36 @@ block content
             e.preventDefault();
         });
         
-        function progress() {
-            var slideMain = document.getElementById('slide')
-            var thisSlide = document.getElementById(slide);
-            var nextSlide = document.getElementById((slide + 1));
-            var backBut = document.getElementById('backButton')
-            var forBut = document.getElementById('forButton')
-
-            if((slide + 1) == slideMain.children.length) {
-                updateDataBase()
-            } else {
-                slideMain.style.transform = 'translateX(-' + (100 * (slide + 1)) + '%)'
-
-                slide += 1
-
-                backButton.style.display = 'unset'
-                if((slide + 1) == slideMain.children.length) {
-                    forBut.children[0].children[0].innerHTML = 'Save'
-                }
-            }
-        }
-
-        function previous() {
-            var slideMain = document.getElementById('slide')
-            var thisSlide = document.getElementById(slide);
-            var nextSlide = document.getElementById((slide - 1));
-            var backBut = document.getElementById('backButton')
-            var forBut = document.getElementById('forButton')
-
-            slideMain.style.transform = 'translateX(-' + (100 * (slide - 1)) + '%)'
-
-            slide -= 1
-
-            forBut.style.display = 'unset'
-            forBut.children[0].children[0].innerHTML = 'Next'
-            if(slide == 0) {
-                backBut.style.display = 'none'
-            }
-        }
-
-        function checkChange() {
-
-        }
-
-        function nextOp(but) {
-            var slideMain = but.parentNode.parentNode.children[2].children[0].children[0]
-            var slides = slideMain.children
-            var text = but.parentNode.parentNode.children[3]
-            var slideIndex
-            for(var i = 0; i < slides.length; i++) {
-                var slide = slides[i]
-                if(!slide.classList.contains('hide')) {
-                    slideIndex = i
-                    break
-                }
-            }
-            var thisSlide = slides[slideIndex]
-            var nextSlide = slides[slideIndex + 1]
-            var nextNxtSlide = slides[slideIndex + 2]
-            var prevSlide = slides[slideIndex - 1]
-
-            var slideAmnt = 100 * (slideIndex + 1)
-
-            thisSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
-            nextSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
-
-            thisSlide.classList.add('hide')
-
-            nextSlide.classList.remove('hide')
-
-            text.innerHTML = nextSlide.getAttribute('data-info')
-        }
-
-        function prevOp(but) {
-            var slideMain = but.parentNode.parentNode.children[2].children[0].children[0]
-            var slides = slideMain.children
-            var slideIndex
-            var text = but.parentNode.parentNode.children[3]
-            for(var i = 0; i < slides.length; i++) {
-                var slide = slides[i]
-                if(!slide.classList.contains('hide')) {
-                    slideIndex = i
-                    break
-                }
-            }
-            var thisSlide = slides[slideIndex]
-            var nextSlide = slides[slideIndex + 1]
-            var nextNxtSlide = slides[slideIndex + 2]
-            var prevSlide = slides[slideIndex - 1]
-
-            var slideAmnt = 100 * (slideIndex - 1)
-
-            thisSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
-            prevSlide.style.transform = 'translate(-' + (slideAmnt + 50) + '%, -50%)'
-
-            thisSlide.classList.add('hide')
-
-            prevSlide.classList.remove('hide')
-
-            text.innerHTML = prevSlide.getAttribute('data-info')
-        }
+        document.getElementById('editor-container').children[0].tabIndex = 8;
 
 
         async function updateDataBase() {
-            await checkForErrors(false)
-            var name = document.getElementById('name')
-            var taken = await compDB('dndgroup', 'characters_players', 'name', name.value, null)
-            if(taken) {
-                var errText = document.getElementById('errorText')
-                name.classList.add('error')
-                slide = 1
-                errText.innerHTML = 'Character name already taken.'
-                errText.style.display = 'block'
-                previous()
+            var saveText = document.getElementById('saveText')
+            var gif = document.getElementById('loadingGif')
+
+            gif.style.display = 'block'
+            saveText.style.display = 'none'
+
+            await checkForErrors(null, 'characters_players')
+            await updateInput()
+            document.getElementById('charForm').submit()
+
+            gif.style.display = 'none'
+            saveText.style.display = 'block'
+        }
+
+        function togglePass(show) {
+            var passCont = document.getElementById('newPass')
+            var passBut = document.getElementById('passBut')
+            var fields = passCont.children
+            if(show) {
+                passCont.style.display = 'block'
+                passBut.classList.remove('saveButtonVisible')
             } else {
-                //- await updateInput()
-                //- document.getElementById('charForm').submit()
+                passCont.style.display = 'none'
+                passBut.classList.add('saveButtonVisible')
+                fields[0].value = ''
+                fields[1].value = ''
             }
         }
 
@@ -316,6 +306,5 @@ block content
             img.src = ''
             document.getElementById('fileName').style.display = 'none'
             document.getElementById('removeImgBut').style.display = 'none'
-
-
+            file.value = null
         }

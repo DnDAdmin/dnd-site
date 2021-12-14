@@ -165,13 +165,8 @@ function compDB(db, col, key, value, exempt) {
 }
 
 // Checks forms for errors
-function checkForErrors(user) {
+function checkForErrors(exmpt, col) {
     return new Promise(async resolve => {
-        var exempt
-        if(user) {
-            var currUrl = window.location.href
-            exempt = currUrl.substring(currUrl.length - 24)
-        }
         var errors = []
 
         var name = document.getElementById('name')
@@ -199,6 +194,22 @@ function checkForErrors(user) {
                 if(name.value.length < 3) {
                     name.classList.add('error')
                     errors.push('Name must be at least three characters')
+                } else {
+                    if(exmpt) {
+                        if(exmpt.field == 'name') {
+                            var taken = await compDB('dndgroup', col, 'name', userName.value, exmpt.id)
+                            if(taken) {
+                                userName.classList.add('error')
+                                errors.push('Usename already in use')
+                            }
+                        }
+                    } else {
+                        var taken = await compDB('dndgroup', col, 'name', userName.value)
+                        if(taken) {
+                            userName.classList.add('error')
+                            errors.push('Usename already in use')
+                        }
+                    }
                 }
             }
         }
@@ -236,11 +247,22 @@ function checkForErrors(user) {
                         userName.classList.add('error')
                         errors.push('Username must be at least three characters')
                     } else {
-                        var taken = await compDB('dndgroup', 'users', 'userName', userName.value, exempt)
-                        if(taken) {
-                            userName.classList.add('error')
-                            errors.push('Usename already in use')
+                        if(exmpt) {
+                            if(exmpt.field == 'userName') {
+                                var taken = await compDB('dndgroup', col, 'userName', userName.value, exmpt.id)
+                                if(taken) {
+                                    userName.classList.add('error')
+                                    errors.push('Usename already in use')
+                                }
+                            }
+                        } else {
+                            var taken = await compDB('dndgroup', col, 'userName', userName.value)
+                            if(taken) {
+                                userName.classList.add('error')
+                                errors.push('Usename already in use')
+                            }
                         }
+                        
                     }
                 }
             }
@@ -257,15 +279,26 @@ function checkForErrors(user) {
                         email.classList.add('error')
                         errors.push('Email address invalid')
                     } else {
-                        var taken = await compDB('dndgroup', 'users', 'email', email.value, exempt)
-                        if(taken) {
-                            userName.classList.add('error')
-                            errors.push('Email already in use')
+                        if(exmpt) {
+                            if(exmpt.field == 'emal') {
+                                var taken = await compDB('dndgroup', col, 'email', email.value, exmpt.id)
+                                if(taken) {
+                                    userName.classList.add('error')
+                                    errors.push('Email already in use')
+                                }
+                            }
+                        } else {
+                            var taken = await compDB('dndgroup', col, 'email', email.value)
+                            if(taken) {
+                                userName.classList.add('error')
+                                errors.push('Email already in use')
+                            }
                         }
                     }
                 }
             }
         }
+        
         if(selects.length > 0) {
             for(var i = 0; i < selects.length; i++) {
                 sel = selects[i]
@@ -278,6 +311,7 @@ function checkForErrors(user) {
                 }
             }
         }
+        
         if(details) {
             var editor = document.getElementById('editor-container')
             editor.classList.remove('error')
@@ -291,6 +325,7 @@ function checkForErrors(user) {
                 }
             }
         }
+        
         if(files.length > 0) {
             for(var i = 0; i < files.length; i++) {
                 var file = files[i]
@@ -324,6 +359,7 @@ function checkForErrors(user) {
                 }
             }
         }
+        
         if(terms) {
             terms.classList.remove('error')
             if(!terms.checked) {
@@ -333,6 +369,7 @@ function checkForErrors(user) {
                 }
             }
         }
+        
         if(password) {
             password.classList.remove('error')
             if(password.value.length < 1) {
@@ -342,6 +379,7 @@ function checkForErrors(user) {
                 }
             }
         }
+        
         if(pass1) {
             var mainPass = document.getElementById('password')
             pass1.classList.remove('error')
@@ -358,8 +396,8 @@ function checkForErrors(user) {
                 }
             }
         }
-
-        var but = document.getElementById('formButton')
+        
+        
         var err = document.getElementById('errorText')
         err.innerHTML = ''
 
