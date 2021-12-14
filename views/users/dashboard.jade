@@ -80,7 +80,7 @@ block content
                             p= message
                     else
                         if error
-                            div#errorMessage(class='error mb-1')
+                            div#formMessage(class='error mb-1')
                                 p= error
                     div(class='w-100 siteCont')
                         if user.access.includes('super') || user.access.includes('admin')
@@ -170,14 +170,14 @@ block content
                     if (loggedUser && gameSession)
                         if gameSession.activities.includes('newCharacters')
                             div(class='col-12 text-right')
-                                button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'" data-tip='Add New Character')
+                                button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + thisUser._id + "'" data-tip='Add New Character')
                                     div(class='buttonText w-100 h-100')
                                         svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
                                             path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
                     else
                         if user.access.includes('super') || (user.access.includes('admin') && !thisUser.access.includes('super'))
                             div(class='col-12 text-right')
-                                button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'" data-tip='Add New Character')
+                                button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + thisUser._id + "'" data-tip='Add New Character')
                                     div(class='buttonText w-100 h-100')
                                         svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
                                             path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
@@ -189,7 +189,7 @@ block content
                             div(class='w-100')
                                 hr
                             for char in chars
-                                div(class='mx-auto mx-sm-0 col-8 col-sm-6 col-md-4 col-lg-3 mb-2 mb-sm-0 px-2')
+                                div(class='mx-auto mx-sm-0 col-8 col-sm-6 col-md-4 col-lg-3 mb-2 mb-sm-0 px-2 mt-2')
                                     div(class='charCard' onclick='window.location.href="/users/character=' + char._id + '"')
                                         div(class='charCardInfo')
                                             if char.artWork
@@ -395,45 +395,63 @@ block content
             var currUrl = window.location.href
             id = currUrl.substring(currUrl.length - 24)
             
-            await checkForErrors({id: id, field: 'userName'}, 'users')
+            var errors = await checkForErrors({id: id, field: 'userName'}, 'users')
+        
+            if(errors) {
+                var err = document.getElementById('errorText')
+                err.innerHTML = ''
 
-            gif.style.display = 'block'
-            saveText.style.display = 'none'
-
-            const files = document.querySelector('[name=profileImage]').files;
-
-            const formData = new FormData();
-
-            formData.append('profileImage', img);
-            for(var i = 0; i < Object.keys(info).length; i++) {
-                var item = info[Object.keys(info)[i]]
-                formData.append(Object.keys(info)[i], item)
-            }
-
-            var updated = await updateDB('/users/updateprofile/' + id, formData)
-            
-            if(updated) {
-                if(img) {
-                    var profImages = document.getElementsByClassName('profileImage')
-                    var imageXBut = document.getElementById('removeImgBut')
-                    for(var i = 0; i < profImages.length; i++) {
-                        thisImg = profImages[i]
-                        thisImg.src = imgData
-                    }
-                    imageXBut.style.display = 'none'
+                for(var i = 0; i < errors.length; i++) {
+                    var li = document.createElement('li')
+                    li.innerHTML = errors[i]
+                    err.append(li)
                 }
-                if(info.userName) {
-                    document.getElementById('userMenName').children[0].innerHTML = info.userName
-                }
+                err.style.display = 'block'
+            } else {
+                gif.style.display = 'block'
+                saveText.style.display = 'none'
+
+                const files = document.querySelector('[name=profileImage]').files;
+
+                const formData = new FormData();
+
+                formData.append('profileImage', img);
                 for(var i = 0; i < Object.keys(info).length; i++) {
-                    var key = Object.keys(info)[i]
-                    var item = document.getElementById(key)
-                    item.setAttribute('data-orig', info[key])
+                    var item = info[Object.keys(info)[i]]
+                    formData.append(Object.keys(info)[i], item)
                 }
-                gif.style.display = 'none'
-                saveText.style.display = 'block'
-                saveBut.classList.remove('saveButtonVisible')
+
+                var updated = await updateDB('/users/updateprofile/' + id, formData)
+            
+                if(updated) {
+                    if(img) {
+                        var profImages = document.getElementsByClassName('profileImage')
+                        var imageXBut = document.getElementById('removeImgBut')
+                        for(var i = 0; i < profImages.length; i++) {
+                            thisImg = profImages[i]
+                            thisImg.src = imgData
+                        }
+                        imageXBut.style.display = 'none'
+                    }
+                    if(info.userName) {
+                        document.getElementById('userMenName').children[0].innerHTML = info.userName
+                    }
+                    for(var i = 0; i < Object.keys(info).length; i++) {
+                        var key = Object.keys(info)[i]
+                        var item = document.getElementById(key)
+                        item.setAttribute('data-orig', info[key])
+                    }
+                    gif.style.display = 'none'
+                    saveText.style.display = 'block'
+                    saveBut.classList.remove('saveButtonVisible')
+                }
             }
+
+            
+
+            
+
+            
         }
 
         function togglePass(show) {

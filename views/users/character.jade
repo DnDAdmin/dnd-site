@@ -7,7 +7,7 @@ block content
     div(class='row mt-5')
         div(class='col-12')
             div(class='siteCont')
-                if isOwner || user.access.includes('admin') || user.access.includes('super')
+                if isOwner || user.permissions.includes('admin') || user.permissions.includes('super')
                     div(class='row mx-auto text-right')
                         span(class='col-1 ml-auto' onclick=href='window.location.href="/users/edit/character=' + char._id + '"')
                             svg(cursor='pointer' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16")
@@ -124,7 +124,7 @@ block content
                 
                 div(class='row mx-auto mt-2 text-right' style='font-size: 10pt;')
                     div(class='col-12')
-                        p Created by: 
+                        p Owner: 
                             a(href='/users/dashboard/user=' + owner._id)= owner.userName
                     div(class='col-12')
                         p= 'ID: ' + char._id

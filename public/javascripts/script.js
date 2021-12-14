@@ -146,7 +146,6 @@ function updateInput() {
 
 function compDB(db, col, key, value, exempt) {
     return new Promise(resolve => {
-        
         var xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function() {
@@ -167,6 +166,7 @@ function compDB(db, col, key, value, exempt) {
 // Checks forms for errors
 function checkForErrors(exmpt, col) {
     return new Promise(async resolve => {
+        
         var errors = []
 
         var name = document.getElementById('name')
@@ -197,22 +197,23 @@ function checkForErrors(exmpt, col) {
                 } else {
                     if(exmpt) {
                         if(exmpt.field == 'name') {
-                            var taken = await compDB('dndgroup', col, 'name', userName.value, exmpt.id)
+                            var taken = await compDB('dndgroup', col, 'name', name.value, exmpt.id)
                             if(taken) {
-                                userName.classList.add('error')
+                                name.classList.add('error')
                                 errors.push('Usename already in use')
                             }
                         }
                     } else {
-                        var taken = await compDB('dndgroup', col, 'name', userName.value)
+                        var taken = await compDB('dndgroup', col, 'name', name.value)
                         if(taken) {
-                            userName.classList.add('error')
+                            name.classList.add('error')
                             errors.push('Usename already in use')
                         }
                     }
                 }
             }
         }
+        
         if(location) {
             location.classList.remove('error')
             if(location.value.length < 1) {
@@ -396,21 +397,11 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
-        
-        
-        var err = document.getElementById('errorText')
-        err.innerHTML = ''
 
         if(errors.length > 0) {
-            for(var i = 0; i < errors.length; i++) {
-                var li = document.createElement('li')
-                li.innerHTML = errors[i]
-                err.append(li)
-            }
-            err.style.display = 'block'
+            resolve(errors)
         } else {
-            err.style.display = 'none'
-            resolve()
+            resolve(null)
         }
 
         // if(errors.length > 0) {

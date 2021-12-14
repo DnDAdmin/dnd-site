@@ -65,8 +65,7 @@ block head
 block content
     -var edit = false
     -var editMsg = 'Can only be edited during a game session with Character Edit enabled'
-    if gameSession.activities.includes('characterEdit') 
-        //- || user.permissions.includes('admin') || user.permissions.includes('super')
+    if gameSession.activities.includes('characterEdit') || user.permissions.includes('admin') || user.permissions.includes('super')
         -edit = true
     div(class='row mt-5')
         form#charForm(class='col-11 col-md-12 mx-auto' name='newChar' action='/users/edit/character=' + fields._id method="POST" enctype="multipart/form-data")
@@ -75,8 +74,7 @@ block content
                 div(class='row')
                     div(class='formItem col-md-6')
                         p(class='formLabel') Character Name:
-                        if edit
-                            //- user.permissions.includes('admin') || user.permissions.includes('super')
+                        if user.permissions.includes('admin') || user.permissions.includes('super')
                             input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
                         else
                             p(data-tip='Character name can only be changed by an admin')
@@ -290,7 +288,8 @@ block content
                 div(class='formItem text-right my-4' )
                     button#formButton(class='buttonMain button col-12 col-md-3' onclick="updateDataBase(); return false;" )
                         div(class='buttonText mx-2')
-                            p Update
+                            img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
+                            p#saveText Update
             div(class='mt-2')
                 ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
                     
@@ -325,18 +324,34 @@ block content
         
 
         async function updateDataBase() {
+            var saveText = document.getElementById('saveText')
+            var gif = document.getElementById('loadingGif')
+
             var currUrl = window.location.href
-            id = currUrl.substring(currUrl.length - 24) 
-            await checkForErrors({id: id, field: 'name'}, 'characters_players')
+            var id = currUrl.substring(currUrl.length - 24) 
             
-            if(taken) {
-                var errText = document.getElementById('errorText')
-                name.classList.add('error')
-                errText.innerHTML = 'Character name already taken.'
-                errText.style.display = 'block'
+            var errors = await checkForErrors({id: id, field: 'name'}, 'characters_players')
+            
+            if(errors) {
+                var err = document.getElementById('errorText')
+                err.innerHTML = ''
+
+                for(var i = 0; i < errors.length; i++) {
+                    var li = document.createElement('li')
+                    li.innerHTML = errors[i]
+                    err.append(li)
+                }
+                err.style.display = 'block'
+                window.scrollTo(0, document.body.scrollHeight);
             } else {
+                gif.style.display = 'block'
+                saveText.style.display = 'none'
+
                 await updateInput()
                 document.getElementById('charForm').submit()
+
+                gif.style.display = 'none'
+                saveText.style.display = 'block'
             }
         }
 

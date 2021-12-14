@@ -267,6 +267,16 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
 
   var userChars = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {user: ObjectId(req.params.id)})
 
+  console.log('form has been submitted.')
+  req.session.sub = null
+
+  var msg
+  msg = req.session.message
+  req.session.message = null
+
+  var err
+  err = req.session.error
+  req.session.error = null
 
   if(thisUser._id.toString() == userSess.user.toString()) {
     var allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {_id: {$not: {$eq: ObjectId(req.params.id)}}})
@@ -277,41 +287,17 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
       if(a.date > b.date) { return 1; }
       return 0;
     });
-
-    if(req.session.sub) {
-      console.log('form has been submitted.')
-      req.session.sub = null
-  
-      var msg
-      msg = req.session.message
-      req.session.message = null
-
-      var err
-      err = req.session.error
-      req.session.error = null
-
-      res.render('users/dashboard', {
-        title: mainHeader,
-        loggedUser: true,
-        message: msg,
-        error: err,
-        allUsers: allUsers,
-        thisUser: thisUser,
-        events: events,
-        chars: userChars,
-        user: user
-      })
-    } else {
-      res.render('users/dashboard', {
-        title: mainHeader,
-        loggedUser: true,
-        allUsers: allUsers,
-        thisUser: thisUser,
-        events: events,
-        chars: userChars,
-        user: user
-      })
-    }
+    res.render('users/dashboard', {
+      title: mainHeader,
+      loggedUser: true,
+      allUsers: allUsers,
+      thisUser: thisUser,
+      events: events,
+      message: msg,
+      error: err,
+      chars: userChars,
+      user: user
+    })
     
   } else {
     res.render('users/dashboard', {
@@ -319,6 +305,8 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
       loggedUser: false,
       thisUser: thisUser,
       chars: userChars,
+      message: msg,
+      error: err,
       user: user
     })
   }
@@ -509,7 +497,7 @@ router.get('/edit/character=:id', authUser(), async function(req, res, next) {
     isOwner = true
   }
 
-  if(isOwner) {
+  if(isOwner || userSess.access.includes('super') || userSess.access.includes('admin')) {
     var races = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'races'})
     var classes = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'classes'})
     var backgrounds = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'backgrounds'})
@@ -539,5 +527,27 @@ router.get('/edit/character=:id', authUser(), async function(req, res, next) {
 
 })
 
+// Updates character info
+router.post('/edit/character=:id', authUser(), async function(req, res, next) {
+  var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)})
+  var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
+
+  var isOwner = false
+  if(char.user.toString() == userSess.user.toString()) {
+    isOwner = true
+  }
+
+  if(isOwner  || userSess.access.includes('super') || userSess.access.includes('admin')) {
+    var form = new formidable.IncomingForm()
+    form.parse(req, async function (err, fields, files) {
+      await ops.updateItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)}, {$set: fields})
+      res.redirect('/users/character=' + req.params.id)
+    })
+  } else {
+    req.session.error = 'You do not permission to edit that character.'
+    req.session.sub = true
+    res.redirect('/users/dashboard')
+  }
+})
 
 module.exports = router;
