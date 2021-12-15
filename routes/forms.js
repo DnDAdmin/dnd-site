@@ -7,7 +7,7 @@ const fs = require('fs')
 const path = require('path')
 const {ObjectId} = require('mongodb');
 
-var mainHeader = 'Lore Seekers | '
+var mainHeader = 'Mystery and Mischief | '
 
 /* Contact me form */
 router.get('/contact', async function(req, res, next) {

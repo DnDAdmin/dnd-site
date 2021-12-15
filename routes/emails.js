@@ -3,7 +3,7 @@ var router = express.Router();
 var ops = require('../functions/databaseOps')
 var eml = require('../functions/emailOps')
 
-var mainHeader = 'Lore Seekers | '
+var mainHeader = 'Mystery and Mischief | '
 
 router.get('/invite/:name', ops.authUser('admin'), function(req, res, next) {
   res.render('emails/invite', {

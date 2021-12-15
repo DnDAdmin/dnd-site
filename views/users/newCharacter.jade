@@ -227,8 +227,8 @@ block content
                             input#notes(style='display: none;' name='notes' type='text' value=fields.notes)
             
                 div(class='formItem text-right my-4' )
-                    button#formButton(class='buttonMain button col-12 col-md-3' onclick="updateDataBase(); return false;" )
-                        div(class='buttonText mx-2')
+                    button#formButton(class='buttonMain button great col-12 col-md-3' onclick="updateDataBase(); return false;" )
+                        div(class='buttonText')
                             img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
                             p#saveText Create
             div(class='mt-2')
@@ -251,8 +251,11 @@ block content
         async function updateDataBase() {
             var saveText = document.getElementById('saveText')
             var gif = document.getElementById('loadingGif')            
-            
+            gif.style.display = 'block'
+            saveText.style.display = 'none'
+
             var errors = await checkForErrors(null, 'characters_players')
+
             if(errors) {
                 var err = document.getElementById('errorText')
                 err.innerHTML = ''
@@ -263,16 +266,14 @@ block content
                     err.append(li)
                 }
                 err.style.display = 'block'
-                window.scrollTo(0, document.body.scrollHeight);
-            } else {
-                gif.style.display = 'block'
-                saveText.style.display = 'none'
-
-                await updateInput()
-                document.getElementById('charForm').submit()
 
                 gif.style.display = 'none'
                 saveText.style.display = 'block'
+
+                window.scrollTo(0, document.body.scrollHeight);
+            } else {
+                await updateInput()
+                document.getElementById('charForm').submit()
             }
         }
 

@@ -163,6 +163,97 @@ function compDB(db, col, key, value, exempt) {
     })
 }
 
+function updateDB(url, data) {
+    return new Promise(resolve => {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.responseType = 'json'
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                resolve('success')
+            }
+        };
+
+        xhttp.open("POST", url, true);
+        xhttp.send(data);
+    })
+}
+
+// div#userMenuBack(class='d-none d-sm-block')
+//         div#userMenMain
+//             div#userMenu
+//                 div(class='userMenLink')
+//                     a(href='/users/dashboard' class='menDeskLink') Dashboard
+//             div#userMenHead
+//                 div#userMenName
+//                     h5= user.userName
+
+function toggleUserMen() {
+    var menBack = document.getElementById('userMenuBack')
+    var menMain = document.getElementById('userMenMain')
+    var arrow = document.getElementById('userMenArrow')
+
+    if(menMain.classList.contains('visible')) {
+        menMain.classList.remove('visible')
+        menBack.classList.remove('visible')
+        arrow.classList.remove('toggled')
+    } else {
+        menMain.classList.add('visible')
+        menBack.classList.add('visible')
+        arrow.classList.add('toggled')
+    }
+}
+
+var toolbarOptions = [
+    ['bold', 'italic', 'underline'],
+            
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],                       
+
+    [{ 'color': [] }, { 'background': [] }],
+
+    ['link', 'image']
+];
+
+
+var editors = document.getElementsByClassName('richEdit')
+if(editors.length > 0) {
+    for(var i = 0; i < editors.length; i++) {
+        var thisEdit = editors[i]
+        new Quill(thisEdit, {
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: toolbarOptions,
+                    handlers: {
+                        image: imageHandler
+                    }
+                }
+            },
+            placeholder: thisEdit.getAttribute('data-placeHolder')
+        })
+        thisEdit.children[0].tabIndex = thisEdit.getAttribute('data-tab')
+    }
+}
+
+
+function imageHandler() {
+    var range = this.quill.getSelection();
+    var value = prompt('What is the image URL');
+    if(value){
+        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+    }
+}
+
+function setFields(){
+    var boxes = document.getElementsByClassName('richEdit')
+    for(var i = 0; i < boxes.length; i++) {
+        var textBox = boxes[i].children[0]
+        var input = boxes[i].parentNode.children[3]
+        textBox.innerHTML = input.value
+    }
+}
+
 // Checks forms for errors
 function checkForErrors(exmpt, col) {
     return new Promise(async resolve => {
@@ -180,6 +271,7 @@ function checkForErrors(exmpt, col) {
         var terms = document.getElementById('terms')
         var password = document.getElementById('inputPass')
         var pass1 = document.getElementById('pass1')
+        var bio = document.getElementById('bio')
         errors = []
 
         // Checks if items exist, then if they have content, then if they are required, then checks for potential format errors.
@@ -398,6 +490,27 @@ function checkForErrors(exmpt, col) {
             }
         }
 
+        if(bio) {
+            alert(bio.value.length)
+            bio.classList.remove('error')
+            if(bio.value.length < 1) {
+                if(bio.getAttribute('data-req') == 'true') {
+                    bio.classList.add('error')
+                    errors.push('Bio required')
+                }
+            } else {
+                if(bio.value.length < 10) {
+                    bio.classList.add('error')
+                    errors.push('Bio must be at least ten characters')
+                } else {
+                    if(bio.value.length > 110) {
+                        bio.classList.add('error')
+                        errors.push('Bio cannot be greater than 110 characters')
+                    }
+                }
+            }
+        }
+
         if(errors.length > 0) {
             resolve(errors)
         } else {
@@ -421,86 +534,4 @@ function checkForErrors(exmpt, col) {
     })
     
     
-}
-
-function updateDB(url, data) {
-    return new Promise(resolve => {
-        var xhttp = new XMLHttpRequest();
-
-        xhttp.responseType = 'json'
-
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                resolve('success')
-            }
-        };
-
-        xhttp.open("POST", url, true);
-        xhttp.send(data);
-    })
-}
-
-// div#userMenuBack(class='d-none d-sm-block')
-//         div#userMenMain
-//             div#userMenu
-//                 div(class='userMenLink')
-//                     a(href='/users/dashboard' class='menDeskLink') Dashboard
-//             div#userMenHead
-//                 div#userMenName
-//                     h5= user.userName
-
-function toggleUserMen() {
-    var menBack = document.getElementById('userMenuBack')
-    var menMain = document.getElementById('userMenMain')
-    var arrow = document.getElementById('userMenArrow')
-
-    if(menMain.classList.contains('visible')) {
-        menMain.classList.remove('visible')
-        menBack.classList.remove('visible')
-        arrow.classList.remove('toggled')
-    } else {
-        menMain.classList.add('visible')
-        menBack.classList.add('visible')
-        arrow.classList.add('toggled')
-    }
-}
-
-var toolbarOptions = [
-    ['bold', 'italic', 'underline'],
-            
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],                       
-
-    [{ 'color': [] }, { 'background': [] }],
-
-    ['link', 'image']
-];
-
-
-var editors = document.getElementsByClassName('richEdit')
-if(editors.length > 0) {
-    for(var i = 0; i < editors.length; i++) {
-        var thisEdit = editors[i]
-        new Quill(thisEdit, {
-            theme: 'snow',
-            modules: {
-                toolbar: {
-                    container: toolbarOptions,
-                    handlers: {
-                        image: imageHandler
-                    }
-                }
-            },
-            placeholder: thisEdit.getAttribute('data-placeHolder')
-        })
-        thisEdit.children[0].tabIndex = thisEdit.getAttribute('data-tab')
-    }
-}
-
-
-function imageHandler() {
-    var range = this.quill.getSelection();
-    var value = prompt('What is the image URL');
-    if(value){
-        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-    }
 }

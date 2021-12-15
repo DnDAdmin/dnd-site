@@ -8,7 +8,7 @@ var ops = require('../functions/databaseOps')
 const {ObjectId} = require('mongodb');
 const { authUser, findItem, addToDatabase } = require('../functions/databaseOps');
 
-var mainHeader = 'Lore Seekers | '
+var mainHeader = 'Mystery and Mischief | '
 
 // Login Page
 router.get('/login', async function(req, res, next) {
@@ -548,6 +548,35 @@ router.post('/edit/character=:id', authUser(), async function(req, res, next) {
     req.session.sub = true
     res.redirect('/users/dashboard')
   }
+})
+
+// Shows characters by all users
+router.get('/allcharacters', authUser(), async function(req, res, next) {
+  var playerChars = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {})
+  var owners = {}
+
+  playerChars.sort(function(a, b){
+    if(a.user < b.user) { return -1; }
+    if(a.user > b.user) { return 1; }
+    return 0;
+  });
+
+  for(var i = 0; i < playerChars.length; i++) {
+    var char = playerChars[i]
+    if(owners[char.user]) {
+      char.user = owners[char.user]
+    } else {
+      char.user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.user)})
+      owners[char.user._id] = char.user
+    }
+    
+  }
+
+  res.render('users/allCharacters', {
+    title: mainHeader,
+    playerChars: playerChars,
+    user: req.session.user
+  })
 })
 
 module.exports = router;

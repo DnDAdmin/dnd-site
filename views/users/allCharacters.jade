@@ -1,0 +1,36 @@
+extends ../layout
+
+block head
+  title= title + 'New Password'
+
+block content
+    div(class='row mt-5')
+        div(class='col-12')
+            div(class='siteCont')
+                h3(class='text-center') Player Characters
+                if playerChars.length > 0
+                    hr
+                    div(class='row mx-auto')
+                        for char in playerChars
+                            div(class='col-6 col-sm-4 col-md-3 col-lg-2 mb-2 mb-sm-0 px-2 mt-2')
+                                div(class='charCard' onclick='window.location.href="/users/character=' + char._id + '"')
+                                    div(class='charCardInfo')
+                                        if char.artWork
+                                            img(class='charCardImg' src=char.artWork)
+                                            p(class='charCardTitle img')
+                                                strong= char.name
+                                                span(class='charCardOwner d-none d-md-inline')
+                                                    br
+                                                    = 'Owner: ' + char.user.userName
+                                                    
+                                        else
+                                            p(class='charCardTitle')
+                                                strong= char.name
+                                                span(class='charCardOwner d-none d-md-inline')
+                                                    br
+                                                    = 'Owner: ' + char.user.userName
+                else
+                    div(class='text-center w-100 font-Alegreya')
+                        hr
+                        h1 No characters yet
+        

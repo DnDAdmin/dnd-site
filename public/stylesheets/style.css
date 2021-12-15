@@ -29,6 +29,13 @@
     background-color: white;
   }
 
+  .quoteText {
+    font-size: 10pt;
+    font-style: italic;
+  }
+  .quoteText:before{content:"\""}
+  .quoteText:after{content:"\""}
+
 /*  --VV-- BASIC/STANDALONE --VV--  */
 html{
   height:100%;
@@ -275,6 +282,9 @@ hr {
       margin-bottom: 20px;
       cursor: pointer;
     }
+    .idUserName {
+      font-size: 10pt;
+    }
     .userId:hover .idUserName {
       color: rgba(255, 255, 255, 0.856);
       text-decoration: underline;
@@ -283,6 +293,14 @@ hr {
       padding: 0;
       margin: -30px 0 0 45px;
       font-family: 'Alegreya', serif;
+    }
+    .groupMC {
+      cursor: help;
+      color: green;
+    }
+    .siteMan {
+      cursor: help;
+      color: gold;
     }
     .bi-key-fill {
       transform: rotate(45deg);
@@ -588,8 +606,37 @@ hr {
       transform: translate(-50%, -50%);
       white-space: nowrap;
     }
+    .cation {
+      border: 1px solid rgba(0,0,0,0);
+      background-color: rgb(119, 22, 15);
+    }
     .cation:hover {
-      background-color: rgb(143, 28, 19);
+      border: 1px solid white;
+      background-color: rgb(119, 22, 15);
+    }
+    .menDeskLink.cation {
+      border: none;
+      background-color: unset;
+    }
+    .menDeskLink.cation:hover {
+      background-color: rgb(119, 22, 15);
+      border: none;
+    }
+    .amazing {
+      border: 1px solid rgba(0,0,0,0);
+      background-color: rgb(136, 116, 0);
+    }
+    .amazing:hover {
+      border: 1px solid white;
+      background-color: rgb(136, 116, 0);
+    }
+    .great {
+      border: 1px solid rgba(0,0,0,0);
+      background-color: rgb(0, 88, 0);
+    }
+    .great:hover {
+      border: 1px solid white;
+      background-color: rgb(0, 88, 0);
     }
 
 /*  --VV-- FORMS --VV--  */
@@ -606,7 +653,7 @@ hr {
   }
   .formTextInput {
     width: 100%;
-    height: 35px;
+    height: 30px;
     border-radius: 2px;
     border: 2px solid rgba(255, 255, 255, 0.856);
     background-color: #a9a9a9;
@@ -641,6 +688,9 @@ hr {
     transition: .25s;
   }
   option {
+    cursor: pointer;
+  }
+  select {
     cursor: pointer;
   }
   .formSelInput:focus {
@@ -841,7 +891,10 @@ hr {
       outline: none;
       box-shadow: none;
     }
-  
+  .bi.bi-question-circle {
+    cursor: help;
+    margin-top: -4px;
+  }
 
 /*  --VV-- TOOLTIP --VV-- */
   #toolTip {
@@ -1210,19 +1263,38 @@ hr {
     transform: translate(-50%, -50%);
     text-align: center;
     padding: 8px;
-    width: 101%;
+    width: 105%;
     background-color: #222222;
     font-family: "Cinzel Decorative", cursive;
     font-size: 14pt;
     text-shadow: 0 0 4px black;
+    transition: .25s;
   }
   .charCardTitle.img {
     top: unset;
-    bottom: 0;
+    bottom: -4px;
+    padding-bottom: 10px;
     transform: translateX(-50%);
   }
+  .charCardOwner {
+    position: relative;
+    top: -15px;
+    opacity: 0;
+    transition: .25s;
+  }
   .charCard:hover{
-    box-shadow: 0 0 8px black;
+    transform: scale(1.015, 1.015);
+    background-color: #0a3350;
+    box-shadow: 0 0 6px black;
+    transition: .25s;
+  }
+  .charCard:hover .charCardOwner{
+    top: 0;
+    opacity: 1;
+    transition: .25s;
+  }
+  .charCard:hover .charCardTitle {
+    background-color: #0a3350;
     transition: .25s;
   }
   /* small screen */
@@ -1270,6 +1342,9 @@ hr {
   .charInfo {
     font-size: 12pt;
     margin-top: 8px;
+  }
+  .charInfo p {
+    min-height: 24px;
   }
   .charName {
     font-family: "Cinzel Decorative", cursive;

@@ -3,7 +3,7 @@ var router = express.Router();
 var ops = require('../functions/databaseOps')
 const {ObjectId} = require('mongodb');
 
-var mainHeader = 'Lore Seekers | '
+var mainHeader = 'Mystery and Mischief | '
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {

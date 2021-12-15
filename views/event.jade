@@ -8,7 +8,7 @@ block head
       margin: 0;
       line-height: 1.1;
     }
-    strong {
+    #eventDetails strong {
       font-family: 'Merriweather Sans', sans-serif;
     }
     a {
@@ -32,7 +32,7 @@ block content
         hr
         div(class='col-10 mx-auto')
           p
-            strong Location: 
+            strong(class='font-Merriweather') Location: 
             =event.location
           div#eventDetails
             !{event.details}

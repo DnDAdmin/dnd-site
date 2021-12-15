@@ -1,7 +1,7 @@
 extends ../layout
 
 block head
-  title= title + 'New Event'
+  title= title + 'Edit Event'
 
   style.
     .errorText {
@@ -18,7 +18,7 @@ block content
             -url = '/admin/edit/event=' + event._id
         form#form(class='col-11 col-md-12 mx-auto' name='invitation' action=url method="POST" enctype="multipart/form-data" onload='setFields()')
             div(class='siteCont')
-                h2(class='text-center') New Event
+                h2(class='text-center') Edit Event
 
                 div(class='row')
                     div(class='formItem col-md-6')
@@ -52,29 +52,29 @@ block content
       
     
     script.
+        
         var info = {}
         var orig = {}
         var img
         var origImg
         var form = document.querySelector('form')
         
+        document.addEventListener("DOMContentLoaded", function() {
+            setFields()
+        });
+
         document.getElementById('editor-container').children[0].tabIndex = 4;
 
         form.addEventListener('submit', e => {
             e.preventDefault();
         });
 
-
+        
         async function updateDataBase() {
             await updateInput()
             await checkForErrors(false)
             document.getElementById('form').submit()
         }
 
-        document.getElementById('details').addEventListener("load", setFields());
 
-        function setFields(item) {
-            var editor = document.getElementById('editor-container').children[0]
-            var details = document.getElementById('details')
-            editor.innerHTML = details.value
-        }
+        

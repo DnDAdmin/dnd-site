@@ -5,7 +5,7 @@ var eml = require('../functions/emailOps')
 const formidable = require('formidable')
 const {ObjectId} = require('mongodb');
 
-var mainHeader = 'Lore Seekers | '
+var mainHeader = 'Mystery and Mischief | '
 
 /* GET users listing. */
 router.get('/', ops.authUser('admin'), async function(req, res, next) {
@@ -75,7 +75,7 @@ router.post('/saveevent', ops.authUser('admin'), async function(req, res, next) 
 router.get('/edit/event=:id', ops.authUser('admin'), async function(req, res, next) {
   var event = await ops.findItem(req.db.db('dndgroup'), 'events', {_id: ObjectId(req.params.id)})
 
-  res.render('secure/newEvent', {
+  res.render('secure/editEvent', {
     title: mainHeader,
     event: event,
     user: req.session.user
