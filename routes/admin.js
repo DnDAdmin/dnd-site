@@ -4,6 +4,7 @@ var ops = require('../functions/databaseOps')
 var eml = require('../functions/emailOps')
 const formidable = require('formidable')
 const {ObjectId} = require('mongodb');
+const { authUser } = require('../functions/databaseOps');
 
 var mainHeader = 'Mystery and Mischief | '
 
@@ -93,6 +94,49 @@ router.post('/edit/event=:id', ops.authUser('admin'), async function(req, res, n
     console.log('Event updated')
 
     req.session.message = 'Event updated!'
+    req.session.sub = true
+    req.session.fields = fields
+
+    res.redirect('/users/dashboard')
+  })
+})
+
+
+router.get('/itemlist', ops.authUser('admin'), async function(req, res, next) {
+  items = await ops.findMany(req.db.db('dndgroup'), 'world-items', {})
+
+  items.sort(function(a, b){
+    if(a.type < b.type) { return -1; }
+    if(a.type > b.type) { return 1; }
+    return 0;
+  });
+
+  res.render('secure/itemList', {
+    title: mainHeader,
+    items: items,
+    user: req.session.user
+  })
+
+})
+
+router.get('/newitem', ops.authUser('admin'), async function(req, res, next) {
+  var types = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Item Types'})
+
+  res.render('secure/newItem', {
+    title: mainHeader,
+    types: types.types,
+    user: req.session.user
+  })
+})
+
+router.post('/additem', ops.authUser('admin'), async function(req, res, next) {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+
+    await ops.addToDatabase(req.db.db('dndgroup'), 'world-items', [fields])
+    console.log('Item Added')
+
+    req.session.message = 'Item Added!'
     req.session.sub = true
     req.session.fields = fields
 

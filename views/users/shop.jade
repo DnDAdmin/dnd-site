@@ -9,15 +9,17 @@ block content
             div(class='siteCont')
                 h3(class='text-center') Shop
                 p Current Balance: 
-                    = char.wealth
+                    span#bal= char.wealth
+                    | gp
                     &nbsp;&nbsp;
                     span Available Weight: 
-                        = char.maxWeight
+                        span#weight= char.maxWeight
+                        | lb
                 hr
                 div(class='row mx-auto')
                     for item in shop.items
-                        div(class='col-md-6')
-                            div(id=item.name class='shopItem' )
+                        div(class='col-lg-6')
+                            div( class='shopItem' )
                                 div(class='itemDetails')
                                     div(class='toggleInfoBut' onclick='toggleInfo(this)')
                                         svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16")
@@ -30,9 +32,10 @@ block content
                                         = item.stealth
                                     p Class: 
                                         = item.class
-                                div(class='shop row' onclick='selectItem(this)')
-                                    div(class='col-2 shopCheckMain')
-                                        div(class='shopCheck' )
+                                div(id=item.name class='shop row' onclick='selectItem(this)' data-cost=item.cost data-weight=item.weight)
+                                    label(class='col-2 shopCheck')
+                                        input(type='checkbox' checked=false)
+                                        div
 
                                     div(class='col-10')
                                         
@@ -53,8 +56,33 @@ block content
     script.
 
         function selectItem(item) {
-            alert(item.id)
+            var box = item.children[0].children[0]
+            var balText = document.getElementById('bal')
+            var weightText = document.getElementById('weight')
+            var balance = parseInt(balText.innerHTML)
+            var weight = parseInt(weightText.innerHTML)
+            var cost = parseInt(item.getAttribute('data-cost'))
+            var heft = parseInt(item.getAttribute('data-weight'))
+            var newBal
+            var newWeight
 
+
+            if(box.checked) {
+                newBal = balance + cost
+                newWeight = weight + heft
+                box.checked = false
+            } else {
+                if(balance - cost > 0) {
+                    if(weight - heft > 0) {
+                        newBal = balance - cost
+                        newWeight = weight - heft
+                        box.checked = true
+                    }
+                }
+                
+            }
+            balText.innerHTML = newBal
+            weightText.innerHTML = newWeight
         }
 
         function toggleInfo(item) {

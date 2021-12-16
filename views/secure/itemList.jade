@@ -1,0 +1,27 @@
+extends ../layout
+
+block head
+  title= title + 'World Items'
+
+  style.
+
+block content
+    div(class='row mt-5')
+        div(class='col-12')
+            div(class='siteCont')
+                h3(class='text-center') World Items
+                div#newItemBut(class='text-right mt-2')
+                    button(class='buttonMain button col-md-2' onclick="window.location.href='/admin/newitem'")
+                        div(class='buttonText')
+                            p Add New Item
+                hr
+                div(class='row mx-auto')
+                    -var currType
+                    for item in items
+                        if item.type != currType
+                            -currType = item.type
+                            h4
+                                strong= item.type
+                        div(class='col-12')
+                            p
+                                a(href='/admin/edit/item=' + item._id)= item.name

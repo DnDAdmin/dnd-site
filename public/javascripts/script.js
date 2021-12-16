@@ -254,6 +254,28 @@ function setFields(){
     }
 }
 
+function shiftPoint(field, inc) {
+    var valText = field.parentNode.children[1]
+    var input = field.parentNode.parentNode.children[0]
+    var val = 0
+
+    if(parseInt(valText.innerHTML) == 0) {
+        val = 0
+        input.value = 0
+    }
+    
+    var oldVal = parseInt(input.value)
+
+    if(inc) {
+        val = oldVal + 1
+    } else {
+        val = oldVal - 1
+    }
+
+    input.value = val
+    valText.innerHTML = val
+}
+
 // Checks forms for errors
 function checkForErrors(exmpt, col) {
     return new Promise(async resolve => {
