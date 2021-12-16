@@ -440,6 +440,9 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
     
     fields.user = ObjectId(user._id)
     fields._id = charId
+    fields.wealth = 1000
+    fields.maxWeight = 100
+    fields.equipment = {}
 
     if(files.artWork.size > 0) {
       var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
@@ -457,13 +460,36 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
     req.session.message = 'Character Created!'
     req.session.sub = true
 
-    res.redirect('/users/dashboard/user=' + req.params.id)
+    res.redirect('/users/newcharacter/shop/char=' + charId + '/user=' + req.params.id)
+    
+    // res.redirect('/users/dashboard/user=' + req.params.id)
 
     // res.send([fields, files])
 
   })
 
 })
+
+router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async function( req, res, next) {
+  var character = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
+  var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+  var shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Initial Shop'})
+
+  for(var i = 0; i < shop.items.length; i++) {
+    var id = shop.items[i]
+    var item = await ops.findItem(req.db.db('dndgroup'), 'world-items', {_id: ObjectId(id)})
+    shop.items[i] = item
+  }
+
+  res.render('users/shop', {
+    title: mainHeader,
+    char: character,
+    shop: shop,
+    user: user
+  })
+
+})
+
 
 // Loads character page
 router.get('/character=:id', authUser(), async function(req, res, next) {

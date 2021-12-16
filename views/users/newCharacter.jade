@@ -62,11 +62,23 @@ block head
             display: none;
         }
         #subClassMain {
-            display: none;
+            height: 0;
+            margin: 0;
+            opacity: 0;
+            transition: .25s;
+            pointer-events: none;
+        }
+        #subClassMain.show {
+            height: 55px;
+            margin-top: 12px;
+            opacity: 1;
+            transition: .25s;
+            pointer-events: all;
         }
         .pointCounter {
             font-size: 10pt;
         }
+        
 
 block content
     div(class='row mt-5')
@@ -121,29 +133,30 @@ block content
                                                 path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                                 path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                                     //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
-                                    select#class(name='class' class='formTextInput')
+                                    select#class(name='class' class='formTextInput' onchange='unCheckBox()')
                                         if fields.class
                                             for clas in classes.baseClasses
-                                                if clas == fields.class
-                                                    option(selected value=clas)= clas
+                                                if clas.name == fields.class
+                                                    option(selected value=clas.name)= clas.name
                                                 else
-                                                    option(value=clas)= clas
+                                                    option(value=clas.name)= clas.name
                                         else
-                                            option(selected disabled) --- Select Class ---
+                                            option(selected disabled value=null) --- Select Class ---
                                             for clas in classes.baseClasses
-                                                option(value=clas)= clas
+                                                option(value=clas.name)= clas.name
                                 div(class='formItem col-2 text-center')
                                     label(class='') Subclass?
-                                        input(type='checkbox' onchange='loadSubclass(this)' checked=false)
+                                        input#isSub(type='checkbox' onchange='loadSubclass(this)' checked=false)
                                         div
                         
                         div#subClassMain(class='formItem w-100')
                             p(class='formLabel') Subclass:
-                            select#subClass(name='class' class='formTextInput')
-                                option(selected disabled) --- Select Subclass ---
-                                option Option
-                                option Option
-                                option Option
+                            select#subClass(name='subClass' class='formTextInput')
+                                option(selected disabled value=null) --- Select Subclass ---
+                                for clas in classes.baseClasses
+                                    if clas.subClasses
+                                        for sub in clas.subClasses
+                                            option(value=sub data-class=clas.name disabled style='display: none;')= sub
                         
                         div(class='formItem w-100')
                             p(class='formLabel' style='white-space: nowrap;') Background:  
@@ -197,7 +210,7 @@ block content
                     
                 
                 div(class='row')
-                    div(class='col-md-6')
+                    div(class='col-12')
                         div(class='formItem')
                             p(class='formLabel') Character History:
                             div(data-name='history' data-placeHolder="Tell us of your journey." data-tab=8 class='richEdit')
@@ -222,34 +235,71 @@ block content
                             p(class='formLabel') Flaws:
                             div(data-name='flaws' data-placeHolder="How will you mess things up, I wonder?" class='richEdit')
                             input#flaws(style='display: none;' name='flaws' type='text' value=fields.flaws)
+                
                 div(class='row')
+                    div(class='formItem col-4 col-md-3 col-lg-2')                    
+                        label(class='formLabel w-100' style='white-space: nowrap;') Strength:
+                            span
+                            input#strength(class='formTextInput countable countPool' type='number' name='strength')
+                            div(class='countVal row mx-auto')
+                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                                div(class='col-6 px-0 text-center countNum') 10
+                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
                     div(class='formItem col-4 col-md-3 col-lg-2')
-                        p(class='formLabel' style='white-space: nowrap;') Strength:
-                        input#strength(class='formTextInput countable' type='number' name='strength' min=0 oninput='checkPoints(this)' value=10)
+                        label(class='formLabel w-100' style='white-space: nowrap;') Dexterity:
+                            span
+                            input#dexterity(class='formTextInput countable countPool' type='number' name='dexterity')
+                            div(class='countVal row mx-auto')
+                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                                div(class='col-6 px-0 text-center countNum') 10
+                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
                     div(class='formItem col-4 col-md-3 col-lg-2')
-                        p(class='formLabel' style='white-space: nowrap;') Dexterity:
-                        input#dexterity(class='formTextInput countable' type='number' name='dexterity' value=10)
+                        label(class='formLabel w-100' style='white-space: nowrap;') Constitution:
+                            span
+                            input#constitution(class='formTextInput countable countPool' type='number' name='constitution')
+                            div(class='countVal row mx-auto')
+                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                                div(class='col-6 px-0 text-center countNum') 10
+                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
                     div(class='formItem col-4 col-md-3 col-lg-2')
-                        p(class='formLabel' style='white-space: nowrap;') Constitution:
-                        input#constitution(class='formTextInput countable' type='number' name='constitution' value=10)
+                        label(class='formLabel w-100' style='white-space: nowrap;') Intelligence:
+                            span
+                            input#intelligence(class='formTextInput countable countPool' type='number' name='intelligence')
+                            div(class='countVal row mx-auto')
+                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                                div(class='col-6 px-0 text-center countNum') 10
+                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
                     div(class='formItem col-4 col-md-3 col-lg-2')
-                        p(class='formLabel' style='white-space: nowrap;') Intelligence:
-                        input#intelligence(class='formTextInput countable' type='number' name='intelligence' value=10)
+                        label(class='formLabel w-100' style='white-space: nowrap;') Wisdom:
+                            span
+                            input#wisdom(class='formTextInput countable countPool' type='number' name='wisdom')
+                            div(class='countVal row mx-auto')
+                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                                div(class='col-6 px-0 text-center countNum') 10
+                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
                     div(class='formItem col-4 col-md-3 col-lg-2')
-                        p(class='formLabel' style='white-space: nowrap;') Wisdom:
-                        input#wisdom(class='formTextInput countable' type='number' name='wisdom' value=10)
-                    div(class='formItem col-4 col-md-3 col-lg-2')
-                        p(class='formLabel' style='white-space: nowrap;') Charisma:
-                        input#charisma(class='formTextInput countable' type='number' name='charisma' value=10)
+                        label(class='formLabel w-100' style='white-space: nowrap;') Charisma:
+                            span
+                            input#charisma(class='formTextInput countable countPool' type='number' name='charisma')
+                            div(class='countVal row mx-auto')
+                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                                div(class='col-6 px-0 text-center countNum') 10
+                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
+
                 div(class='row')
                     div(class='col-12 mt-1 pointCounter')
                         p Remaining points: 
                             span#points 20
                 
-                //- div(class='row')
-                //-     div(class='formItem col-4 col-md-3 col-lg-2')
-                //-         p(class='formLabel' style='white-space: nowrap;') Proficiency Bonus:
-                //-         input#proficiencyBonus(class='formTextInput' type='number' name='proficiencyBonus' value=fields.proficiencyBonus)
+                div(class='row')
+                    div(class='formItem col-4 col-md-3 col-lg-2')
+                        label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
+                            input#proficiencyBonus(class='formTextInput countable' type='number' name='proficiencyBonus')
+                            div(class='countVal row mx-auto')
+                                div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                                div(class='col-6 px-0 text-center countNum') 0
+                                div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                                
             
                 div(class='row')
                     div(class='col-12')
@@ -262,7 +312,7 @@ block content
                     button#formButton(class='buttonMain button great col-12 col-md-3' onclick="updateDataBase(); return false;" )
                         div(class='buttonText')
                             img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
-                            p#saveText Create
+                            p#saveText Next
             div(class='mt-2')
                 ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
                     
@@ -272,7 +322,20 @@ block content
     script.
         var img
         var count = 60
-        var countFields = {}
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var numInputs = document.getElementsByClassName('countable')
+            for(var i = 0; i < numInputs.length; i++) {
+                var inp = numInputs[i]
+                if(inp.classList.contains('countPool')) {
+                    inp.value = 10
+                } else {
+                    inp.value = 0
+                }
+            }
+            document.getElementsByClassName('isSub').checked = false
+
+        });
 
         var form = document.querySelector('charForm')
         form.addEventListener('submit', e => {
@@ -282,26 +345,66 @@ block content
         document.getElementById('editor-container').children[0].tabIndex = 8;
 
         
-        function checkPoints(field) {
+        function checkPoints(field, inc) {
             var remText = document.getElementById('points')
-            var allCounts = document.getElementsByClassName('countable')
-            var val = parseInt(field.value)
-            var inc = false
+            var valText = field.parentNode.children[1]
+            var costText = field.parentNode.parentNode.children[0]
+            var input = field.parentNode.parentNode.children[1]
+            var val = 10
             var change = 1
-            if(!countFields[field.id]) {
-                countFields[field.id] = 10
-            }
-            if(val > countFields[field.id]) {
-                inc = true
-            }
-            countFields[field.id] = val
 
-            if(val == 14 || val > 14) {
+            if(parseInt(valText.innerHTML) == 10) {
+                val = 10
+                input.value = 10
+            }
+            
+            var oldVal = parseInt(input.value)
+            
+            if(inc) {
+                val = oldVal + 1
+            } else {
+                val = oldVal - 1
+            }
+
+            if(val > 13) {
+                costText.innerHTML = ' +1'
                 change = 2
-                if(val == 17 || val > 17) {
+                if(val > 16) {
+                    costText.innerHTML = ' +2'
                     change = 3
-                    if(val == 20 || val > 20) {
+                    if(val > 19) {
+                        costText.innerHTML = ' +3'
                         change = 4
+                        if(val > 22) {
+                            costText.innerHTML = ' +4'
+                            change = 5
+                            if(val > 25) {
+                                costText.innerHTML = ' +5'
+                                change = 6
+                                if(val > 28) {
+                                    costText.innerHTML = ' +6'
+                                    change = 7
+                                } else {
+                                    if(val == 28) {
+                                        if(!inc) {
+                                            change = 7
+                                        }
+                                    }
+                                }
+                            } else {
+                                if(val == 25) {
+                                    if(!inc) {
+                                        change = 6
+                                    }
+                                }
+                            }
+                        } else {
+                            if(val == 22) {
+                                if(!inc) {
+                                    change = 5
+                                }
+                            }
+                        }
                     } else {
                         if(val == 19) {
                             if(!inc) {
@@ -319,18 +422,54 @@ block content
             } else {
                 if(val == 13) {
                     if(!inc) {
+                        costText.innerHTML = ' +1'
                         change = 2
                     }
                 }
             }
-            
-            if(inc) {
-                count += change
-            } else {
-                count -= change
+            if(val < 14) {
+                costText.innerHTML = ''
             }
             
-            remText.innerHTML = 80 - count
+            if(inc) {
+                if(80 - (count + change) > -1) {
+                    count += change
+
+                    remText.innerHTML = 80 - count
+                    input.value = val
+                    valText.innerHTML = val
+                }
+            } else {
+                if(val > -1) {
+                    count -= change
+
+                    remText.innerHTML = 80 - count
+                    input.value = val
+                    valText.innerHTML = val
+                }
+            }
+        }
+
+        function shiftPoint(field, inc) {
+            var valText = field.parentNode.children[1]
+            var input = field.parentNode.parentNode.children[0]
+            var val = 0
+
+            if(parseInt(valText.innerHTML) == 0) {
+                val = 0
+                input.value = 0
+            }
+            
+            var oldVal = parseInt(input.value)
+
+            if(inc) {
+                val = oldVal + 1
+            } else {
+                val = oldVal - 1
+            }
+
+            input.value = val
+            valText.innerHTML = val
         }
 
         async function updateDataBase() {
@@ -408,11 +547,52 @@ block content
             file.value = null
         }
 
+        function unCheckBox() {
+            var box = document.getElementById("isSub")
+            box.checked = false
+            loadSubclass(box)
+        }
+
         function loadSubclass(box) {
             var subItem = document.getElementById('subClassMain')
+            var className = document.getElementById('class')
+            var value = className.options[className.selectedIndex].value;
+            var subs = false
+            if(value == '--- Select Class ---') {
+                box.checked = false
+            }
             if(box.checked) {
-                subItem.style.display = 'block'
+                for(var i = 0; i < subItem.children[1].children.length; i++) {
+                    var op = subItem.children[1].children[i]
+                    if(op.getAttribute("data-class") == value) {
+                        subs = true
+                        op.disabled = false
+                        op.style.display = 'unset'
+                    } else {
+                        if(op.value == '--- Select Subclass ---'  || op.value == null) {
+                            op.selected = true
+                            op.style.display = 'unset'
+                        }
+                    }
+                }
+                if(subs) {
+                    subItem.classList.add('show')
+                } else {
+                    box.checked = false
+                }
+                
             } else {
-                subItem.style.display = 'none'
+                for(var i = 0; i < subItem.children[1].children.length; i++) {
+                    var op = subItem.children[1].children[i]
+                    if(op.value != '--- Select Subclass ---' || op.value != null) {
+                        op.disabled = true
+                        op.selected = false
+                        op.style.display = 'none'
+                    } else {
+                        op.selected = true
+                        op.style.display = 'unset'
+                    }
+                }
+                subItem.classList.remove('show')
             }
         }
