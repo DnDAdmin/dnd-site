@@ -61,100 +61,22 @@ block head
             padding: 8px;
             display: none;
         }
+        #subClassMain {
+            display: none;
+        }
+        .pointCounter {
+            font-size: 10pt;
+        }
 
 block content
     div(class='row mt-5')
         form#charForm(class='col-11 col-md-12 mx-auto' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
             div(class='siteCont')
                 h2(class='text-center') New Character
-                div(class='row')
-                    div(class='formItem col-md-6')
-                        p(class='formLabel') Character Name:
-                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
-                    div(class='formItem col-md-6')
-                        p(class='formLabel') Race:  
-                            a(href='https://www.wargamer.com/dnd/races' target='_blank' data-tip='View Info on Races' style='color: white;')
-                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
-                                    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
-                                    path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
-                        //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
-                        select#race(name='race' class='formTextInput')
-                            if fields.race
-                                for race in races.pureBlood
-                                    if race == fields.race
-                                        option(selected value=race)= race
-                                    else
-                                        option(value=race)= race
-                            else
-                                option(selected disabled) --- Select Race ---
-                                for race in races.pureBlood
-                                    option(value=race)= race
-                                
-
-                
-                div(class='row')
-                    div(class='formItem col-8 col-md-4 pr-0')
-                        p(class='formLabel') Class:  
-                            a(href='https://www.wargamer.com/dnd/classes' target='_blank' data-tip='View Info on Classes' style='color: white;')
-                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
-                                    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
-                                    path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
-                        //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
-                        select#class(name='class' class='formTextInput')
-                            if fields.class
-                                for clas in classes.baseClasses
-                                    if clas == fields.class
-                                        option(selected value=clas)= clas
-                                    else
-                                        option(value=clas)= clas
-                            else
-                                option(selected disabled) --- Select Class ---
-                                for clas in classes.baseClasses
-                                    option(value=clas)= clas
-                                
-                    div(class='formItem col-4 col-md-2 pl-1')
-                        p(class='formLabel') Level:
-                        input#level(class='formTextInput' type='number' name='level' value=fields.level tabindex='4')
-                    div(class='formItem col-md-6')
-                        p(class='formLabel' style='white-space: nowrap;') Background:  
-                            a(href='https://www.wargamer.com/dnd/backgrounds-5e' target='_blank' data-tip='View Info on Backgrounds' style='color: white;')
-                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
-                                    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
-                                    path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
-                        //- input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
-                        select#background(name='background' class='formTextInput' cursor='pointer')
-                            if fields.background
-                                for back in backgrounds.options
-                                    if back == fields.background
-                                        option(selected value=back)= back
-                                    else
-                                        option(value=back)= back
-                            else
-                                option(selected disabled) --- Select Background ---
-                                for back in backgrounds.options
-                                    option(value=back)= back
-                div(class='row')
-                    div(class='formItem col-md-6')
-                        p(class='formLabel') Alignment:
-                        //- input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
-                        select#alignment(name='alignment' class='formTextInput' cursor='pointer')
-                            if fields.alignment
-                                for align in alignments.options
-                                    if align == fields.alignment
-                                        option(selected value=align)= align
-                                    else
-                                        option(value=align)= align
-                            else
-                                option(selected disabled) --- Select Alignment ---
-                                for align in alignments.options
-                                    option(value=align)= align
-
-                    div(class='formItem col-4 col-md-2')
-                        p(class='formLabel' style='white-space: nowrap;') Experience Points:
-                        input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
+                hr
                 div(class='row')
                     div(class='col-md-6 col-lg-4 pt-4' style='min-height: 200px; max-height: 405px;')
-                        button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeImage(); return false;' style='display: none;') X
+                        button#removeImgBut(class='buttonMain button removeImgBut cation' onclick='removeImage(); return false;' style='display: none;') X
                         label(class='w-100 h-100')
                             input#artWork(type='file' name='artWork' class='d-none file' data-type='image' onchange='setImage(this)')
                             div#artWorkCont(class='h-100 w-100 imageEdit' )
@@ -167,13 +89,119 @@ block content
                                     path(style='color: white;' d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z")
                                     path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
                             p#fileName File
+
                     div(class='col-md-6 col-lg-8')
+                        div(class='formItem w-100')
+                            p(class='formLabel') Character Name:
+                            input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
+                        div(class='formItem w-100')
+                            p(class='formLabel') Race:  
+                                a(href='https://www.wargamer.com/dnd/races' target='_blank' data-tip='View Info on Races' style='color: white;')
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                        path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                        path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                            //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
+                            select#race(name='race' class='formTextInput')
+                                if fields.race
+                                    for race in races.pureBlood
+                                        if race == fields.race
+                                            option(selected value=race)= race
+                                        else
+                                            option(value=race)= race
+                                else
+                                    option(selected disabled) --- Select Race ---
+                                    for race in races.pureBlood
+                                        option(value=race)= race
+                        div(class='w-100')
+                            div(class='row mx-auto')
+                                div(class='formItem col-9 col-md-8 col-lg-10 pl-0')
+                                    p(class='formLabel') Class:  
+                                        a(href='https://www.wargamer.com/dnd/classes' target='_blank' data-tip='View Info on Classes' style='color: white;')
+                                            svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                                path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                                path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                                    //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
+                                    select#class(name='class' class='formTextInput')
+                                        if fields.class
+                                            for clas in classes.baseClasses
+                                                if clas == fields.class
+                                                    option(selected value=clas)= clas
+                                                else
+                                                    option(value=clas)= clas
+                                        else
+                                            option(selected disabled) --- Select Class ---
+                                            for clas in classes.baseClasses
+                                                option(value=clas)= clas
+                                div(class='formItem col-2 text-center')
+                                    label(class='') Subclass?
+                                        input(type='checkbox' onchange='loadSubclass(this)' checked=false)
+                                        div
+                        
+                        div#subClassMain(class='formItem w-100')
+                            p(class='formLabel') Subclass:
+                            select#subClass(name='class' class='formTextInput')
+                                option(selected disabled) --- Select Subclass ---
+                                option Option
+                                option Option
+                                option Option
+                        
+                        div(class='formItem w-100')
+                            p(class='formLabel' style='white-space: nowrap;') Background:  
+                                a(href='https://www.wargamer.com/dnd/backgrounds-5e' target='_blank' data-tip='View Info on Backgrounds' style='color: white;')
+                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                        path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                        path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                            //- input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
+                            select#background(name='background' class='formTextInput' cursor='pointer')
+                                if fields.background
+                                    for back in backgrounds.options
+                                        if back == fields.background
+                                            option(selected value=back)= back
+                                        else
+                                            option(value=back)= back
+                                else
+                                    option(selected disabled) --- Select Background ---
+                                    for back in backgrounds.options
+                                        option(value=back)= back
+                        div(class='formItem w-100')
+                            p(class='formLabel') Alignment:
+                            //- input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
+                            select#alignment(name='alignment' class='formTextInput' cursor='pointer')
+                                if fields.alignment
+                                    for align in alignments.options
+                                        if align == fields.alignment
+                                            option(selected value=align)= align
+                                        else
+                                            option(value=align)= align
+                                else
+                                    option(selected disabled) --- Select Alignment ---
+                                    for align in alignments.options
+                                        option(value=align)= align
+                                
+
+                
+
+                
+                                
+                //-     //- div(class='formItem col-4 col-md-2 pl-1')
+                //-     //-     p(class='formLabel') Level:
+                //-     //-     input#level(class='formTextInput' type='number' name='level' value=fields.level tabindex='4')
+                
+
+                //- div(class='formItem col-4 col-md-2')
+                //-     p(class='formLabel' style='white-space: nowrap;') Experience Points:
+                //-     input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
+                    
+                    
+                    
+                    
+                
+                div(class='row')
+                    div(class='col-md-6')
                         div(class='formItem')
                             p(class='formLabel') Character History:
                             div(data-name='history' data-placeHolder="Tell us of your journey." data-tab=8 class='richEdit')
                             input#history(style='display: none;' data-req='true' name='history' type='text' value=fields.history)
-                
-                div(class='row')
                     div(class='col-md-6')
                         div(class='formItem')
                             p(class='formLabel') Personality:
@@ -184,7 +212,6 @@ block content
                             p(class='formLabel') Ideals:
                             div(data-name='ideals' data-placeHolder="What is your code?" class='richEdit')
                             input#ideals(style='display: none;' name='ideals' type='text' value=fields.ideals)
-                div(class='row')
                     div(class='col-md-6')
                         div(class='formItem')
                             p(class='formLabel') Bonds:
@@ -198,26 +225,31 @@ block content
                 div(class='row')
                     div(class='formItem col-4 col-md-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Strength:
-                        input#strength(class='formTextInput' type='number' name='strength' value=fields.strength)
+                        input#strength(class='formTextInput countable' type='number' name='strength' min=0 oninput='checkPoints(this)' value=10)
                     div(class='formItem col-4 col-md-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Dexterity:
-                        input#dexterity(class='formTextInput' type='number' name='dexterity' value=fields.dexterity)
+                        input#dexterity(class='formTextInput countable' type='number' name='dexterity' value=10)
                     div(class='formItem col-4 col-md-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Constitution:
-                        input#constitution(class='formTextInput' type='number' name='constitution' value=fields.constitution)
+                        input#constitution(class='formTextInput countable' type='number' name='constitution' value=10)
                     div(class='formItem col-4 col-md-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Intelligence:
-                        input#intelligence(class='formTextInput' type='number' name='intelligence' value=fields.intelligence)
+                        input#intelligence(class='formTextInput countable' type='number' name='intelligence' value=10)
                     div(class='formItem col-4 col-md-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Wisdom:
-                        input#wisdom(class='formTextInput' type='number' name='wisdom' value=fields.wisdom)
+                        input#wisdom(class='formTextInput countable' type='number' name='wisdom' value=10)
                     div(class='formItem col-4 col-md-3 col-lg-2')
                         p(class='formLabel' style='white-space: nowrap;') Charisma:
-                        input#charisma(class='formTextInput' type='number' name='charisma' value=fields.charisma)
+                        input#charisma(class='formTextInput countable' type='number' name='charisma' value=10)
                 div(class='row')
-                    div(class='formItem col-4 col-md-3 col-lg-2')
-                        p(class='formLabel' style='white-space: nowrap;') Proficiency Bonus:
-                        input#proficiencyBonus(class='formTextInput' type='number' name='proficiencyBonus' value=fields.proficiencyBonus)
+                    div(class='col-12 mt-1 pointCounter')
+                        p Remaining points: 
+                            span#points 20
+                
+                //- div(class='row')
+                //-     div(class='formItem col-4 col-md-3 col-lg-2')
+                //-         p(class='formLabel' style='white-space: nowrap;') Proficiency Bonus:
+                //-         input#proficiencyBonus(class='formTextInput' type='number' name='proficiencyBonus' value=fields.proficiencyBonus)
             
                 div(class='row')
                     div(class='col-12')
@@ -239,6 +271,8 @@ block content
     
     script.
         var img
+        var count = 60
+        var countFields = {}
 
         var form = document.querySelector('charForm')
         form.addEventListener('submit', e => {
@@ -247,6 +281,57 @@ block content
         
         document.getElementById('editor-container').children[0].tabIndex = 8;
 
+        
+        function checkPoints(field) {
+            var remText = document.getElementById('points')
+            var allCounts = document.getElementsByClassName('countable')
+            var val = parseInt(field.value)
+            var inc = false
+            var change = 1
+            if(!countFields[field.id]) {
+                countFields[field.id] = 10
+            }
+            if(val > countFields[field.id]) {
+                inc = true
+            }
+            countFields[field.id] = val
+
+            if(val == 14 || val > 14) {
+                change = 2
+                if(val == 17 || val > 17) {
+                    change = 3
+                    if(val == 20 || val > 20) {
+                        change = 4
+                    } else {
+                        if(val == 19) {
+                            if(!inc) {
+                                change = 4
+                            }
+                        }
+                    }
+                }  else {
+                    if(val == 16) {
+                        if(!inc) {
+                            change = 3
+                        }
+                    }
+                }
+            } else {
+                if(val == 13) {
+                    if(!inc) {
+                        change = 2
+                    }
+                }
+            }
+            
+            if(inc) {
+                count += change
+            } else {
+                count -= change
+            }
+            
+            remText.innerHTML = 80 - count
+        }
 
         async function updateDataBase() {
             var saveText = document.getElementById('saveText')
@@ -321,4 +406,13 @@ block content
             document.getElementById('fileName').style.display = 'none'
             document.getElementById('removeImgBut').style.display = 'none'
             file.value = null
+        }
+
+        function loadSubclass(box) {
+            var subItem = document.getElementById('subClassMain')
+            if(box.checked) {
+                subItem.style.display = 'block'
+            } else {
+                subItem.style.display = 'none'
+            }
         }
