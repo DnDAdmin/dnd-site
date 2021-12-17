@@ -286,9 +286,36 @@ function setPoint(field) {
     } else {
         input.value = parseInt(valText.innerHTML)
     }
+}
 
+function togglePromt(url, msg, sub) {
+    var promt = document.getElementById('promt')
+    var text = document.getElementById('promtText')
 
+    text.children[0].innerHTML = msg
+    if(sub) {
+        text.children[1].style.display = 'block'
+        text.children[1].children[0].innerHTML = sub
+    } else {
+        text.children[1].style.display = 'none'
+    }
+
+    promt.action = url
     
+    promt.classList.add('show')
+}
+
+function closePromt() {
+    var promt = document.getElementById('promt')
+    var text = document.getElementById('promtText')
+
+    text.children[0].innerHTML = ''
+    text.children[1].style.display = 'none'
+    text.children[1].children[0].innerHTML = ''
+
+    promt.action = ''
+
+    promt.classList.remove('show')
 }
 
 // Checks forms for errors

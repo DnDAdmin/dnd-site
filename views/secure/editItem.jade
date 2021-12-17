@@ -1,0 +1,130 @@
+extends ../layout
+
+block head
+  title= title + 'Edit Item'
+
+  style.
+
+block content
+    form#promt(class='confirmPromt'  action='' method='POST' enctype="multipart/form-data")
+        div(class='confirmBox')
+            div(class='confirmCont')
+                div(class='row mx-auto')
+                    div#promtText(class='col-12 confirmText')
+                        p(class='confirmTxtMain') Confirm Delete
+                        p(class='confirmTxtSub') (
+                            span This cannot be undone
+                            | )
+                div(class='row mt-4 mb-2 promtButs')
+                    div(class='col-6 cancelBut')
+                        button#confButton(class='buttonMain button w-100' onclick="closePromt(); return false;")
+                            div(class='buttonText')
+                                p#saveText() No
+                    div(class='col-6 confirmBut')
+                        button#confButton(class='buttonMain button w-100')
+                            div(class='buttonText')
+                                p#saveText() Yes
+                
+    div(class='row mt-5')
+        div(class='col-11')
+            div(class='row mx-auto mt-2')
+                div(class='col-12 text-right')
+                    p(class='itemID')= 'ID: ' + item._id
+            
+            div(class='siteCont')
+                h3(class='text-center')= 'Editing ' + item.name
+                form#itemForm(name='newitem' action='/admin/edit/item=' + item._id method="POST" enctype="multipart/form-data")
+                    div(class='row mx-auto')
+                        div(class='formItem col-md-6')
+                            input#name(class='formTextInput' tab-index=1 type='text' name='name' placeholder='Item Name' value=item.name)
+                        
+                        
+                        
+                        div(class='formItem col-md-6')
+                            select#type(name='type' tab-index=2 class='formTextInput')
+                                if item.type
+                                    for op in types
+                                        if op == item.type
+                                            option(value=op selected)= op
+                                        else
+                                            option(value=op)= op
+                                else
+                                    option(selected disabled value=null) --- Select Item Type ---
+                                    for op in types
+                                        option(value=op)= op
+                        
+                        div(class='formItem col-2 text-center')
+                            label(class='') Sellable?
+                                if item.sellable
+                                    input#sellable(name='sellable' tab-index=3 type='checkbox' checked=true)
+                                else
+                                    input#sellable(name='sellable' tab-index=3 type='checkbox' checked=false)
+                                div
+                        
+                        div(class='col-12')
+                            div(class='row mx-auto')
+                                div(class='formItem col-sm-6 col-lg-2')
+                                    label(class='formLabel w-100' style='white-space: nowrap;') Cost:
+                                        input#cost(class='formTextInput countable' type='number' name='cost' value=item.cost)
+                                        div(class='countVal row mx-auto')
+                                            div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)')= item.cost
+                                            div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                                div(class='formItem col-sm-6 col-lg-2')
+                                    label(class='formLabel w-100' style='white-space: nowrap;') Weight:
+                                        input#weight(class='formTextInput countable' type='number' name='weight' value=item.weight)
+                                        div(class='countVal row mx-auto')
+                                            div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)')= item.weight
+                                            div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                                div(class='formItem col-sm-6 col-lg-2')
+                                    label(class='formLabel w-100' style='white-space: nowrap;') Strength:
+                                        input#strength(class='formTextInput countable' type='number' name='strength' value=item.strength)
+                                        div(class='countVal row mx-auto')
+                                            div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)')= item.strength
+                                            div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                                div(class='formItem col-sm-6 col-lg-2')
+                                    label(class='formLabel w-100' style='white-space: nowrap;') Class:
+                                        input#class(class='formTextInput countable' type='number' name='class' value=item.class)
+                                        div(class='countVal row mx-auto')
+                                            div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)')= item.class
+                                            div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                                div(class='formItem col-sm-6 col-lg-2')
+                                    label(class='formLabel w-100' style='white-space: nowrap;') Time to Equip:
+                                        input#don(class='formTextInput countable' type='number' name='don' value = item.don)
+                                        div(class='countVal row mx-auto')
+                                            div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)')= item.don
+                                            div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                                div(class='formItem col-sm-6 col-lg-2')
+                                    label(class='formLabel w-100' style='white-space: nowrap;') Time to Remove:
+                                        input#dof(class='formTextInput countable' type='number' name='dof' value=item.dof)
+                                        div(class='countVal row mx-auto')
+                                            div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)')= item.dof
+                                            div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                        div(class='formItem col-md-6')
+                            input#stealth(class='formTextInput' type='text' name='stealth' placeholder='Stealth' value=item.stealth)
+
+                    div(class='row mx-auto mt-2')
+                        div(class='col-12 text-right mt-2')
+                            button#formButton(class='buttonMain button great w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                                div(class='buttonText')
+                                    p#saveText() Save
+
+            div(class='row mx-auto mt-2')
+                div(class='col-12 text-left px-0 mt-2')
+                    button#delButton(class='buttonMain button cation w-100 col-md-4' style='right: 0;' onclick="confirmDelete('" + item._id + "')")
+                        div(class='buttonText')
+                            p#saveText() Delete
+    
+    script.
+        function confirmDelete(id) {
+            var msg = 'Are you sure you want to delete this item?'
+            var subMsg = 'This connot be undone.'
+            var url = '/admin/delete/item=' + id
+
+            togglePromt(url, msg, subMsg)
+        }

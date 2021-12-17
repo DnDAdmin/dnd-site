@@ -482,6 +482,16 @@ router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async f
   }
 
   shop.items.sort(function(a, b){
+    if(parseInt(a.weight) < parseInt(b.weight)) { return -1; }
+    if(parseInt(a.weight) > parseInt(b.weight)) { return 1; }
+    return 0;
+  });
+  shop.items.sort(function(a, b){
+    if(parseInt(a.cost) < parseInt(b.cost)) { return -1; }
+    if(parseInt(a.cost) > parseInt(b.cost)) { return 1; }
+    return 0;
+  });
+  shop.items.sort(function(a, b){
     if(a.type < b.type) { return -1; }
     if(a.type > b.type) { return 1; }
     return 0;

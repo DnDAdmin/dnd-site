@@ -1,0 +1,73 @@
+extends ../layout
+
+block head
+  title= title + 'New Shop'
+
+  style.
+    .multSel {
+        min-height: 400px;
+    }
+block content
+    form#promt(class='confirmPromt'  action='' method='POST' enctype="multipart/form-data")
+        div(class='confirmBox')
+            div(class='confirmCont')
+                div(class='row mx-auto')
+                    div#promtText(class='col-12 confirmText')
+                        p(class='confirmTxtMain') Confirm Delete
+                        p(class='confirmTxtSub') (
+                            span This cannot be undone
+                            | )
+                div(class='row mt-4 mb-2 promtButs')
+                    div(class='col-6 cancelBut')
+                        button#confButton(class='buttonMain button w-100' onclick="closePromt(); return false;")
+                            div(class='buttonText')
+                                p#saveText() No
+                    div(class='col-6 confirmBut')
+                        button#confButton(class='buttonMain button w-100')
+                            div(class='buttonText')
+                                p#saveText() Yes
+    div(class='row mt-5')
+        div(class='col-11')
+            div(class='row mx-auto mt-2')
+                div(class='col-12 text-right')
+                    p(class='itemID')= 'ID: ' + shop._id
+            div(class='siteCont')
+                h3(class='text-center')= 'Editing ' + shop.name
+                form#shopForm(name='newitem' action='/admin/edit/shop=' + shop._id method="POST" enctype="multipart/form-data")
+                    div(class='row mx-auto')
+                        div(class='formItem col-12')
+                            input#name(class='formTextInput' type='text' name='name' placeholder='Shop Name' value=shop.name)
+                        
+                        div(class='formItem col-12')
+                            p(class='formLabel') Items
+                            select#items(name='items' multiple="multiple" class='multSel')
+                                -var currType
+                                for item in items
+                                    if item.type != currType
+                                        -currType = item.type
+                                        option(disabled)= '--' + item.type + '--'
+                                    if shop.items.includes(item._id.toString())
+                                        option(value=item._id selected='true')= item.name
+                                    else
+                                        option(value=item._id)= item.name
+
+                    div(class='row mx-auto mt-2')
+                        div(class='col-12 text-right mt-2')
+                            button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                                div(class='buttonText')
+                                    p#saveText() Save
+
+            div(class='row mx-auto mt-2')
+                div(class='col-12 text-left px-0 mt-2')
+                    button#delButton(class='buttonMain button cation w-100 col-md-4' style='right: 0;' onclick="confirmDelete('" + shop._id + "')")
+                        div(class='buttonText')
+                            p#saveText() Delete
+    
+    script.
+        function confirmDelete(id) {
+            var msg = 'Are you sure you want to delete this shop?'
+            var subMsg = 'This connot be undone.'
+            var url = '/admin/delete/shop=' + id
+
+            togglePromt(url, msg, subMsg)
+        }

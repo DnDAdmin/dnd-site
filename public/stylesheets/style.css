@@ -37,67 +37,108 @@
   .quoteText:after{content:"\""}
 
 /*  --VV-- BASIC/STANDALONE --VV--  */
-html{
-  height:100%;
-  scroll-behavior: smooth;
-}
-body {
-  background-color: #222222;
-  color: rgba(255, 255, 255, 0.856);
-  margin:0;
-  padding:0;
-  height:100%;
-  z-index: -1;
-}
-#body {
-  padding-bottom: 180px;
-}
-#contentContainer {
-  min-height:100%;
-  position:relative;
-}
-.bodyText {
-  text-indent: 12px;
-}
-p {
-  margin-bottom: 10px;
-}
-p a {
-  color: rgba(255, 255, 255, 0.747);
-  text-decoration: underline;
-  transition: .25s;
-}
-p a:hover {
-  color: rgba(255, 255, 255, 0.932);
-  opacity: .8;
-}
-hr {
-  border-color: rgba(255, 255, 255, 0.747);
-}
-.topImageCont {
-  height: 40vmin;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 70px;
-  z-index: -1;
-  overflow: hidden;
-  text-shadow: 0 0 12px black;
-}
-.topImageCont div h1 {
-  font-size: 4.5vmin;
-}
-.commStatus {
-  position: absolute;
-  right: 15px;
-  top: 80px;
-  color: #848688;
-}
-.commStatus h6 span {
-  text-decoration: underline;
-  cursor: help;
-}
+  html{
+    height:100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #222222;
+    color: rgba(255, 255, 255, 0.856);
+    margin:0;
+    padding:0;
+    height:100%;
+    z-index: -1;
+  }
+  #body {
+    padding-bottom: 180px;
+  }
+  #contentContainer {
+    min-height:100%;
+    position:relative;
+  }
+  .bodyText {
+    text-indent: 12px;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+  p a {
+    color: rgba(255, 255, 255, 0.747);
+    text-decoration: underline;
+    transition: .25s;
+  }
+  p a:hover {
+    color: rgba(255, 255, 255, 0.932);
+    opacity: .8;
+  }
+  hr {
+    border-color: rgba(255, 255, 255, 0.747);
+  }
+  .topImageCont {
+    height: 40vmin;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 70px;
+    z-index: -1;
+    overflow: hidden;
+    text-shadow: 0 0 12px black;
+  }
+  .topImageCont div h1 {
+    font-size: 4.5vmin;
+  }
+  .commStatus {
+    position: absolute;
+    right: 15px;
+    top: 80px;
+    color: #848688;
+  }
+  .commStatus h6 span {
+    text-decoration: underline;
+    cursor: help;
+  }
+
+/* --VV-- CONFIRM PROMT --VV-- */
+  .confirmPromt {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 12;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.5);
+    transition: .25s;
+  }
+  .confirmPromt.show {
+    opacity: 1;
+    pointer-events: all;
+    transition: .25s;
+  }
+  .confirmBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 50%;
+    background-color: #444444;
+    border-radius: 2px;
+    border: 2px solid white;
+    box-shadow: 0 0 4px black;
+    padding: 18px;
+  }
+  .confirmTxtMain {
+    text-align: center;
+    font-size: 18pt;
+    margin: 0;
+  }
+  .confirmTxtSub {
+    text-align: center;
+    font-size: 8pt;
+    margin: 0;
+  }
 
 /* --VV-- HEADER --VV-- */
   #header {
@@ -951,6 +992,11 @@ hr {
         background-color: #0C3B5D;
         transition: .25s;
     }
+  
+  .itemID {
+    font-size: 8pt;
+    opacity: .5;
+  }
 
 /*  --VV-- TOOLTIP --VV-- */
   #toolTip {
@@ -1462,6 +1508,37 @@ hr {
   .shopItem:hover{
     box-shadow: 1px 1px 4px black;
     transition: .25s;
+  }
+  .shopItem .oops {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,.7);
+    color: red;
+    text-align: center;
+  }
+  .shopItem .oops p {
+    position: relative;
+    background-color: #222222;
+    width: 100%;
+    padding: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .shopItem .oops.show {
+    animation-name: cantSel;
+    animation-duration: 5s;
+  }
+  @keyframes cantSel {
+    0%{opacity: 0;}
+    5%{opacity: 1;}
+    95%{opacity: 1;}
+    100%{opacity: 0;}
   }
   .shopCheck {
     pointer-events: none;
