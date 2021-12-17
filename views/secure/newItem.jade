@@ -13,64 +13,64 @@ block content
                 form#itemForm(name='newitem' action='/admin/additem' method="POST" enctype="multipart/form-data")
                     div(class='row mx-auto')
                         div(class='formItem col-md-6')
-                            input#name(class='formTextInput' type='text' name='name' placeholder='Item Name')
+                            input#name(class='formTextInput' tab-index=1 type='text' name='name' placeholder='Item Name')
                         
                         
                         
                         div(class='formItem col-md-6')
-                            select#type(name='type' class='formTextInput')
+                            select#type(name='type' tab-index=2 class='formTextInput')
                                 option(selected disabled value=null) --- Select Item Type ---
                                 for op in types
                                     option(value=op)= op
                         
                         div(class='formItem col-2 text-center')
                             label(class='') Sellable?
-                                input#sellable(name='sellable' type='checkbox' checked=false)
+                                input#sellable(name='sellable' tab-index=3 type='checkbox' checked=false)
                                 div
                         
                         div(class='col-12')
                             div(class='row mx-auto')
                                 div(class='formItem col-sm-6 col-lg-2')
                                     label(class='formLabel w-100' style='white-space: nowrap;') Cost:
-                                        input#cost(class='formTextInput countable' type='number' name='proficiencyBonus')
+                                        input#cost(class='formTextInput countable' type='number' name='cost')
                                         div(class='countVal row mx-auto')
                                             div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                                            div(class='col-6 px-0 text-center countNum') 0
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)') 0
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                                 div(class='formItem col-sm-6 col-lg-2')
                                     label(class='formLabel w-100' style='white-space: nowrap;') Weight:
-                                        input#weight(class='formTextInput countable' type='number' name='proficiencyBonus')
+                                        input#weight(class='formTextInput countable' type='number' name='weight')
                                         div(class='countVal row mx-auto')
                                             div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                                            div(class='col-6 px-0 text-center countNum') 0
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)') 0
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                                 div(class='formItem col-sm-6 col-lg-2')
                                     label(class='formLabel w-100' style='white-space: nowrap;') Strength:
-                                        input#strength(class='formTextInput countable' type='number' name='proficiencyBonus')
+                                        input#strength(class='formTextInput countable' type='number' name='strength')
                                         div(class='countVal row mx-auto')
                                             div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                                            div(class='col-6 px-0 text-center countNum') 0
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)') 0
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                                 div(class='formItem col-sm-6 col-lg-2')
                                     label(class='formLabel w-100' style='white-space: nowrap;') Class:
-                                        input#class(class='formTextInput countable' type='number' name='proficiencyBonus')
+                                        input#class(class='formTextInput countable' type='number' name='class')
                                         div(class='countVal row mx-auto')
                                             div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                                            div(class='col-6 px-0 text-center countNum') 0
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)') 0
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                                 div(class='formItem col-sm-6 col-lg-2')
                                     label(class='formLabel w-100' style='white-space: nowrap;') Time to Equip:
-                                        input#don(class='formTextInput countable' type='number' name='proficiencyBonus')
+                                        input#don(class='formTextInput countable' type='number' name='don')
                                         div(class='countVal row mx-auto')
                                             div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                                            div(class='col-6 px-0 text-center countNum') 0
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)') 0
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                                 div(class='formItem col-sm-6 col-lg-2')
                                     label(class='formLabel w-100' style='white-space: nowrap;') Time to Remove:
-                                        input#dof(class='formTextInput countable' type='number' name='proficiencyBonus')
+                                        input#dof(class='formTextInput countable' type='number' name='dof')
                                         div(class='countVal row mx-auto')
                                             div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                                            div(class='col-6 px-0 text-center countNum') 0
+                                            div(class='col-6 px-0 text-center countNum' tab-index=4 contenteditable="true" oninput='setPoint(this)') 0
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                         div(class='formItem col-md-6')
                             input#stealth(class='formTextInput' type='text' name='stealth' placeholder='Stealth')

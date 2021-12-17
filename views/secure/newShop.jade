@@ -1,0 +1,88 @@
+extends ../layout
+
+block head
+  title= title + 'New Shop'
+
+  style.
+    .multSel {
+        min-height: 400px;
+    }
+block content
+    div(class='row mt-5')
+        div(class='col-11')
+            div(class='siteCont')
+                h3(class='text-center') New Shop
+                form#shopForm(name='newitem' action='/admin/addshop' method="POST" enctype="multipart/form-data")
+                    div(class='row mx-auto')
+                        div(class='formItem col-12')
+                            input#name(class='formTextInput' type='text' name='name' placeholder='Shop Name')
+                        
+                        
+                        
+                        div(class='formItem col-12')
+                            p(class='formLabel') Items
+                            select#items(name='items' multiple="multiple" class='multSel')
+                                -var currType
+                                for item in items
+                                    if item.type != currType
+                                        -currType = item.type
+                                        option(disabled)= '--' + item.type + '--'
+                                    option(value=item._id)= item.name
+                        
+                        //- div(class='formItem col-2 text-center')
+                        //-     label(class='') Sellable?
+                        //-         input#sellable(name='sellable' type='checkbox' checked=false)
+                        //-         div
+                        
+                        //- div(class='col-12')
+                        //-     div(class='row mx-auto')
+                        //-         div(class='formItem col-sm-6 col-lg-2')
+                        //-             label(class='formLabel w-100' style='white-space: nowrap;') Cost:
+                        //-                 input#cost(class='formTextInput countable' type='number' name='proficiencyBonus')
+                        //-                 div(class='countVal row mx-auto')
+                        //-                     div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                        //-                     div(class='col-6 px-0 text-center countNum') 0
+                        //-                     div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                        //-         div(class='formItem col-sm-6 col-lg-2')
+                        //-             label(class='formLabel w-100' style='white-space: nowrap;') Weight:
+                        //-                 input#weight(class='formTextInput countable' type='number' name='proficiencyBonus')
+                        //-                 div(class='countVal row mx-auto')
+                        //-                     div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                        //-                     div(class='col-6 px-0 text-center countNum') 0
+                        //-                     div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                        //-         div(class='formItem col-sm-6 col-lg-2')
+                        //-             label(class='formLabel w-100' style='white-space: nowrap;') Strength:
+                        //-                 input#strength(class='formTextInput countable' type='number' name='proficiencyBonus')
+                        //-                 div(class='countVal row mx-auto')
+                        //-                     div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                        //-                     div(class='col-6 px-0 text-center countNum') 0
+                        //-                     div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                        //-         div(class='formItem col-sm-6 col-lg-2')
+                        //-             label(class='formLabel w-100' style='white-space: nowrap;') Class:
+                        //-                 input#class(class='formTextInput countable' type='number' name='proficiencyBonus')
+                        //-                 div(class='countVal row mx-auto')
+                        //-                     div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                        //-                     div(class='col-6 px-0 text-center countNum') 0
+                        //-                     div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                        //-         div(class='formItem col-sm-6 col-lg-2')
+                        //-             label(class='formLabel w-100' style='white-space: nowrap;') Time to Equip:
+                        //-                 input#don(class='formTextInput countable' type='number' name='proficiencyBonus')
+                        //-                 div(class='countVal row mx-auto')
+                        //-                     div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                        //-                     div(class='col-6 px-0 text-center countNum') 0
+                        //-                     div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                        //-         div(class='formItem col-sm-6 col-lg-2')
+                        //-             label(class='formLabel w-100' style='white-space: nowrap;') Time to Remove:
+                        //-                 input#dof(class='formTextInput countable' type='number' name='proficiencyBonus')
+                        //-                 div(class='countVal row mx-auto')
+                        //-                     div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                        //-                     div(class='col-6 px-0 text-center countNum') 0
+                        //-                     div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                        //- div(class='formItem col-md-6')
+                        //-     input#stealth(class='formTextInput' type='text' name='stealth' placeholder='Stealth')
+
+                    div(class='row mx-auto mt-2')
+                        div(class='col-12 text-right mt-2')
+                            button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                                div(class='buttonText')
+                                    p#saveText() Save

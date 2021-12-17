@@ -644,6 +644,7 @@ hr {
   .formItem {
     margin-top: 12px;
   }
+  
   .formLabel {
     color: rgba(255, 255, 255, 0.856);
     margin: 0;
@@ -665,6 +666,14 @@ hr {
     outline: none;
     box-shadow: 0 0 2px rgba(0,0,0,1);
     background-color: rgba(255, 255, 255, 0.856);
+    transition: .25s;
+  }
+  .multSel {
+    width: 100%;
+    border-radius: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.856);
+    background-color: #a9a9a9;
+    box-shadow: 0 0 2px rgba(0,0,0,0);
     transition: .25s;
   }
   .formTextArea {
@@ -916,7 +925,15 @@ hr {
         margin: 0;
         padding-top: 2px;
         color: white;
+        cursor: text;
+        transition: .25s;
     }
+    .countNum:focus {
+      background-color: white;
+      outline: none;
+      color: black;
+      transition: .25s;
+  }
     .countBut {
         padding-top: 2px;
         cursor: pointer;
@@ -1438,9 +1455,12 @@ hr {
     overflow: hidden;
     transition: .25s;
   }
+  .shopItem.selected {
+    border: 2px solid white;
+    transition: .25s;
+  }
   .shopItem:hover{
     box-shadow: 1px 1px 4px black;
-    transform: scale(1.01);
     transition: .25s;
   }
   .shopCheck {

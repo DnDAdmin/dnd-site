@@ -276,6 +276,21 @@ function shiftPoint(field, inc) {
     valText.innerHTML = val
 }
 
+function setPoint(field) {
+    var valText = field.parentNode.children[1]
+    var input = field.parentNode.parentNode.children[0]
+
+    if(isNaN(valText.innerHTML)) {
+        valText.innerHTML = ''
+        input.value = null
+    } else {
+        input.value = parseInt(valText.innerHTML)
+    }
+
+
+    
+}
+
 // Checks forms for errors
 function checkForErrors(exmpt, col) {
     return new Promise(async resolve => {

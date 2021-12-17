@@ -473,13 +473,19 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
 router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async function( req, res, next) {
   var character = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-  var shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Initial Shop'})
+  var shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Test Shop'})
 
   for(var i = 0; i < shop.items.length; i++) {
     var id = shop.items[i]
     var item = await ops.findItem(req.db.db('dndgroup'), 'world-items', {_id: ObjectId(id)})
     shop.items[i] = item
   }
+
+  shop.items.sort(function(a, b){
+    if(a.type < b.type) { return -1; }
+    if(a.type > b.type) { return 1; }
+    return 0;
+  });
 
   res.render('users/shop', {
     title: mainHeader,

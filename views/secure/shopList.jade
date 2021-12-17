@@ -1,0 +1,23 @@
+extends ../layout
+
+block head
+  title= title + 'Shops'
+
+  style.
+
+block content
+    div(class='row mt-5')
+        div(class='col-12')
+            div(class='siteCont')
+                h3(class='text-center') Shops
+                div#newShopBut(class='text-right mt-2')
+                    button(class='buttonMain button col-md-2' onclick="window.location.href='/admin/newshop'")
+                        div(class='buttonText')
+                            p Add New Shop
+                hr
+                div(class='row mx-auto')
+                    -var currType
+                    for shop in shops
+                        div(class='col-12')
+                            p
+                                a(href='/admin/edit/shop=' + shop._id)= shop.name

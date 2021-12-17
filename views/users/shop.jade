@@ -3,21 +3,46 @@ extends ../layout
 block head
   title= title + 'Shop'
 
+  style.
+    #bal.out {
+        animation-name: out;
+        animation-duration: 1s;
+    }
+    #weight.out {
+        animation-name: out;
+        animation-duration: 1s;
+    }
+    @keyframes out {
+        0%{color: white; font-size: 12pt;}
+        40%{color: red; font-size: 13pt;}
+        75%{color: red; font-size: 11pt;}
+        85%{color: red; font-size: 12.5pt;}
+        95%{color: white; font-size: 11.5pt;}
+        100%{color: white; font-size: 12pt;}
+    }
+
+
 block content
     div(class='row mt-5')
         div(class='col-11')
             div(class='siteCont')
-                h3(class='text-center') Shop
+                h3(class='text-center') Shoping for 
+                    = char.name
                 p Current Balance: 
                     span#bal= char.wealth
-                    | gp
+                        | gp
                     &nbsp;&nbsp;
                     span Available Weight: 
                         span#weight= char.maxWeight
-                        | lb
+                            | lb
                 hr
                 div(class='row mx-auto')
+                    -var currType
                     for item in shop.items
+                        if item.type != currType
+                            -currType = item.type
+                            div(class='col-12')
+                                h3= item.type
                         div(class='col-lg-6')
                             div( class='shopItem' )
                                 div(class='itemDetails')
@@ -55,7 +80,16 @@ block content
     
     script.
 
+        document.addEventListener("DOMContentLoaded", function() {
+            var boxes = document.querySelectorAll('input[type=checkbox]')
+            for(var i = 0; i < boxes.length; i++) {
+                boxes[i].checked = false
+            }
+        });
+
+
         function selectItem(item) {
+            var main = item.parentNode
             var box = item.children[0].children[0]
             var balText = document.getElementById('bal')
             var weightText = document.getElementById('weight')
@@ -66,23 +100,37 @@ block content
             var newBal
             var newWeight
 
+            balText.classList.remove('out')
+            weightText.classList.remove('out')
 
             if(box.checked) {
                 newBal = balance + cost
                 newWeight = weight + heft
+
+                balText.innerHTML = newBal + 'gp'
+                weightText.innerHTML = newWeight + 'lb'
+
                 box.checked = false
+                main.classList.remove('selected')
             } else {
                 if(balance - cost > 0) {
                     if(weight - heft > 0) {
                         newBal = balance - cost
                         newWeight = weight - heft
+
+                        balText.innerHTML = newBal + 'gp'
+                        weightText.innerHTML = newWeight + 'lb'
+
                         box.checked = true
+                        main.classList.add('selected')
+                    } else {
+                        weightText.classList.add('out')
                     }
+                } else {
+                    balText.classList.add('out')
                 }
-                
             }
-            balText.innerHTML = newBal
-            weightText.innerHTML = newWeight
+            
         }
 
         function toggleInfo(item) {

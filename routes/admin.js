@@ -132,11 +132,58 @@ router.get('/newitem', ops.authUser('admin'), async function(req, res, next) {
 router.post('/additem', ops.authUser('admin'), async function(req, res, next) {
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
-
+    // res.send(fields)
     await ops.addToDatabase(req.db.db('dndgroup'), 'world-items', [fields])
     console.log('Item Added')
 
     req.session.message = 'Item Added!'
+    req.session.sub = true
+    req.session.fields = fields
+
+    res.redirect('/users/dashboard')
+  })
+})
+
+router.get('/shoplist', ops.authUser('admin'), async function(req, res, next) {
+  shops = await ops.findMany(req.db.db('dndgroup'), 'game_data', {shop: true})
+
+  res.render('secure/shopList', {
+    title: mainHeader,
+    shops: shops,
+    user: req.session.user
+  })
+
+})
+
+router.get('/newshop', ops.authUser('admin'), async function(req, res, next) {
+  var items = await ops.findMany(req.db.db('dndgroup'), 'world-items', {})
+
+  items.sort(function(a, b){
+    if(a.type < b.type) { return -1; }
+    if(a.type > b.type) { return 1; }
+    return 0;
+  });
+
+  res.render('secure/newShop', {
+    title: mainHeader,
+    items: items,
+    user: req.session.user
+  })
+})
+
+
+router.post('/addshop', ops.authUser('admin'), async function(req, res, next) {
+  var form = new formidable.IncomingForm({multiples: true})
+  form.parse(req, async function (err, fields, files) {
+    fields.shop = true
+    for(var i = 0; i < fields.items.length; i++) {
+      var item = fields.items[i]
+      fields.items[i] = new ObjectId(item)
+    }
+    await ops.addToDatabase(req.db.db('dndgroup'), 'game_data', [fields])
+    console.log('Shop Added')
+
+    req.session.message = 'Shop Added!'
     req.session.sub = true
     req.session.fields = fields
 
