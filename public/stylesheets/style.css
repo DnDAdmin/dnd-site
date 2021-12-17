@@ -1502,6 +1502,7 @@
     transition: .25s;
   }
   .shopItem.selected {
+    background-color: #0a3350;
     border: 2px solid white;
     transition: .25s;
   }

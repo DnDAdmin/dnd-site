@@ -7,6 +7,7 @@ const hash = require('password-hash')
 var ops = require('../functions/databaseOps')
 const {ObjectId} = require('mongodb');
 const { authUser, findItem, addToDatabase } = require('../functions/databaseOps');
+const { Formidable } = require('formidable');
 
 var mainHeader = 'Mystery and Mischief | '
 
@@ -446,8 +447,8 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
 
     if(files.artWork.size > 0) {
       var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
-      var oldpath = fs.readFileSync(files.artWork.path)
-      var data = await ops.uploadFile(s3User, 'dnd-character-images', charId + '-artWork' + path.extname(files.artWork.name), oldpath, 'public-read')
+      var oldpath = fs.readFileSync(files.artWork.filepath)
+      var data = await ops.uploadFile(s3User, 'dnd-character-images', charId + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
       if(data) {
           console.log('Profile image uploaded.')
           fields.artWork = data.Location
@@ -567,6 +568,14 @@ router.get('/edit/character=:id', authUser(), async function(req, res, next) {
 
   
 
+})
+
+router.post('/edit/character=:id', authUser(), async function(req, res, next) {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function(err, fields, files) {
+    var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: req.params.id})
+    res.send([fields, files])
+  })
 })
 
 // Updates character info
