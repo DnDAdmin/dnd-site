@@ -47,18 +47,21 @@ block head
             transition: .5s;
         }
         .removeImgBut {
+            padding-top: 2px;
             right: 20px;
             top: 30px;
             z-index: 1;
         }
         #fileName {
             position: absolute;
-            bottom: -8px;
-            right: 17px;
+            bottom: -10px;
+            right: 15px;
+            left: 15px;
             font-size: 8pt;
             border-radius: 4px 0 0 0;
             background-color: #0a3350;
             padding: 8px;
+            border: 2px solid #0C3B5D;
             display: none;
         }
         #subClassMain {
@@ -81,8 +84,28 @@ block head
         
 
 block content
+    form#promt(class='confirmPromt'  action='' method='POST' enctype="multipart/form-data")
+        div(class='confirmBox')
+            div(class='confirmCont')
+                div(class='row mx-auto')
+                    div#promtText(class='col-12 confirmText')
+                        p(class='confirmTxtMain') Confirm Delete
+                        p(class='confirmTxtSub') (
+                            span This cannot be undone
+                            | )
+                div(class='row mt-4 mb-2 promtButs')
+                    div(class='col-6 cancelBut')
+                        button#confButton(class='buttonMain button w-100' onclick="closePromt(); return false;")
+                            div(class='buttonText')
+                                p#saveText() No
+                    div(class='col-6 confirmBut')
+                        button#confButton(class='buttonMain button cation w-100')
+                            div(class='buttonText')
+                                p#saveText() Yes
     div(class='row mt-5')
-        form#charForm(class='col-11 col-md-12 mx-auto' name='newChar' action='/users/edit/character=' + fields._id method="POST" enctype="multipart/form-data")
+        div(class='col-12 text-right')
+            p(class='itemID')= 'ID: ' + fields._id
+        form#charForm(class='col-11 col-md-12 mx-auto' name='newChar' action='/users/edit/char=' + fields._id + '/user=' + owner._id method="POST" enctype="multipart/form-data")
             div(class='siteCont')
                 h2(class='text-center') Editing 
                     =fields.name
@@ -92,21 +115,19 @@ block content
                         -var disp = 'none'
                         if fields.artWork
                             -disp = 'block'
-                        button#removeImgBut(class='buttonMain button removeImgBut cation' onclick='removeImage(); return false;' style='display: ' + disp + ';') X
+                        div#removeImgBut(class='buttonMain button removeImgBut cation' onclick='removeImage(); return false;' style='display: ' + disp + ';') X
                         label(class='w-100 h-100')
                             input#artWork(type='file' name='artWork' class='d-none file' data-type='image' onchange='setImage(this)')
                             div#artWorkCont(class='h-100 w-100 imageEdit' )
                                 p#artImageLetter(class='artImageLetter' style='font-size: 12pt;') Art Work
                                 if fields.artWork
-                                    
                                     img#artImage(src=fields.artWork class='artImage' data-orig=fields.artWork style='display: block;')
                                 else
-                                    
                                     img#artImage(src=null class='artImage' style='display: none;')
                                 svg(xmlns="http://www.w3.org/2000/svg" class="bi bi-camera" viewBox="0 0 16 16")
                                     path(style='color: white;' d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z")
                                     path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
-                            p#fileName File
+                        p#fileName File
                         input#delImg(type='checkbox' name='delImg' checked=false style='display: none;')
 
                     div(class='col-md-6 col-lg-8')
@@ -331,12 +352,17 @@ block content
                             p(class='formLabel') Notes:
                             div(data-name='notes' data-placeHolder="What doesn't quite fit?" class='richEdit')
                             input#notes(style='display: none;' name='notes' type='text' value=fields.notes)
-            
-                div(class='formItem text-right my-4' )
-                    button#formButton(class='buttonMain button great col-12 col-md-3' onclick="updateDataBase('" + fields._id + "''); return false;" )
-                        div(class='buttonText')
-                            img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
-                            p#saveText Save
+
+                div(class='row')
+                    div(class='formItem my-4 col-6')
+                        button#formButton(class='buttonMain button cation col-12 col-md-4' onclick='confirmDelete("' + fields._id + '", "' + owner._id + '"); return false;' )
+                            div(class='buttonText')
+                                p#saveText Delete
+                    div(class='formItem text-right my-4 col-6')
+                        button#formButton(class='buttonMain button great col-12 col-md-4' onclick="updateDataBase('" + fields._id + "'); return false;" )
+                            div(class='buttonText')
+                                img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
+                                p#saveText Save
             div(class='mt-2')
                 ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
                     
@@ -398,8 +424,6 @@ block content
         form.addEventListener('submit', e => {
             e.preventDefault();
         });
-        
-        document.getElementById('editor-container').children[0].tabIndex = 8;
 
         
         function checkPoints(field, inc) {
@@ -555,7 +579,7 @@ block content
             var file = files.files[0];
             var imgReader = new FileReader();
             var imgCont =  document.getElementById('artImage')
-            var delImg = document.getElementsByClassName('delImg')
+            var delImg = document.getElementById('delImg')
 
             delImg.checked = false
 
@@ -574,17 +598,43 @@ block content
         }
 
         function removeImage() {
-            var img =  document.getElementById('artImage')
+            var image =  document.getElementById('artImage')
             var imgCont =  document.getElementById('artWorkCont')
             var file = document.getElementById('artWork')
+            var fileName = document.getElementById('fileName')
 
             imgCont.classList.remove('error')
-            img.src = ''
-            document.getElementById('fileName').style.display = 'none'
-            document.getElementById('removeImgBut').style.display = 'none'
+            fileName.style.display = 'none'
             file.value = null
-            document.getElementsByClassName('delImg').checked = true
-            
+
+            if(img) {
+                document.getElementById('delImg').checked = false
+                image.src = image.getAttribute("data-orig")
+                img = null
+            } else {
+                image.src = ''
+                document.getElementById('removeImgBut').style.display = 'none'
+                document.getElementById('delImg').checked = true
+
+                fileName.style.cursor = 'pointer'
+                fileName.setAttribute("onclick","restoreImg();");
+                fileName.innerHTML = 'Image will be removed from database. <span style="text-decoration: underline;">Restore?</span>'
+                fileName.style.display = 'block'
+            }
+        }
+
+        function restoreImg() {
+            var image =  document.getElementById('artImage')
+            var fileName = document.getElementById('fileName')
+
+            fileName.setAttribute("onclick","");
+            fileName.innerHTML = ''
+            fileName.style.display = 'none'
+
+            fileName.style.cursor = 'unset'
+            document.getElementById('removeImgBut').style.display = 'block'
+            document.getElementById('delImg').checked = false
+            image.src = image.getAttribute("data-orig")
         }
 
         function unCheckBox() {
@@ -635,4 +685,12 @@ block content
                 }
                 subItem.classList.remove('show')
             }
+        }
+
+        function confirmDelete(char, id) {
+            var msg = 'Are you sure you want to delete this character?'
+            var subMsg = 'This connot be undone.'
+            var url = '/users/delete/char=' + char + '/user=' + id
+
+            togglePromt(url, msg, subMsg)
         }

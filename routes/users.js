@@ -6,8 +6,8 @@ const path = require('path')
 const hash = require('password-hash')
 var ops = require('../functions/databaseOps')
 const {ObjectId} = require('mongodb');
-const { authUser, findItem, addToDatabase } = require('../functions/databaseOps');
-const { Formidable } = require('formidable');
+const { authUser, findItem, addToDatabase, updateItem } = require('../functions/databaseOps');
+var aws = require('aws-sdk')
 
 var mainHeader = 'Mystery and Mischief | '
 
@@ -165,8 +165,14 @@ router.post('/login', async function(req, res, next) {
 
             if(newSess) {
               console.log('User session made.')
-              // res.send(req.session.user)
-              res.redirect('/users/dashboard/user=' + user._id)
+              if(req.session.redir) {
+                var redir = req.session.redir
+                req.session.redir = null
+                console.log('Redirecting to previously attempted URL')
+                res.redirect(redir)
+              } else {
+                res.redirect('/users/dashboard/user=' + user._id)
+              }
             } else {
               console.log('error adding session to db')
               error('Error adding session to database.')
@@ -200,7 +206,14 @@ router.post('/login', async function(req, res, next) {
             if(dbUserSession) {
               console.log('User session made.')
               // res.send(req.session.user)
-              res.redirect('/users/dashboard/user=' + user._id)
+              if(req.session.redir) {
+                var redir = req.session.redir
+                req.session.redir = null
+                console.log('Redirecting to previously attempted URL')
+                res.redirect(redir)
+              } else {
+                res.redirect('/users/dashboard/user=' + user._id)
+              }
             } else {
               console.log('error making db session.')
               error('Error trying to find user in database.')
@@ -208,8 +221,6 @@ router.post('/login', async function(req, res, next) {
 
             
           }
-
-          
         } else {
           console.log('error matching passwords.')
           error('Invalid password.')
@@ -530,75 +541,101 @@ router.get('/character=:id', authUser(), async function(req, res, next) {
 })
 
 // Loads character edit page
-router.get('/edit/character=:id', authUser(), async function(req, res, next) {
-  var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)})
+router.get('/edit/char=:char/user=:id', authUser('userId'), async function(req, res, next) {
+  var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
   var owner = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.user)})
-  var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
 
-  var isOwner = false
-  if(char.user.toString() == userSess.user.toString()) {
-    isOwner = true
-  }
+  var races = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'races'})
+  var classes = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'classes'})
+  var backgrounds = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'backgrounds'})
+  var alignments = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'alignments'})
 
-  if(isOwner || userSess.access.includes('super') || userSess.access.includes('admin')) {
-    var races = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'races'})
-    var classes = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'classes'})
-    var backgrounds = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'backgrounds'})
-    var alignments = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'alignments'})
+  var gameSession = {activities:[]}
 
-    var gameSession = {activities:[]}
-
-    res.render('users/editCharacter', {
-      title: mainHeader,
-      fields: char,
-      owner: owner,
-      races: races,
-      classes: classes,
-      backgrounds: backgrounds,
-      alignments: alignments,
-      gameSession: gameSession,
-      user: req.session.user
-    })
-  } else {
-    req.session.error = 'You do not permission to edit that character.'
-    req.session.sub = true
-    res.redirect('/users/dashboard')
-
-  }
+  res.render('users/editCharacter', {
+    title: mainHeader,
+    fields: char,
+    owner: owner,
+    races: races,
+    classes: classes,
+    backgrounds: backgrounds,
+    alignments: alignments,
+    gameSession: gameSession,
+    user: req.session.user
+  })
 
   
 
 })
 
-router.post('/edit/character=:id', authUser(), async function(req, res, next) {
+router.post('/edit/char=:char/user=:id', authUser('userId'), async function(req, res, next) {
   var form = new formidable.IncomingForm()
   form.parse(req, async function(err, fields, files) {
-    var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: req.params.id})
-    res.send([fields, files])
+    var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
+    
+    if(fields.delImg) {
+      var s3User = await findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+      s3 = new aws.S3({apiVersion: '2006-03-01'});
+      aws.config.update({
+        accessKeyId: s3User.keyId,
+        secretAccessKey: s3User.accessKey,
+        region: 'us-east-2',
+        ACL:'public-read'
+      })
+      await ops.deleteFile(s3User, 'dnd-character-images', char.artWorkKey)
+      fields.artWork = null
+      fields.artWorkKey = null
+    } else {
+      if(files.artWork.size > 0) {
+        var s3User = await findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+        s3 = new aws.S3({apiVersion: '2006-03-01'});
+
+        var oldpath = fs.readFileSync(files.artWork.filepath)
+        var data = await ops.uploadFile(s3User, 'dnd-character-images', char._id + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
+        if(data) {
+            console.log('Character artwork uploaded.')
+            fields.artWork = data.Location
+            fields.artWorkKey = data.Key
+        }
+      }
+    }
+
+    await updateItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(char._id)}, {$set: fields})
+
+    console.log('Character Updated!')
+
+    req.session.sub = true
+    req.session.message
+
+    res.redirect('/users/dashboard/user=' + req.params.id)
+
   })
 })
 
-// Updates character info
-router.post('/edit/character=:id', authUser(), async function(req, res, next) {
-  var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)})
-  var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
+router.post('/delete/char=:char/user=:id', authUser('userId'), async function(req, res, next) {
+  var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
 
-  var isOwner = false
-  if(char.user.toString() == userSess.user.toString()) {
-    isOwner = true
-  }
-
-  if(isOwner  || userSess.access.includes('super') || userSess.access.includes('admin')) {
-    var form = new formidable.IncomingForm()
-    form.parse(req, async function (err, fields, files) {
-      await ops.updateItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)}, {$set: fields})
-      res.redirect('/users/character=' + req.params.id)
+  if(char.artWork) {
+    var s3User = await findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+    s3 = new aws.S3({apiVersion: '2006-03-01'});
+    aws.config.update({
+      accessKeyId: s3User.keyId,
+      secretAccessKey: s3User.accessKey,
+      region: 'us-east-2',
+      ACL:'public-read'
     })
-  } else {
-    req.session.error = 'You do not permission to edit that character.'
-    req.session.sub = true
-    res.redirect('/users/dashboard')
+    await ops.deleteFile(s3User, 'dnd-character-images', char.artWorkKey)
   }
+
+  await ops.deleteItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
+
+  console.log('Character Deleted')
+
+  req.session.sub = true
+  req.session.message = 'Character deleted!'
+
+  res.redirect('/users/dashboard/user=' + req.params.id)
+
 })
 
 // Shows characters by all users

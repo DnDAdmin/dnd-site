@@ -26,9 +26,6 @@ function authUser(access) {
                                 }
                             }
                             if(access == 'userId') {
-                                // var currUrl = req.params.id
-                                // var id = currUrl.substring(currUrl.length - 24)
-
                                 var id = req.params.id
 
                                 userSess = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
@@ -38,7 +35,9 @@ function authUser(access) {
                                     next()
                                 } else {
                                     console.log('User does not have access.')
-                                    res.send('Access Denied')
+                                    req.session.sub = true
+                                    req.session.error = 'You do not have access to that page.'
+                                    res.redirect('/users/dashboard')
                                 }
                             } else {
                                 if(user.access.includes(access)) {
@@ -71,6 +70,7 @@ function authUser(access) {
             }
         } else {
             console.log('No user.')
+            req.session.redir = req.protocol + '://' + req.get('host') + req.originalUrl
             req.session.user = null
             req.session.errors = 'You must be logged in to view that page.'
             req.session.sub = true
