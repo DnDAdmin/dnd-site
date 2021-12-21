@@ -103,7 +103,8 @@ router.post('/edit/event=:id', ops.authUser('admin'), async function(req, res, n
 
 
 router.get('/itemlist', ops.authUser('admin'), async function(req, res, next) {
-  items = await ops.findMany(req.db.db('dndgroup'), 'world-items', {})
+  var items = await ops.findMany(req.db.db('dndgroup'), 'world-items', {})
+  var types = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Item Types'})
 
   items.sort(function(a, b){
     if(parseInt(a.cost) < parseInt(b.cost)) { return -1; }
@@ -117,9 +118,16 @@ router.get('/itemlist', ops.authUser('admin'), async function(req, res, next) {
     return 0;
   });
 
+  types.types.sort(function(a, b){
+    if(a.class < b.class) { return -1; }
+    if(a.class > b.class) { return 1; }
+    return 0;
+  });
+
   res.render('secure/itemList', {
     title: mainHeader,
     items: items,
+    types: types.types,
     user: req.session.user
   })
 
@@ -127,18 +135,33 @@ router.get('/itemlist', ops.authUser('admin'), async function(req, res, next) {
 
 router.get('/newitem', ops.authUser('admin'), async function(req, res, next) {
   var types = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Item Types'})
+  var shops = await ops.findMany(req.db.db('dndgroup'), 'game_data', {shop: true})
 
   res.render('secure/newItem', {
     title: mainHeader,
     types: types.types,
+    shops: shops,
     user: req.session.user
   })
 })
 
 router.post('/additem', ops.authUser('admin'), async function(req, res, next) {
-  var form = new formidable.IncomingForm()
+  var form = new formidable.IncomingForm({multiples: true})
   form.parse(req, async function (err, fields, files) {
-    // res.send(fields)
+    var itemId = new ObjectId()
+    fields._id = itemId
+
+    if(fields.shop) {
+      if(Array.isArray(fields.shop)) {
+        for(var i = 0; i < fields.shop.length; i++) {
+          var shop = fields.shop[i]
+          await ops.updateItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(shop)}, {$push: {items: itemId}})
+        }
+      } else {
+        await ops.updateItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(fields.shop)}, {$push: {items: itemId}})
+      }
+    }
+    
     await ops.addToDatabase(req.db.db('dndgroup'), 'world-items', [fields])
     console.log('Item Added')
 
@@ -147,26 +170,48 @@ router.post('/additem', ops.authUser('admin'), async function(req, res, next) {
     req.session.fields = fields
 
     res.redirect('/users/dashboard')
+
+    // res.send(fields)
+
   })
 })
 
 router.get('/edit/item=:id', ops.authUser('admin'), async function(req, res, next) {
   var item = await ops.findItem(req.db.db('dndgroup'), 'world-items', {_id: ObjectId(req.params.id)})
   var types = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Item Types'})
+  var shops = await ops.findMany(req.db.db('dndgroup'), 'game_data', {shop: true})
 
   res.render('secure/editItem', {
     title: mainHeader,
     types: types.types,
     item: item,
+    shops: shops,
     user: req.session.user
   })
 
 })
 
 router.post('/edit/item=:id', ops.authUser('admin'), async function(req, res, next) {
-  var form = new formidable.IncomingForm()
+  var form = new formidable.IncomingForm({multiples: true})
   form.parse(req, async function (err, fields, files) {
     // res.send(fields)
+
+    if(fields.shop) {
+      if(Array.isArray(fields.shop)) {
+        for(var i = 0; i < fields.shop.length; i++) {
+          var shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(fields.shop[i])})
+          if(!shop.items.includes(req.params.id)) {
+            await ops.updateItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(shop._id)}, {$push: {items: req.params.id}})
+          }
+        }
+      } else {
+        var shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(fields.shop)})
+        if(!shop.items.includes(req.params.id)) {
+          await ops.updateItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(shop._id)}, {$push: {items: req.params.id}})
+        }
+      }
+    }
+
     await ops.updateItem(req.db.db('dndgroup'), 'world-items', {_id: ObjectId(req.params.id)}, {$set: fields})
     console.log('Item Updated')
 
@@ -295,6 +340,29 @@ router.post('/delete/shop=:id', ops.authUser('admin'), async function(req, res, 
   req.session.sub = true
 
   res.redirect('/users/dashboard')
+})
+
+
+router.get('/siteUpdate', ops.authUser('super'), function(req, res, next) {
+  res.render('secure/addSiteUpdate', {
+    title: mainHeader,
+    user: req.session.user
+  })
+})
+
+router.post('/siteupdate', ops.authUser('super'), async function(req, res, next) {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    fields.date = new Date(Date.now())
+    await ops.addToDatabase(req.db.db('dndgroup'), 'site_updates', [fields])
+    res.redirect('/siteupdates')
+  })
+})
+
+router.post('/delete/update=:id', ops.authUser('super'), async function(req, res, next) {
+  await ops.deleteItem(req.db.db('dndgroup'), 'site_updates', {_id: ObjectId(req.params.id)})
+  console.log('Update Deleted')
+  res.redirect('/siteupdates')
 })
 
 module.exports = router;

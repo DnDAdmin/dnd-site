@@ -281,6 +281,9 @@ block content
                                     a(href='/admin/itemlist') World Items
                                 p
                                     a(href='/admin/shoplist') Shops
+                                if user.access.includes('super')
+                                    p
+                                        a(href='/admin/siteUpdate') Add Site Update
                                             
                                     
       

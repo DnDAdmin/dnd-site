@@ -21,7 +21,7 @@ block content
                             select#type(name='type' tab-index=2 class='formTextInput')
                                 option(selected disabled value=null) --- Select Item Type ---
                                 for op in types
-                                    option(value=op)= op
+                                    option(value=op.name)= op.name
                         
                         div(class='formItem col-2 text-center')
                             label(class='') Sellable?
@@ -74,6 +74,12 @@ block content
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                         div(class='formItem col-md-6')
                             input#stealth(class='formTextInput' type='text' name='stealth' placeholder='Stealth')
+                        
+                        div(class='formItem col-12')
+                            p(class='formLable') Add to shops
+                            select(class='formSelInput' name='shop' multiple)
+                                for shop in shops
+                                    option(value=shop._id)= shop.name
 
                     div(class='row mx-auto mt-2')
                         div(class='col-12 text-right mt-2')

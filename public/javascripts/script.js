@@ -137,8 +137,6 @@ function updateInput() {
             } else {
                 input.value = ''
             }
-                 
-            
         }
         resolve()
     })

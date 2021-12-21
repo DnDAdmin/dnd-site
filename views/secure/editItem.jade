@@ -44,14 +44,14 @@ block content
                             select#type(name='type' tab-index=2 class='formTextInput')
                                 if item.type
                                     for op in types
-                                        if op == item.type
-                                            option(value=op selected)= op
+                                        if op.name == item.type
+                                            option(value=op.name selected)= op.name
                                         else
-                                            option(value=op)= op
+                                            option(value=op.name)= op.name
                                 else
                                     option(selected disabled value=null) --- Select Item Type ---
                                     for op in types
-                                        option(value=op)= op
+                                        option(value=op.name)= op.name
                         
                         div(class='formItem col-2 text-center')
                             label(class='') Sellable?
@@ -107,6 +107,15 @@ block content
                                             div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                         div(class='formItem col-md-6')
                             input#stealth(class='formTextInput' type='text' name='stealth' placeholder='Stealth' value=item.stealth)
+
+                        div(class='formItem col-12')
+                            p(class='formLable') Add to shops
+                            select#shop(class='formSelInput' name='shop' multiple)
+                                for shop in shops
+                                    if shop.items.includes(item._id.toString())
+                                        option(value=shop._id selected='true')= shop.name
+                                    else
+                                        option(value=shop._id)= shop.name
 
                     div(class='row mx-auto mt-2')
                         div(class='col-12 text-right mt-2')

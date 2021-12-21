@@ -33,4 +33,20 @@ router.get('/event/:id', async function(req, res, next) {
 
 })
 
+router.get('/siteupdates', async function(req, res, next) {
+  var updates = await ops.findMany(req.db.db('dndgroup'), 'site_updates', {})
+  updates.sort(function(a, b){
+    if(a.date > b.date) { return -1; }
+    if(a.date < b.date) { return 1; }
+    return 0;
+  });
+
+  res.render('siteUpdates', {
+    title: mainHeader,
+    updates: updates,
+    user: req.session.user
+  })
+
+})
+
 module.exports = router;

@@ -98,6 +98,16 @@
     text-decoration: underline;
     cursor: help;
   }
+  #updateLink {
+    position: absolute;
+    bottom: 0;
+    z-index: 9;
+    font-size: 8pt;
+    padding: 12px;
+  }
+  #updateLink a {
+    color: white;
+  }
 
 /* --VV-- CONFIRM PROMT --VV-- */
   .confirmPromt {
@@ -1503,7 +1513,7 @@
   }
   .shopItem.selected {
     background-color: #0a3350;
-    border: 2px solid white;
+    /* border: 2px solid white; */
     transition: .25s;
   }
   .shopItem:hover{
@@ -1567,8 +1577,8 @@
     left: -25px;
     top: 5px;
     z-index: 1;
-    height: 15px;
-    width: 15px;
+    height: 20px;
+    width: 20px;
     cursor: pointer;
     transition: .25s;
     filter: drop-shadow(0 0 4px black);
@@ -1578,18 +1588,23 @@
     transform: scale(1.3);
     transition: .25s;
   }
+  /* medium screen */
+  @media (min-width: 768px) {
+    .toggleInfoBut {
+      height: 15px;
+      width: 15px;
+    }
+  } 
   .itemDetails {
     position: absolute;
-    background-color: #222222;
+    background-color: #444444;
     font-size: 7pt;
     padding: 4px 12px 4px 8px;
     height: 100%;
     top: 0;
     right: 0;
     z-index: 1;
-    border-left: 2px solid #444444;
-    
-    transform: translateX(100%);
+    transform: translateX(101%);
     transition: .25s;
   }
   .itemDetails p {
@@ -1597,11 +1612,11 @@
   }
 
   .shopItem.toggled .itemDetails {
-    transform: translateX(0);
+    transform: translateX(2px);
     box-shadow: 0 0 4px black;
     transition: .25s;
   }
-  
+   
 
 /* Used to help visualize layout while coding */
   .red {

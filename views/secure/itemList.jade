@@ -17,11 +17,14 @@ block content
                 hr
                 div(class='row mx-auto')
                     -var currType
-                    for item in items
-                        if item.type != currType
-                            -currType = item.type
-                            h4
-                                strong= item.type
-                        div(class='col-12')
-                            p
-                                a(href='/admin/edit/item=' + item._id)= item.name
+                    for typ in types
+                        div(class='w-100')
+                            for item in items
+                                if item.type == typ.name
+                                    if item.type != currType
+                                        -currType = typ.name
+                                        h3= typ.name
+                                    div(class='col-12')
+                                        p
+                                            a(href='/admin/edit/item=' + item._id)= item.name
+                        

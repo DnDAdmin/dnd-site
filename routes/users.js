@@ -486,6 +486,7 @@ router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async f
   var character = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   var shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Test Shop'})
+  var types = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Item Types'})
 
   for(var i = 0; i < shop.items.length; i++) {
     var id = shop.items[i]
@@ -508,11 +509,17 @@ router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async f
     if(a.type > b.type) { return 1; }
     return 0;
   });
+  types.types.sort(function(a, b){
+    if(a.class < b.class) { return -1; }
+    if(a.class > b.class) { return 1; }
+    return 0;
+  });
 
   res.render('users/shop', {
     title: mainHeader,
     char: character,
     shop: shop,
+    types: types.types,
     user: user
   })
 
