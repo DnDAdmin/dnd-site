@@ -11,23 +11,27 @@ html
   body(style='padding: 8px;' align='center')
     div#body(style='overflow: hidden; border-radius: 8px;' align='center')
         div#header(style='' align='center')
-                a(href='https://www.nrjohnson.net/')
+                a(href='')
                     img(src='https://dndgroup-site-files.s3.us-east-2.amazonaws.com/Logo.png' style='margin-top: 10px; filter: drop-shadow(1px 3px 5px rgba(0,0,0,0.55)); width: 110px;')
             
             
-        div(style='width: 100%; margin-top: 32px; margin-bottom: 32px;' align='center')
+        div(class='siteCont pt-4' style='width: 75%; margin-top: 52px; margin-bottom: 32px;' align='center')
             div(style='width: 75%; text-align: start;' align='left')
-                p= 'Hello'
-                p A new Commission, titled 
-                    | , has been assigned to you! Click the link below to view it!
+                if user.name
+                    p= 'Hello ' + user.name + ','
+                p You have been invited to join the awesome DND group Mystery and Mischief! Click the link below to accept the invitation and fille out your profile!
+                p(class='text-right') -Mystery and Myschief Admin
                 br
                 div(style='width: 100%; text-align: center;')
-                    a(style="height: 35px; min-width: 70px; max-width: 70px; padding: 8px; background-color: #0C3B5D; color: #EBF0F5; border-radius: 8px; text-decoration: none;" align="center" href="https://www.nrjohnson.net/mybook/commission/")
-                        strong View Commission
+                    a(style="height: 35px; min-width: 70px; max-width: 70px; padding: 8px; background-color: #0C3B5D; color: #EBF0F5; border-radius: 2px; text-decoration: none;" align="center" href="https://www.nrjohnson.net/mybook/commission/")
+                        strong Accept Invite!
                 br
 
-        div#footer(style='posisiton: relative;' align='center')
-            p Hello!
+        div#footer(style='position: relative; bottom: unset; border-radius: 0 0 8px 8px; height: unset;' align='center')
+            p
+                a(href='') MysteryAndMyschief.com
+            p
+                a(href='') Contact Us
 
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous")

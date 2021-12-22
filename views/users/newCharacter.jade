@@ -126,7 +126,7 @@ block content
                                         option(value=race)= race
                         div(class='w-100')
                             div(class='row mx-auto')
-                                div(class='formItem col-9 col-md-8 col-lg-10 pl-0')
+                                div(class='formItem col-8 col-lg-10 pl-0')
                                     p(class='formLabel') Class:  
                                         a(href='https://www.wargamer.com/dnd/classes' target='_blank' data-tip='View Info on Classes' style='color: white;')
                                             svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
@@ -144,7 +144,7 @@ block content
                                             option(selected disabled value=null) --- Select Class ---
                                             for clas in classes.baseClasses
                                                 option(value=clas.name)= clas.name
-                                div(class='formItem col-2 text-center')
+                                div(class='formItem col-4 col-lg-2 text-center')
                                     label(class='') Subclass?
                                         input#isSub(type='checkbox' onchange='loadSubclass(this)' checked=false)
                                         div
@@ -237,7 +237,7 @@ block content
                             input#flaws(style='display: none;' name='flaws' type='text' value=fields.flaws)
                 
                 div(class='row')
-                    div(class='formItem col-4 col-md-3 col-lg-2')                    
+                    div(class='formItem col-6 col-md-3 col-lg-2')                    
                         label(class='formLabel w-100' style='white-space: nowrap;') Strength:
                             span
                             input#strength(class='formTextInput countable countPool' type='number' name='strength')
@@ -245,7 +245,7 @@ block content
                                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
                                 div(class='col-6 px-0 text-center countNum') 10
                                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-4 col-md-3 col-lg-2')
+                    div(class='formItem col-6 col-md-3 col-lg-2')
                         label(class='formLabel w-100' style='white-space: nowrap;') Dexterity:
                             span
                             input#dexterity(class='formTextInput countable countPool' type='number' name='dexterity')
@@ -253,7 +253,7 @@ block content
                                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
                                 div(class='col-6 px-0 text-center countNum') 10
                                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-4 col-md-3 col-lg-2')
+                    div(class='formItem col-6 col-md-3 col-lg-2')
                         label(class='formLabel w-100' style='white-space: nowrap;') Constitution:
                             span
                             input#constitution(class='formTextInput countable countPool' type='number' name='constitution')
@@ -261,7 +261,7 @@ block content
                                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
                                 div(class='col-6 px-0 text-center countNum') 10
                                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-4 col-md-3 col-lg-2')
+                    div(class='formItem col-6 col-md-3 col-lg-2')
                         label(class='formLabel w-100' style='white-space: nowrap;') Intelligence:
                             span
                             input#intelligence(class='formTextInput countable countPool' type='number' name='intelligence')
@@ -269,7 +269,7 @@ block content
                                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
                                 div(class='col-6 px-0 text-center countNum') 10
                                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-4 col-md-3 col-lg-2')
+                    div(class='formItem col-6 col-md-3 col-lg-2')
                         label(class='formLabel w-100' style='white-space: nowrap;') Wisdom:
                             span
                             input#wisdom(class='formTextInput countable countPool' type='number' name='wisdom')
@@ -277,7 +277,7 @@ block content
                                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
                                 div(class='col-6 px-0 text-center countNum') 10
                                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-4 col-md-3 col-lg-2')
+                    div(class='formItem col-6 col-md-3 col-lg-2')
                         label(class='formLabel w-100' style='white-space: nowrap;') Charisma:
                             span
                             input#charisma(class='formTextInput countable countPool' type='number' name='charisma')
@@ -292,7 +292,7 @@ block content
                             span#points 20
                 
                 div(class='row')
-                    div(class='formItem col-4 col-md-3 col-lg-2')
+                    div(class='formItem col-6 col-md-3 col-lg-2')
                         label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
                             input#proficiencyBonus(class='formTextInput countable' type='number' name='proficiencyBonus')
                             div(class='countVal row mx-auto')

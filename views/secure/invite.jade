@@ -13,15 +13,21 @@ block head
 
 block content
     div(class='row mt-5')
-        form#inviteForm(class='col-11 col-md-6 mx-auto' name='invitation' action='/sendinvite' method="POST" enctype="multipart/form-data")
+        form#inviteForm(class='col-11 col-md-6 mx-auto' name='invitation' action='/admin/invite' method="POST" enctype="multipart/form-data")
             div(class='siteCont')
                 h2(class='text-center') New Member Invitation
                 input#name(class='formTextInput' type='text' name='name' placeholder='Name (optional)')
                 input#email(class='formTextInput mt-2' type='text' data-req='true' name='email' placeholder='Email Address')
+                div(class='w-100 formItem')
+                    p(class='formLabel') User Access
+                    select#access(name="access" multiple class='formSelInput')
+                        for acc in access
+                            option(value=acc)= acc
                 
                 div(class='w-100 text-right mt-2')
-                    button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                    button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDateBase(); return false;")
                         div(class='buttonText')
+                            img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
                             p#saveText() Send
             div(class='mt-2')
                 ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
@@ -30,10 +36,6 @@ block content
       
     
     script.
-        var info = {}
-        var orig = {}
-        var img
-        var origImg
         var form = document.querySelector('form')
 
         form.addEventListener('submit', e => {
@@ -41,22 +43,24 @@ block content
         });
 
 
-        async function updateDataBase() {
-            await checkForErrors(false)
-            document.getElementById('passForm').submit()
-        }
+        async function updateDateBase() {
+            var saveText = document.getElementById('saveText')
+            var gif = document.getElementById('loadingGif')            
 
-        function togglePass(show) {
-            var passCont = document.getElementById('newPass')
-            var passBut = document.getElementById('passBut')
-            var fields = passCont.children
-            if(show) {
-                passCont.style.display = 'block'
-                passBut.classList.remove('saveButtonVisible')
+            var errors = await checkForErrors(false, 'users')
+            if(errors) {
+                alert(errors)
             } else {
-                passCont.style.display = 'none'
-                passBut.classList.add('saveButtonVisible')
-                fields[0].value = ''
-                fields[1].value = ''
+                var access = document.getElementById('access')
+                access.classList.remove('error')
+                if(access.value) {
+                    gif.style.display = 'block'
+                    saveText.style.display = 'none'
+                    
+                    document.getElementById('inviteForm').submit()
+                } else {
+                    access.classList.add('error')
+                    alert('Access required')
+                }
             }
         }

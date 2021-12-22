@@ -141,12 +141,12 @@
   }
   .confirmTxtMain {
     text-align: center;
-    font-size: 18pt;
+    font-size: 3vmin;
     margin: 0;
   }
   .confirmTxtSub {
     text-align: center;
-    font-size: 8pt;
+    font-size: 2vmin;
     margin: 0;
   }
 
@@ -404,7 +404,7 @@
       font-size: 4vmin;
       white-space: nowrap;
     }
-    #mobUserIcon p {
+    #mobUserIcon .mobUserName {
       position: absolute;
       top: 50%;
       left: 52px;
@@ -523,7 +523,7 @@
     background-color: #444444;
     position: absolute;
     bottom: 0;
-    height: 120px;
+    height: 150px;
     width: 100%;
     left: 0;
     padding: 12px;
@@ -743,7 +743,10 @@
   .formSelInput {
     width: 100%;
     border-radius: 2px;
-    border: 2px solid #0C3B5D;
+    border: 2px solid rgba(255, 255, 255, 0.856);
+    background-color: #444444;
+    padding: 0;
+    color: white;
     cursor: pointer;
     box-shadow: 0 0 2px rgba(0,0,0,0);
     transition: .25s;

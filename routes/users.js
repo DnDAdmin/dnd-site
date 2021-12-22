@@ -267,6 +267,22 @@ router.get('/logout', async function(req, res, next) {
   }
 })
 
+
+// Form for when a user first accepts site invitation
+router.get('/firstform/user=:id', async function(req, res, next) {
+  // Add key and check to url!
+  var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+  res.render('users/firstUserForm', {
+    title: mainHeader,
+    user: user
+  })
+})
+
+// Final new user form submission
+router.post('/newuser/user=:id', async function(req, res, next) {
+  
+})
+
 // ------ Pages ------
 
 // Dashboard
@@ -339,7 +355,7 @@ router.post('/updateprofile/:id', ops.authUser('userId'), async function(req, re
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
       var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-
+      
       for(var i = 0; i < Object.keys(fields).length; i++) {
           var item = fields[Object.keys(fields)[i]]
           var key = Object.keys(fields)[i]
@@ -351,8 +367,8 @@ router.post('/updateprofile/:id', ops.authUser('userId'), async function(req, re
 
       if(files.profileImage) {
           var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
-          var oldpath = fs.readFileSync(files.profileImage.path)
-          var data = await ops.uploadFile(s3User, 'dndgroup-user-images', user._id + '-profileImage' + path.extname(files.profileImage.name), oldpath, 'public-read')
+          var oldpath = fs.readFileSync(files.profileImage.filepath)
+          var data = await ops.uploadFile(s3User, 'dndgroup-user-images', user._id + '-profileImage' + path.extname(files.profileImage.originalFilename), oldpath, 'public-read')
           if(data) {
               console.log('Profile image uploaded.')
               user.profileImage = data.Location
@@ -524,7 +540,6 @@ router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async f
   })
 
 })
-
 
 // Loads character page
 router.get('/character=:id', authUser(), async function(req, res, next) {

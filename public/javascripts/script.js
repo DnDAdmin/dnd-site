@@ -350,8 +350,14 @@ function checkForErrors(exmpt, col) {
                     errors.push('Name must be at least three characters')
                 } else {
                     if(exmpt) {
-                        if(exmpt.field == 'name') {
+                        if(exmpt.field.includes('name')) {
                             var taken = await compDB('dndgroup', col, 'name', name.value, exmpt.id)
+                            if(taken) {
+                                name.classList.add('error')
+                                errors.push('Name already in use')
+                            }
+                        } else {
+                            var taken = await compDB('dndgroup', col, 'name', name.value)
                             if(taken) {
                                 name.classList.add('error')
                                 errors.push('Usename already in use')
@@ -403,8 +409,14 @@ function checkForErrors(exmpt, col) {
                         errors.push('Username must be at least three characters')
                     } else {
                         if(exmpt) {
-                            if(exmpt.field == 'userName') {
+                            if(exmpt.field.includes('userName')) {
                                 var taken = await compDB('dndgroup', col, 'userName', userName.value, exmpt.id)
+                                if(taken) {
+                                    userName.classList.add('error')
+                                    errors.push('Usename already in use')
+                                }
+                            } else {
+                                var taken = await compDB('dndgroup', col, 'userName', userName.value)
                                 if(taken) {
                                     userName.classList.add('error')
                                     errors.push('Usename already in use')
@@ -429,23 +441,30 @@ function checkForErrors(exmpt, col) {
                     email.classList.add('error')
                     errors.push('Email required')
                 } else {
+                    
                     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     if(!re.test(String(email.value).toLowerCase())) {
                         email.classList.add('error')
                         errors.push('Email address invalid')
                     } else {
                         if(exmpt) {
-                            if(exmpt.field == 'emal') {
+                            if(exmpt.field.includes('email')) {
                                 var taken = await compDB('dndgroup', col, 'email', email.value, exmpt.id)
                                 if(taken) {
                                     userName.classList.add('error')
+                                    errors.push('Email already in use')
+                                }
+                            } else {
+                                var taken = await compDB('dndgroup', col, 'email', email.value)
+                                if(taken) {
+                                    email.classList.add('error')
                                     errors.push('Email already in use')
                                 }
                             }
                         } else {
                             var taken = await compDB('dndgroup', col, 'email', email.value)
                             if(taken) {
-                                userName.classList.add('error')
+                                email.classList.add('error')
                                 errors.push('Email already in use')
                             }
                         }
@@ -453,7 +472,6 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
-        
         if(selects.length > 0) {
             for(var i = 0; i < selects.length; i++) {
                 sel = selects[i]
@@ -499,14 +517,14 @@ function checkForErrors(exmpt, col) {
                     }
                 } else {
                     if(file.files.length > 0) {
-                        if(file.files[0].size > 1000000) {
+                        if(file.files[0].size > 3000000) {
                             fileCont.classList.add('error')
-                            errors.push('Filesize cannot excede 1mb')
+                            errors.push('Filesize cannot excede 3mb')
                         } else {
                             if(file.getAttribute('data-type') == 'image') {
-                                if(file.files[0].type != 'image/jpg' && file.files[0].type != 'image/jpeg' && file.files[0].type != 'image/png') {
+                                if(file.files[0].type != 'image/jpg' && file.files[0].type != 'image/jpeg' && file.files[0].type != 'image/png' && file.files[0].type != 'image/gif') {
                                     fileCont.classList.add('error')
-                                    errors.push('Image must be a JPEG or PNG')
+                                    errors.push('File must be a JPEG, PNG or GIF')
                                 }
                             }
                         }
@@ -553,7 +571,6 @@ function checkForErrors(exmpt, col) {
         }
 
         if(bio) {
-            alert(bio.value.length)
             bio.classList.remove('error')
             if(bio.value.length < 1) {
                 if(bio.getAttribute('data-req') == 'true') {
@@ -572,7 +589,7 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
-
+        
         if(errors.length > 0) {
             resolve(errors)
         } else {

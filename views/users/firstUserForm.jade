@@ -1,0 +1,154 @@
+extends ../layout
+
+block head
+  title= title + 'New User'
+
+  style.
+    .formNote {
+        font-size: 8pt;
+    }
+
+block content
+    div(class='row mt-5')
+        div(class='col-11 col-md-8 mx-auto')
+            div(class='siteCont')
+                h3(class='text-center') New User Form
+                form#newUserForm(action='/users/newuser/user=' + user._id method='POST' enctype="multipart/form-data")
+                    div(class='formItem')
+                        p(class='formLabel') Name:
+                        input#name(name='name' type='text' class='formTextInput' data-req='true' placeholder='Please enter your name' value=user.name)
+                        p(class='formNote')
+                            span(style='color: red;') *
+                            | Note: once submited, your name will only be able to be changed by a site admin.
+                    
+                    div(class='formItem')
+                        p(class='formLabel') Email:
+                        input#email(name='email' type='text' class='formTextInput' data-req='true' placeholder='Please enter your email' value=user.email)
+
+                    div(class='formItem')
+                        p(class='formLabel') Username:
+                        input#userName(name='userName' type='text' class='formTextInput' data-req='true' placeholder='Please enter your Username')
+                    
+                    div(class='formItem')
+                        p(class='formLabel mb-1') Profile Image:
+                            span(style='font-size: 9pt; color: white; opacity: .5;')  (Optional)
+                        div(style='height: 80px; width: 80px; position: relative;')
+                            button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeNewImage()' style='display: none;') X
+                            label(class='w-100 h-100')
+                                input#profileImageSelect(type='file' name='profileImage' class='d-none file' data-type='image' onchange='getImageInfo(this)')
+                                div#profileImageCont(class='profileImageCont imageEdit h-100 w-100' )
+                                    p#profileImageLetter(class='profileImageLetter' style='font-size: 10pt;') Image
+                                    img#profileImage(src=null class='profileImage' style='display: none;')
+                                    svg(xmlns="http://www.w3.org/2000/svg" class="bi bi-camera" viewBox="0 0 16 16")
+                                        path(style='color: white;' d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z")
+                                        path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
+                        p(class='formNote mt-1') Filetypes include JPEG, PNG or GIF
+
+                    div(class='formItem')
+                        p(class='formLabel') Bio:
+                            span(style='font-size: 9pt; color: white; opacity: .5;')  (Optional)
+                        input#bio(name='bio' type='text' class='formTextInput' placeholder='Something fun!')
+                    
+                    div(class='formItem')
+                        p(class='formLabel') Password:
+                        input#pass1(class='formTextInput' type='password' data-req='true' name='pass1' placeholder='Password')
+                        input#password(class='formTextInput mt-2' type='password' data-req='true' name='password' placeholder='Confirm Password')
+
+                    div(class='w-100 text-right mt-3')
+                        button#formButton(class='buttonMain button great w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                            div(class='buttonText')
+                                p#saveText() Save
+            div(class='mt-2')
+                ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
+    script.
+        var info = {}
+        var orig = {}
+        var img
+        var origImg
+        var form = document.querySelector('form')
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+        });
+
+        function getImageInfo(files) {
+            var button = document.getElementById('saveButton')
+            var file = files.files[0];
+            var imgReader = new FileReader();
+            var proImg =  document.getElementById('profileImage')
+
+            imgReader.onloadend = function() {
+                
+                if(!img) {
+                    origImg = proImg.src
+                }
+                img = file
+
+                document.getElementById('removeImgBut').style.display = 'block'
+                proImg.style.display = 'block'
+                proImg.src = imgReader.result
+                imgData = imgReader.result
+
+                button.classList.add('saveButtonVisible')
+
+                checkFields()
+            }
+            imgReader.readAsDataURL(file);
+        }
+
+        function removeNewImage() {
+            var button = document.getElementById('saveButton')
+            var proImg =  document.getElementById('profileImage')
+            var imgCont =  document.getElementById('profileImageCont')
+            var file = document.getElementById('profileImageSelect')
+
+            if(proImg.getAttribute('data-orig')) {
+                proImg.src = proImg.getAttribute('data-orig')
+            } else {
+                proImg.style.display = 'none'
+                proImg.src = ''
+            }
+            
+            img = false
+            imgCont.classList.remove('error')
+            document.getElementById('removeImgBut').style.display = 'none'
+            file.value = null
+            checkFields()
+        }
+
+
+        async function updateDataBase() {
+            var currUrl = window.location.href
+            id = currUrl.substring(currUrl.length - 24)
+
+            var errors = await checkForErrors({id: id, field: ['name', 'email']}, 'users')
+            if(errors) {
+                var errText = document.getElementById('errorText')
+                errText.innerHTML = ''
+                for(var i = 0; i < errors.length; i++) {
+                    var err = errors[i]
+                    var li = document.createElement('LI')
+                    li.innerHTML = err
+                    errText.appendChild(li)
+                }
+                errText.style.display = 'block'
+            } else {
+                document.getElementById('passForm').submit()
+            }
+            
+        }
+
+        function togglePass(show) {
+            var passCont = document.getElementById('newPass')
+            var passBut = document.getElementById('passBut')
+            var fields = passCont.children
+            if(show) {
+                passCont.style.display = 'block'
+                passBut.classList.remove('saveButtonVisible')
+            } else {
+                passCont.style.display = 'none'
+                passBut.classList.add('saveButtonVisible')
+                fields[0].value = ''
+                fields[1].value = ''
+            }
+        }

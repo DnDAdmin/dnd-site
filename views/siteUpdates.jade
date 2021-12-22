@@ -49,8 +49,9 @@ block content
           if thisDate != date
               -date = thisDate
               -dateCount = dateCount + 1
-              h3= thisDate
               hr
+              p
+                strong= thisDate
           div(class='col-12 col-8 p-0 mt-2 mx-auto')
             if up.type == 'Feature'
               div(class='siteCont feature p-3')

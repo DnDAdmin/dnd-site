@@ -234,18 +234,19 @@ block content
                                                 path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
                             div(class='row mx-auto')
                                 for mem in allUsers
-                                    div(class='col-6 col-md-12 col-xl-6')
-                                        div(class='userId' onclick='window.location.href="/users/dashboard/user=' + mem._id + '"')
-                                            div(class='profileImageCont' style='height: 35px; width: 35px;')
-                                                if mem.profileImage
-                                                    img(class='profileImage' src=mem.profileImage)
-                                                else
-                                                    p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()
+                                    if !mem.invite
+                                        div(class='col-6 col-md-12 col-xl-6')
+                                            div(class='userId' onclick='window.location.href="/users/dashboard/user=' + mem._id + '"')
+                                                div(class='profileImageCont' style='height: 35px; width: 35px;')
+                                                    if mem.profileImage
+                                                        img(class='profileImage' src=mem.profileImage)
+                                                    else
+                                                        p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()
 
-                                            p(class='idUserName')= mem.userName
-                                                if mem.adminRole
-                                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill ml-1" viewBox="0 0 16 16" data-tip=mem.adminRole.name)
-                                                        path(class=mem.adminRole.class d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
+                                                p(class='idUserName')= mem.userName
+                                                    if mem.adminRole
+                                                        svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill ml-1" viewBox="0 0 16 16" data-tip=mem.adminRole.name)
+                                                            path(class=mem.adminRole.class d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
                                     
 
                 if loggedUser
@@ -411,7 +412,7 @@ block content
             var currUrl = window.location.href
             id = currUrl.substring(currUrl.length - 24)
             
-            var errors = await checkForErrors({id: id, field: 'userName'}, 'users')
+            var errors = await checkForErrors({id: id, field: ['name', 'email', 'userName']}, 'users')
         
             if(errors) {
                 var err = document.getElementById('errorText')
@@ -430,12 +431,12 @@ block content
                 const files = document.querySelector('[name=profileImage]').files;
 
                 const formData = new FormData();
-
-                formData.append('profileImage', img);
+                formData.append('profileImage', img, img.name);
                 for(var i = 0; i < Object.keys(info).length; i++) {
                     var item = info[Object.keys(info)[i]]
                     formData.append(Object.keys(info)[i], item)
                 }
+                
 
                 var updated = await updateDB('/users/updateprofile/' + id, formData)
             

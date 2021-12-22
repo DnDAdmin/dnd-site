@@ -5,6 +5,7 @@ var eml = require('../functions/emailOps')
 const formidable = require('formidable')
 const {ObjectId} = require('mongodb');
 const { authUser, findMany } = require('../functions/databaseOps');
+const { Formidable } = require('formidable');
 
 var mainHeader = 'Mystery and Mischief | '
 
@@ -26,24 +27,55 @@ router.post('/commstat/:id', ops.authUser('admin'), async function(req, res, nex
 
 // Loads New User Invite Form
 router.get('/invite', ops.authUser('admin'), async function(req, res, next) {
+  var access = await ops.findItem(req.db.db('dndgroup'), 'site_data', {name: 'User Permissions'})
   res.render('secure/invite', {
     title: mainHeader,
+    access: access.access,
     user: req.session.user
   })
 });
 
 // Send user invite email
-router.post('/invite', ops.authUser('admin'), async function(req, res, next) {
-  var emailURL = await eml.emailVar(req)
+router.post('/invite', async function(req, res, next) {
+  var form = new formidable.IncomingForm({multiples: true})
+  form.parse(req, async function(err, fields, files) {
 
-  var mailOptions = {
-    from: 'Lore Seekers Admin',
-    to: req.body.email,
-    subject: 'Membership Invitation',
-    html: ({path: emailURL + '/admin/invite/' + req.body.name})
-  };
+    if(!Array.isArray(fields.access)) {
+      fields.access = [fields.access]
+    }
 
-  await eml.sendMail(mailOptions)
+    fields.invite = true
+    var url = req.get('host')
+    res.send(url)
+
+    // var emailURL = await eml.emailVar(req)
+    // var mailOptions = {
+    //   from: 'NRJohnson Commissions <contact@nrjohnson.net>',
+    //   to: artist.email,
+    //   subject: 'New Commission!',
+    //   html: ({path: emailURL + '/email/newcomm/' + thisID})
+    // };
+    // await sendMail(mailOptions)
+
+    // res.send(fields)
+    // res.render('emails/invite', {
+    //   user: fields
+    // })
+  })
+
+  // var emailURL = await eml.emailVar(req)
+
+  // var mailOptions = {
+  //   from: 'Lore Seekers Admin',
+  //   to: req.body.email,
+  //   subject: 'Membership Invitation',
+  //   html: ({path: emailURL + '/admin/invite/' + req.body.name})
+  // };
+
+  // await eml.sendMail(mailOptions)
+  
+  
+  
 })
 
 // Loads new event form

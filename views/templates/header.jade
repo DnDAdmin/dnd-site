@@ -67,8 +67,12 @@ div#header(class='row w-100 mx-auto font-Merriweather')
                     if user
                         div#mobUserIcon(onclick='window.location.href="/users/dashboard"')
                             div(class='profileImageCont mobMen' style='height: 35px; width: 35px;')
-                                img(src=user.profileImage class='profileImage')
-                            p= user.userName
+                                if user.profileImage
+                                    img(src=user.profileImage class='profileImage')
+                                else
+                                    p#profileImageLetter(class='profileImageLetter' style='margin: -1px -1px;')= user.userName.substring(0,1).toUpperCase()
+                                    img#profileImage(src=null class='profileImage' style='display: none;')
+                            p(class='mobUserName')= user.userName
                                 //- &#x1f517;
                     else
                         button#formButton(class='buttonMain button w-100 col-md-4 mt-3' style='height: 40px' onclick='window.location.href="/users/login"')
