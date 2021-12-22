@@ -39,43 +39,32 @@ router.get('/invite', ops.authUser('admin'), async function(req, res, next) {
 router.post('/invite', async function(req, res, next) {
   var form = new formidable.IncomingForm({multiples: true})
   form.parse(req, async function(err, fields, files) {
+    var newId = new ObjectId()
 
     if(!Array.isArray(fields.access)) {
       fields.access = [fields.access]
     }
 
+    fields._id = newId
     fields.invite = true
-    var url = req.get('host')
-    res.send(url)
 
-    // var emailURL = await eml.emailVar(req)
-    // var mailOptions = {
-    //   from: 'NRJohnson Commissions <contact@nrjohnson.net>',
-    //   to: artist.email,
-    //   subject: 'New Commission!',
-    //   html: ({path: emailURL + '/email/newcomm/' + thisID})
-    // };
-    // await sendMail(mailOptions)
+    await ops.addToDatabase(req.db.db('dndgroup'), 'users', [fields])
 
-    // res.send(fields)
-    // res.render('emails/invite', {
-    //   user: fields
-    // })
-  })
+    var emailURL = await eml.emailVar(req)
+    var mailOptions = {
+      from: 'Mystery and Mischief <dndgroupsuper@gmail.com>',
+      to: fields.email,
+      subject: "You've been invited!",
+      html: ({path: emailURL + '/emails/invite/user=' + newId})
+    };
+    await eml.sendMail(mailOptions)
 
-  // var emailURL = await eml.emailVar(req)
+    req.session.sub = true
+    req.session.message = 'Invitation Sent!'
 
-  // var mailOptions = {
-  //   from: 'Lore Seekers Admin',
-  //   to: req.body.email,
-  //   subject: 'Membership Invitation',
-  //   html: ({path: emailURL + '/admin/invite/' + req.body.name})
-  // };
+    res.redirect('/users/dashboard')
 
-  // await eml.sendMail(mailOptions)
-  
-  
-  
+  })  
 })
 
 // Loads new event form

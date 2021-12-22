@@ -5,7 +5,7 @@ function emailVar(req) {
   return new Promise(resolve => {
     var emailURL
     if(req.get('Host').substring(0, 9) !== 'localhost') {
-      emailURL = 'https://dnd-group.herokuapp.com/'
+      emailURL = 'https://' + req.get('Host')
     } else {
       emailURL = 'http://localhost:8000'
     }
