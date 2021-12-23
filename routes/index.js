@@ -49,4 +49,14 @@ router.get('/siteupdates', async function(req, res, next) {
 
 })
 
+router.get('/error', function(req, res, next) {
+  var error = req.session.error
+  req.session.error = null
+
+  res.render('error', {
+    error: error
+  })
+
+})
+
 module.exports = router;

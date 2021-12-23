@@ -1,9 +1,15 @@
 extends layout
 
 block head
-  title= title + 'Error'
+  title= 'Errors'
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  div#error(class='mt-5')
+    h1= error.msg || message
+    p= error.subMsg || error.status
+    if user
+      if user.permissions.includes('super')
+        hr
+        p= error.url
+        p= error.trace
+    pre #{error.stack}

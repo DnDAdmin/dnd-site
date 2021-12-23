@@ -2,29 +2,102 @@ doctype html
 html
   head
     link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
-    link(rel='stylesheet', href='/stylesheets/style.css')
+
     link(rel="preconnect" href="https://fonts.gstatic.com")
     link(href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Overlock:wght@400;700&display=swap" rel="stylesheet")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
 
-  body(style='padding: 8px;' align='center')
-    div#body(style='overflow: hidden; border-radius: 8px;' align='center')
+    style.
+        .siteCont {
+            position: relative;
+            background-color: #444444;
+            border-radius: 2px;
+            padding: 18px;
+            color: white;
+        }
+        #header {
+            background-color: #444444;
+            height: 80px;
+        }
+        #footer {
+            background-color: #444444;
+            padding: 12px 0 8px 0;
+        }
+        a {
+            color: white;
+            text-decoration: underline;
+        }
+        a:hover {
+            color: white;
+            opacity: .5;
+        }
+        #invite {
+            border-radius: 2px;
+            padding: 12px 28px;
+            background-color: #0C3B5D;
+            color: #EBF0F5;
+            border-radius: 2px;
+            text-decoration: none;
+            border: 1px solid rgba(0,0,0,0);
+            transition: .25s;
+        }
+        #invite:hover {
+            border: 1px solid white;
+            opacity: 1;
+            transition: .25s;
+        }
+        #invite:focus {
+            outline: none;
+        }
+        #logo {
+            position: relative;
+            top: 0;
+            margin: 0;
+        }
+        #logo:hover {
+            opacity: 1;
+        }
+        hr {
+            margin: 18px auto 12px auto;
+            background-color: white;
+            width: 75%;
+        }
+        input {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+  body(style='padding: 8px; background-color: #222222; color: white;' align='center')
+    div#body(style='overflow: hidden; border-radius: 8px; background-color: #222222;' align='center')
         div#header(style='' align='center')
-                a(href='')
-                    img(src='https://dndgroup-site-files.s3.us-east-2.amazonaws.com/Logo.png' style='margin-top: 10px; filter: drop-shadow(1px 3px 5px rgba(0,0,0,0.55)); width: 110px;')
+            a#logo(href='')
+                img(src='https://dndgroup-site-files.s3.us-east-2.amazonaws.com/Logo.png' style='filter: drop-shadow(1px 3px 5px rgba(0,0,0,0.55)); width: 110px;')
             
             
         div(class='siteCont pt-4' style='width: 75%; margin-top: 52px; margin-bottom: 32px;' align='center')
-            div(style='width: 75%; text-align: start;' align='left')
-                p= user.name
-                p You have been invited to join the awesome DND group Mystery and Mischief! Click the link below to accept the invitation and fille out your profile!
+            div(style='width: 75%; text-align: start; color: white;' align='left')
+                p Hello
+                    if user
+                        &nbsp;
+                        =user.name
+                    |,
+                p You have been invited to join the awesome DND group Mystery and Mischief! Click the link below to accept the invitation and fill out your profile!
+                p We are exciting for you to join us and are looking forward to gaming with you!
                 p(class='text-right') -Mystery and Myschief Admin
-                br
-                div(style='width: 100%; text-align: center;')
-                    a(style="height: 35px; min-width: 70px; max-width: 70px; padding: 8px; background-color: #0C3B5D; color: #EBF0F5; border-radius: 2px; text-decoration: none;" align="center" href="https://www.nrjohnson.net/mybook/commission/")
-                        strong Accept Invite!
-                br
+                
+                hr(style='margin-bottom: 18px;' align='center')
+                div(style='width: 100%; text-align: center; position: relative;')
+                    form(action="/users/firstform/user=" + user._id method='GET' enctype="multipart/form-data")
+                        input(type='text' name='key' value=key style='display: none; opacity: 0; visibility: hidden;')
+                        button#invite(style="" align="center")
+                            strong Accept Invite!
+                hr(align='center')
+                span(style='font-size: 10pt;') Your Role(s):
+                    ul
+                        for role in user.access
+                            li= role
 
         div#footer(style='position: relative; bottom: unset; border-radius: 0 0 8px 8px; height: unset;' align='center')
             p

@@ -4,20 +4,11 @@ var ops = require('../functions/databaseOps')
 var eml = require('../functions/emailOps')
 const formidable = require('formidable')
 const {ObjectId} = require('mongodb');
-const { authUser, findMany } = require('../functions/databaseOps');
+const { authUser, findMany, updateItem } = require('../functions/databaseOps');
 const { Formidable } = require('formidable');
+const hash = require('password-hash')
 
 var mainHeader = 'Mystery and Mischief | '
-
-/* GET users listing. */
-router.get('/', ops.authUser('admin'), async function(req, res, next) {
-  var siteData = await ops.findItem(req.db.db('dndgroup'), 'data', {name: 'Site Data'})
-  res.render('secure/admin', {
-    title: mainHeader,
-    user: req.session.user,
-    data: siteData
-  })
-});
 
 // Old. Uneeded
 router.post('/commstat/:id', ops.authUser('admin'), async function(req, res, next) {
@@ -40,13 +31,15 @@ router.post('/invite', async function(req, res, next) {
   var form = new formidable.IncomingForm({multiples: true})
   form.parse(req, async function(err, fields, files) {
     var newId = new ObjectId()
+    var key = Math.floor(100000 + Math.random() * 900000).toString()
+    var hashedKey = hash.generate(key)
 
-    if(!Array.isArray(fields.access)) {
+    if(fields.access.length > 3) {
       fields.access = [fields.access]
     }
 
     fields._id = newId
-    fields.invite = true
+    fields.invite = hashedKey
 
     await ops.addToDatabase(req.db.db('dndgroup'), 'users', [fields])
 
@@ -55,7 +48,7 @@ router.post('/invite', async function(req, res, next) {
       from: 'Mystery and Mischief <dndgroupsuper@gmail.com>',
       to: fields.email,
       subject: "You've been invited!",
-      html: ({path: emailURL + '/emails/invite/user=' + newId})
+      html: ({path: emailURL + '/emails/invite/key=' + key + '/user=' + newId})
     };
     await eml.sendMail(mailOptions)
 
@@ -385,5 +378,30 @@ router.post('/delete/update=:id', ops.authUser('super'), async function(req, res
   console.log('Update Deleted')
   res.redirect('/siteupdates')
 })
+
+
+router.get('/site/errors', ops.authUser('super'), async function(req, res, next) {
+  var errors = await ops.findMany(req.db.db('dndgroup'), 'site_errors', {})
+
+  for(var i = 0; i < errors.length; i++) {
+    var err = errors[i]
+    if(!err.viewed) {
+      await updateItem(req.db.db('dndgroup'), 'site_errors', {_id: ObjectId(err._id)}, {$set: err})
+    }
+  }
+
+  errors.sort(function(a, b){
+    if(a.date > b.date) { return -1; }
+    if(a.date < b.date) { return 1; }
+    return 0;
+  });
+
+  res.render('secure/siteErrors', {
+    title: mainHeader,
+    errors: errors,
+    user: req.session.user
+  })
+})
+
 
 module.exports = router;

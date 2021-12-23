@@ -1,0 +1,30 @@
+extends ../layout
+
+block head
+  title= title + 'Site Errors'
+
+  style.
+
+block content
+    div(class='row mt-5')
+        div(class='col-12')
+            h3(class='text-center') Site Errors
+            -var date
+            -var dateCount = 0
+            for err in errors
+                -var thisDate = err.date.toLocaleString('default', {timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+                if date != thisDate
+                    -date = thisDate
+                    -dateCount += 1
+                    hr
+                    h3= thisDate
+                div(class='siteCont')
+                    h4= err.msg
+                    p Told to: 
+                        =err.subMsg
+                    p URL: 
+                        =err.url
+                    div(class='col-12')
+                        p= err.trace
+                
+                        

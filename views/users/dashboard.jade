@@ -141,6 +141,8 @@ block content
                     div(class='siteCont')
                         if user.access.includes('admin') || user.access.includes('super')
                             p#name(class='w-100 text-right' style='font-size: 1.75vmin;')=thisUser.name
+                                if user.error
+                                    span = error
 
                         div(class='mx-auto mt-3' style='height: 120px; width: 120px; position: relative;')
                             div#profileImageCont(class='profileImageCont h-100 w-100' )
@@ -285,6 +287,8 @@ block content
                                 if user.access.includes('super')
                                     p
                                         a(href='/admin/siteUpdate') Add Site Update
+                                    p
+                                        a(href='/admin/site/errors') Site Errors
                                             
                                     
       

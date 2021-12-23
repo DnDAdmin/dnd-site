@@ -5,6 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const hash = require('password-hash')
 var ops = require('../functions/databaseOps')
+var siteOps = require('../functions/siteOps')
 const {ObjectId} = require('mongodb');
 const { authUser, findItem, addToDatabase, updateItem } = require('../functions/databaseOps');
 var aws = require('aws-sdk')
@@ -80,8 +81,17 @@ router.get('/login', async function(req, res, next) {
 router.post('/login', async function(req, res, next) {
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
-      
       var user = await ops.findItem(req.db.db('dndgroup'), 'users', {$or: [{userName: fields.name}, {email: fields.name}]})
+      var errors = null
+      if(user.access.includes('super')) {
+        errors = await ops.findItem(req.db.db('dndgroup'), 'site_errors', {viewed: false})
+        if(errors) {
+          errors = true
+        } else {
+          errors = false
+        }
+      }
+      
 
       if(user) {
         if(hash.verify(fields.pass, user.password)) {
@@ -122,7 +132,8 @@ router.post('/login', async function(req, res, next) {
                 key: key,
                 index: index,
                 profileImage: user.profileImage,
-                permissions: user.access
+                permissions: user.access,
+                errors: errors
               }
             } else {
               var earliest = 0
@@ -144,7 +155,8 @@ router.post('/login', async function(req, res, next) {
                 key: key,
                 index: earliest,
                 profileImage: user.profileImage,
-                permissions: user.access
+                permissions: user.access,
+                errors: errors
               }
 
 
@@ -198,7 +210,8 @@ router.post('/login', async function(req, res, next) {
               key: key,
               index: 0,
               profileImage: user.profileImage,
-              permissions: user.access
+              permissions: user.access,
+              errors: errors
             }
 
             var dbUserSession = await ops.addToDatabase(req.db.db('dndgroup'), 'userSessions', [session])
@@ -270,12 +283,27 @@ router.get('/logout', async function(req, res, next) {
 
 // Form for when a user first accepts site invitation
 router.get('/firstform/user=:id', async function(req, res, next) {
-  // Add key and check to url!
-  var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-  res.render('users/firstUserForm', {
-    title: mainHeader,
-    user: user
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function(err, fields, files) {
+    // siteOps.error(req, res, "Error verifying user", new Error().stack, req.originalUrl, 'Please contact site admin.')
+    // var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+    // if(fields.key) {
+    //   if(hash.verify(fields.key, user.invite)) {
+    //     res.render('users/firstUserForm', {
+    //       title: mainHeader,
+    //       user: user
+    //     })
+    //   } else {
+    //     siteOps.error(req, res, "Error verifying user", new Error().stack, req.originalUrl, 'Please contact site admin.')
+    //   }
+      
+    // } else {
+    //   siteOps.error(req, res, "Error verifying user", new Error().stack, req.originalUrl, 'Please contact site admin.')
+    // }
+
+    
   })
+  
 })
 
 // Final new user form submission
