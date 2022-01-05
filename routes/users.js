@@ -288,7 +288,7 @@ router.get('/firstform/user=:id', async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   res.render('users/firstUserForm', {
     title: mainHeader,
-    user: user
+    newUser: user
   })
 })
 

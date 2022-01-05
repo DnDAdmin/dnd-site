@@ -13,17 +13,17 @@ block content
         div(class='col-11 col-md-8 mx-auto')
             div(class='siteCont')
                 h3(class='text-center') New User Form
-                form#newUserForm(action='/users/newuser/user=' + user._id method='POST' enctype="multipart/form-data")
+                form#newUserForm(action='/users/newuser/user=' + newUser._id method='POST' enctype="multipart/form-data")
                     div(class='formItem')
                         p(class='formLabel') Name:
-                        input#name(name='name' type='text' class='formTextInput' data-req='true' placeholder='Please enter your name' value=user.name)
+                        input#name(name='name' type='text' class='formTextInput' data-req='true' placeholder='Please enter your name' value=newUser.name)
                         p(class='formNote')
                             span(style='color: red;') *
-                            | Note: once submited, your name will only be able to be changed by a site admin.
+                            | Note: after submitting this form, your name will only be able to be changed by a site admin.
                     
                     div(class='formItem')
                         p(class='formLabel') Email:
-                        input#email(name='email' type='text' class='formTextInput' data-req='true' placeholder='Please enter your email' value=user.email)
+                        input#email(name='email' type='text' class='formTextInput' data-req='true' placeholder='Please enter your email' value=newUser.email)
 
                     div(class='formItem')
                         p(class='formLabel') Username:
