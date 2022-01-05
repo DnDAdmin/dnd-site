@@ -288,10 +288,15 @@ router.get('/firstform/user=:id', async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   if(user) {
     if(user.invite) {
-      res.render('users/firstUserForm', {
-        title: mainHeader,
-        newUser: user
-      })
+      if(!req.session.user) {
+        res.render('users/firstUserForm', {
+          title: mainHeader,
+          newUser: user
+        })
+      } else {
+        res.redirect('/users/dashboard/user=' + req.params.id)
+      }
+      
     } else {
       res.redirect('/users/dashboard')
     }
