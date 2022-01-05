@@ -11,11 +11,24 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var emailRouter = require('./routes/emails');
 
+var forceSsl = function (req, res, next) {
+  if(req.get('Host').substring(0, 9) !== 'localhost') {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(['https://', req.get('Host'), req.url].join(''));
+    }
+    return next();
+  } else {
+    return next();
+  }
+};
+
 var expressMongoDb = require('mongo-express-req');
 // var mongoURL = "mongodb+srv://superUser:Super399049!@cluster0.czxy3.mongodb.net/Reviews?retryWrites=true&w=majority"
 var mongoURL = 'mongodb+srv://dndgroupsuper:Mongo399049@cluster0.lufhz.mongodb.net/dndgroup?retryWrites=true&w=majority'
 
 var app = express();
+
+app.use(forceSsl);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -34,7 +34,7 @@ router.get('/event/:id', async function(req, res, next) {
 })
 
 router.get('/siteupdates', async function(req, res, next) {
-  var updates = await ops.findMany(req.db.db('dndgroup'), 'site_updates', {})
+  var updates = await ops.findMany(req.db.db('dndgroup'), 'site_updates', {draft: false})
   updates.sort(function(a, b){
     if(a.date > b.date) { return -1; }
     if(a.date < b.date) { return 1; }

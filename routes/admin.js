@@ -368,6 +368,7 @@ router.post('/siteupdate', ops.authUser('super'), async function(req, res, next)
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
     fields.date = new Date(Date.now())
+    fields.draft = false
     await ops.addToDatabase(req.db.db('dndgroup'), 'site_updates', [fields])
     res.redirect('/siteupdates')
   })
