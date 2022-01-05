@@ -6,7 +6,7 @@ const {ObjectId} = require('mongodb');
 
 var mainHeader = 'Mystery and Mischief | '
 
-router.get('/invite/key=:key/user=:id', async function(req, res, next) {
+router.get('/invite/user=:id', async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   res.render('emails/invite', {
     title: mainHeader,

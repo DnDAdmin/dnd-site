@@ -282,21 +282,13 @@ router.get('/logout', async function(req, res, next) {
 
 
 // Form for when a user first accepts site invitation
-router.get('/firstform/user=:id/:key', async function(req, res, next) {
+router.get('/firstform/user=:id', async function(req, res, next) {
   // siteOps.error(req, res, "Error verifying user", new Error().stack, req.originalUrl, 'Please contact site admin.')
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-  if(req.params.key) {
-    if(hash.verify(req.params.key, user.invite)) {
-      res.render('users/firstUserForm', {
-        title: mainHeader,
-        user: user
-      })
-    } else {
-      siteOps.error(req, res, "Error verifying user", new Error().stack, req.originalUrl, 'Please contact site admin.')
-    }
-  } else {
-    siteOps.error(req, res, "Error verifying user", new Error().stack, req.originalUrl, 'Please contact site admin.')
-  }
+  res.render('users/firstUserForm', {
+    title: mainHeader,
+    user: user
+  })
 })
 
 // Final new user form submission

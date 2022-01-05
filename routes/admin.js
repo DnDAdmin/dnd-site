@@ -31,15 +31,12 @@ router.post('/invite', async function(req, res, next) {
   var form = new formidable.IncomingForm({multiples: true})
   form.parse(req, async function(err, fields, files) {
     var newId = new ObjectId()
-    var key = Math.floor(100000 + Math.random() * 900000).toString()
-    var hashedKey = hash.generate(key)
 
     if(fields.access.length > 3) {
       fields.access = [fields.access]
     }
 
     fields._id = newId
-    fields.invite = hashedKey
 
     await ops.addToDatabase(req.db.db('dndgroup'), 'users', [fields])
 
@@ -48,7 +45,7 @@ router.post('/invite', async function(req, res, next) {
       from: 'Mystery and Mischief <admin@mysteryandmischief.com>',
       to: fields.email,
       subject: "You've been invited!",
-      html: ({path: emailURL + '/emails/invite/key=' + key + '/user=' + newId})
+      html: ({path: emailURL + '/emails/invite/user=' + newId})
     };
     await eml.sendMail(mailOptions)
 
