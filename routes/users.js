@@ -328,6 +328,15 @@ router.post('/newuser/user=:id', async function(req, res, next) {
 
     await ops.updateItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)}, {$set: fields})
     
+    var emailURL = await eml.emailVar(req)
+    var mailOptions = {
+      from: 'Mystery and Mischief <admin@mysteryandmischief.com>',
+      to: fields.email,
+      subject: "Welcome to Mystery and Mischief!",
+      html: ({path: emailURL + '/emails/welcome/user=' + req.params.id})
+    };
+    await eml.sendMail(mailOptions)
+
     res.redirect('/users/login')
 
   })

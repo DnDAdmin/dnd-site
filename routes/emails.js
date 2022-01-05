@@ -10,7 +10,14 @@ router.get('/invite/user=:id', async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   res.render('emails/invite', {
     title: mainHeader,
-    key: req.params.key,
+    user: user
+  })
+})
+
+router.get('/welcome/user=:id', async function(req, res, next) {
+  var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+  res.render('emails/welcome', {
+    title: mainHeader,
     user: user
   })
 })
