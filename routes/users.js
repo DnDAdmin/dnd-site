@@ -286,15 +286,46 @@ router.get('/logout', async function(req, res, next) {
 router.get('/firstform/user=:id', async function(req, res, next) {
   // siteOps.error(req, res, "Error verifying user", new Error().stack, req.originalUrl, 'Please contact site admin.')
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-  res.render('users/firstUserForm', {
-    title: mainHeader,
-    newUser: user
-  })
+  if(user) {
+    if(user.invite) {
+      res.render('users/firstUserForm', {
+        title: mainHeader,
+        newUser: user
+      })
+    } else {
+      res.redirect('/users/dashboard')
+    }
+  } else {
+    siteOps.error(req, res, "Error finding user", new Error().stack, req.originalUrl, 'Please contact site admin.')
+  }
 })
 
 // Final new user form submission
 router.post('/newuser/user=:id', async function(req, res, next) {
-  
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+
+    var password = hash.generate(fields.password)
+    fields.password = password
+    fields.invite = null
+
+    if(files.profileImage.size > 0) {
+      var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+      var oldpath = fs.readFileSync(files.profileImage.filepath)
+      var data = await ops.uploadFile(s3User, 'dndgroup-user-images', user._id + '-profileImage' + path.extname(files.profileImage.originalFilename), oldpath, 'public-read')
+      if(data) {
+          console.log('Profile image uploaded.')
+          fields.profileImage = data.Location
+          fields.profileImageKey = data.Key
+      }
+    }
+
+    await ops.updateItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)}, {$set: fields})
+    
+    res.redirect('/users/login')
+
+  })
 })
 
 // ------ Pages ------
@@ -441,8 +472,6 @@ router.post('/newpass/user=:id', authUser('userId'), async function(req, res, ne
       res.redirect('/users/newpass')
     }
   })
-  
-
 })
 
 

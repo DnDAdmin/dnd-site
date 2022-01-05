@@ -57,6 +57,7 @@ block content
                     div(class='w-100 text-right mt-3')
                         button#formButton(class='buttonMain button great w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
                             div(class='buttonText')
+                                img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
                                 p#saveText() Save
             div(class='mt-2')
                 ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
@@ -70,6 +71,9 @@ block content
         form.addEventListener('submit', e => {
             e.preventDefault();
         });
+
+        var imageInp = document.getElementById('profileImageSelect')
+        document.getElementById('newUserForm').addEventListener("load", getImageInfo(imageInp))
 
         function getImageInfo(files) {
             var button = document.getElementById('saveButton')
@@ -133,9 +137,12 @@ block content
                 }
                 errText.style.display = 'block'
             } else {
-                document.getElementById('passForm').submit()
+                var saveText = document.getElementById('saveText')
+                var gif = document.getElementById('loadingGif')            
+                gif.style.display = 'block'
+                saveText.style.display = 'none'
+                document.getElementById('newUserForm').submit()
             }
-            
         }
 
         function togglePass(show) {
