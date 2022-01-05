@@ -37,6 +37,7 @@ router.post('/invite', async function(req, res, next) {
     }
 
     fields._id = newId
+    fields.invite = true
 
     await ops.addToDatabase(req.db.db('dndgroup'), 'users', [fields])
 
