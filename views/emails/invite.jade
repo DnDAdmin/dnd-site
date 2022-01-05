@@ -7,6 +7,8 @@ html
     link(href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Overlock:wght@400;700&display=swap" rel="stylesheet")
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    
+    title Mystery and Mischief Invite
 
     style.
         .siteCont {
@@ -72,7 +74,7 @@ html
   body(style='padding: 8px; background-color: #222222; color: white;' align='center')
     div#body(style='overflow: hidden; border-radius: 8px; background-color: #222222;' align='center')
         div#header(style='' align='center')
-            a#logo(href='')
+            a#logo(href='https://www.mysteryandmischief.com')
                 img(src='https://dndgroup-site-files.s3.us-east-2.amazonaws.com/Logo.png' style='filter: drop-shadow(1px 3px 5px rgba(0,0,0,0.55)); width: 110px;')
             
             
@@ -89,21 +91,19 @@ html
                 
                 hr(style='margin-bottom: 18px;' align='center')
                 div(style='width: 100%; text-align: center; position: relative;')
-                    form(action="/users/firstform/user=" + user._id method='GET' enctype="multipart/form-data")
-                        input(type='text' name='key' value=key style='display: none; opacity: 0; visibility: hidden;')
-                        button#invite(style="" align="center")
-                            strong Accept Invite!
+                    a#invite(href="https://www.mysteryandmischief.com/users/firstform/user=" + user._id + '/' + key align="center")
+                        strong Accept Invite!
                 hr(align='center')
-                span(style='font-size: 10pt;') Your Role(s):
-                    ul
-                        for role in user.access
-                            li= role
+                //- span(style='font-size: 10pt;') Your Role(s):
+                //-     ul
+                //-         for role in user.access
+                //-             li= role
 
         div#footer(style='position: relative; bottom: unset; border-radius: 0 0 8px 8px; height: unset;' align='center')
             p
-                a(href='') MysteryAndMyschief.com
+                a(href='https://www.mysteryandmischief.com') MysteryAndMyschief.com
             p
-                a(href='') Contact Us
+                a(href='https://www.mysteryandmischief.com/forms/contact') Contact Us
 
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous")

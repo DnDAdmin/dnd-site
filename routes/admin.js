@@ -45,7 +45,7 @@ router.post('/invite', async function(req, res, next) {
 
     var emailURL = await eml.emailVar(req)
     var mailOptions = {
-      from: 'Mystery and Mischief <dndgroupsuper@gmail.com>',
+      from: 'Mystery and Mischief <admin@mysteryandmischief.com>',
       to: fields.email,
       subject: "You've been invited!",
       html: ({path: emailURL + '/emails/invite/key=' + key + '/user=' + newId})
