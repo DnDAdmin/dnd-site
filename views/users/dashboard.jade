@@ -95,10 +95,11 @@ block content
                                 input#profileImageSelect(type='file' name='profileImage' class='d-none file' data-type='image' onchange='getImageInfo(this)')
                                 div#profileImageCont(class='profileImageCont imageEdit h-100 w-100' )
                                     if thisUser.profileImage
-                                        img#profileImage(src=thisUser.profileImage class='profileImage' data-orig=thisUser.profileImage style='display: block;')
+                                        img#profileImageMain(src=thisUser.profileImage class='profileImage' data-orig=thisUser.profileImage style='display: block;')
                                     else
-                                        p#profileImageLetter(class='profileImageLetter' style='font-size: 48pt;')= thisUser.userName.substring(0,1).toUpperCase()
-                                        img#profileImage(src=null class='profileImage' style='display: none;')
+                                        div#profLetter(class='w-100 h-100 profileImageLetterCont')
+                                            p(class='profileImageLetter' style='font-size: 48pt;')= thisUser.userName.substring(0,1).toUpperCase()
+                                        img#profileImageMain(src=null class='profileImage' style='display: none;')
                                     svg(xmlns="http://www.w3.org/2000/svg" class="bi bi-camera" viewBox="0 0 16 16")
                                         path(style='color: white;' d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z")
                                         path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
@@ -149,7 +150,8 @@ block content
                                 if thisUser.profileImage
                                     img#profileImage(src=thisUser.profileImage class='profileImage' data-orig=thisUser.profileImage style='display: block;')
                                 else
-                                    p#profileImageLetter(class='profileImageLetter' style='font-size: 48pt;')= thisUser.userName.substring(0,1).toUpperCase()
+                                    div(class='w-100 h-100 profileImageLetterCont')
+                                        p#profileImageLetter(class='profileImageLetter' style='font-size: 48pt;')= thisUser.userName.substring(0,1).toUpperCase()
 
                                     
                         div#fields(class='w-100 mx-auto text-center mt-2 font-Alegreya')
@@ -243,7 +245,8 @@ block content
                                                     if mem.profileImage
                                                         img(class='profileImage' src=mem.profileImage)
                                                     else
-                                                        p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()
+                                                        div(class='w-100 h-100 profileImageLetterCont')
+                                                            p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()
 
                                                 p(class='idUserName')= mem.userName
                                                     if mem.adminRole
@@ -364,9 +367,10 @@ block content
 
         function getImageInfo(files) {
             var button = document.getElementById('saveButton')
+            var profLetter = document.getElementById('profLetter')
             var file = files.files[0];
             var imgReader = new FileReader();
-            var proImg =  document.getElementById('profileImage')
+            var proImg = document.getElementById('profileImageMain')
 
             imgReader.onloadend = function() {
                 
@@ -377,6 +381,7 @@ block content
 
                 document.getElementById('removeImgBut').style.display = 'block'
                 proImg.style.display = 'block'
+                profLetter.style.display = 'none'
                 proImg.src = imgReader.result
                 imgData = imgReader.result
 
@@ -389,7 +394,8 @@ block content
 
         function removeNewImage() {
             var button = document.getElementById('saveButton')
-            var proImg =  document.getElementById('profileImage')
+            var proImg =  document.getElementById('profileImageMain')
+            var profLetter = document.getElementById('profLetter')
             var imgCont =  document.getElementById('profileImageCont')
             var file = document.getElementById('profileImageSelect')
 
@@ -397,6 +403,7 @@ block content
                 proImg.src = proImg.getAttribute('data-orig')
             } else {
                 proImg.style.display = 'none'
+                profLetter.style.display = 'block'
                 proImg.src = ''
             }
             

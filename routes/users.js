@@ -312,6 +312,8 @@ router.post('/newuser/user=:id', async function(req, res, next) {
     var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
 
     var password = hash.generate(fields.password)
+    fields.pass1 = null
+    delete fields.pass1
     fields.password = password
     fields.invite = null
 

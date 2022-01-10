@@ -1267,11 +1267,11 @@
   .profileImageCont {
     position: relative;
     border-radius: 50%;
-    background-color: #0a3350;
+    /* background-color: #0a3350; */
     /* border: 2px solid #0C3B5D; */
     color: white;
     box-shadow: 0 0 4px black;
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: .25s;
   }
   .profileImageCont.mobMen {
@@ -1282,14 +1282,24 @@
     box-shadow: none;
     right: 0;
   }
+  .profileImageLetterCont {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    border-radius: 50%;
+    background-color: #0a3350;
+  }
   .profileImage {
     position: absolute;
 
-    width: 102%;
-    height: 102%;
+    width: 101%;
+    height: 101%;
     object-fit: cover;
 
+    z-index: 1;
+
     border:none;
+    border-radius: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

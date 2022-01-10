@@ -362,11 +362,24 @@ router.get('/siteUpdate', ops.authUser('super'), function(req, res, next) {
   })
 })
 
+router.get('/updatedrafts', authUser('super'), async function(req, res, next) {
+  var drafts = await ops.findMany(req.db.db('dndgroup'), 'site_updates', {draft: true})
+  res.render('secure/updateDrafts', {
+    title: mainHeader,
+    drafts: drafts,
+    user: req.session.user
+  })
+})
+
 router.post('/siteupdate', ops.authUser('super'), async function(req, res, next) {
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
+    if(fields.draft) {
+      fields.draft = true
+    } else {
+      fields.draft = false
+    }
     fields.date = new Date(Date.now())
-    fields.draft = false
     await ops.addToDatabase(req.db.db('dndgroup'), 'site_updates', [fields])
     res.redirect('/siteupdates')
   })

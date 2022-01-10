@@ -16,10 +16,17 @@ block content
         form#siteUpdateForm(class='col-11 col-md-8 mx-auto' name='invitation' action='/admin/siteupdate' method="POST" enctype="multipart/form-data")
             div(class='siteCont')
                 h2(class='text-center') New Site Update
+                p(class='text-right')
+                    a(href='/admin/updatedrafts') Drafts
                 
                 div(class='formItem')
                     div#editor-container(data-name='update' data-placeHolder='Say what you need to say.' data-tab=3 class='richEdit')
                     input#update(style='display: none;' data-req='true' type='text' name='update')
+                
+                div(class='formItem')
+                    label(class='') Draft?
+                        input#draft(type='checkbox' name='draft' checked=false)
+                        div
                 
                 div(class='mt-2')
                     p(class='formLabel') Update Type:

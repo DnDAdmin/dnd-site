@@ -30,7 +30,8 @@ if user
                 if user.profileImage
                     img(src=user.profileImage class='profileImage')
                 else
-                    p#profileImageLetter(class='profileImageLetter' style='margin: -1px -1px;')= user.userName.substring(0,1).toUpperCase()
+                    div(class='w-100 h-100 profileImageLetterCont')
+                        p#profileImageLetter(class='profileImageLetter' style='margin: -1px -1px;')= user.userName.substring(0,1).toUpperCase()
             
 else
     div(class='loginDeskBut d-none d-sm-block' style='')
