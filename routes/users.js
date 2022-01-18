@@ -5,6 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const hash = require('password-hash')
 var ops = require('../functions/databaseOps')
+var eml = require('../functions/emailOps')
 var siteOps = require('../functions/siteOps')
 const {ObjectId} = require('mongodb');
 const { authUser, findItem, addToDatabase, updateItem } = require('../functions/databaseOps');
@@ -317,6 +318,10 @@ router.post('/newuser/user=:id', async function(req, res, next) {
     fields.password = password
     fields.invite = null
 
+    if(user.access.length > 4) {
+      fields.access = [user.access]
+    }
+
     if(files.profileImage.size > 0) {
       var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
       var oldpath = fs.readFileSync(files.profileImage.filepath)
@@ -338,6 +343,9 @@ router.post('/newuser/user=:id', async function(req, res, next) {
       html: ({path: emailURL + '/emails/welcome/user=' + req.params.id})
     };
     await eml.sendMail(mailOptions)
+
+    req.session.sub = true
+    req.session.message = 'Thank you signing up! Please log in to start exploring.'
 
     res.redirect('/users/login')
 

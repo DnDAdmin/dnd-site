@@ -247,7 +247,11 @@ function setFields(){
     var boxes = document.getElementsByClassName('richEdit')
     for(var i = 0; i < boxes.length; i++) {
         var textBox = boxes[i].children[0]
-        var input = boxes[i].parentNode.children[3]
+
+        var name = boxes[i].getAttribute('data-name')
+
+        var input = document.getElementsByName(name)[0]
+        // var input = boxes[i].parentNode.children[3]
         textBox.innerHTML = input.value
     }
 }

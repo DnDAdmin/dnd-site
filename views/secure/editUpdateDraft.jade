@@ -1,0 +1,66 @@
+extends ../layout
+
+block head
+  title= title + 'New Invitation'
+
+  style.
+    .errorText {
+        position: relative;
+        color: red;
+        font-size: 11pt;
+        transition: .5s;
+    }
+
+block content
+    div(class='row mt-5')
+        form#siteUpdateForm(class='col-11 col-md-8 mx-auto' name='invitation' action='/admin/edit/draft=' + draft._id method="POST" enctype="multipart/form-data")
+            div(class='siteCont')
+                h2(class='text-center') Edit Draft
+                p(class='text-right')
+                    a(href='/admin/updatedrafts') Drafts
+                
+                div(class='formItem')
+                    div#editor-container(data-name='update' data-placeHolder='Say what you need to say.' data-tab=3 class='richEdit')
+                    input#update(style='display: none;' data-req='true' type='text' name='update' value=draft.update)
+                
+                div(class='formItem')
+                    label(class='') Draft?
+                        input#draft(type='checkbox' name='draft' checked=true)
+                        div
+                
+                div(class='mt-2')
+                    p(class='formLabel') Update Type:
+                    select#type(name='type' class='formSelInput')
+                        -var types = ['Bug Fix', 'Feature', 'General Update']
+                        if draft.type
+                            for typ in types
+                                if typ == draft.type
+                                    option(selected)= typ
+                                else
+                                    option= typ
+                        else
+                            option(disabled selected value=null) --- Select Update Type ---
+                            option Bug Fix
+                            option Feature
+                            option General Update
+
+                div(class='w-100 text-right mt-2')
+                    button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase(); return false;")
+                        div(class='buttonText')
+                            p#saveText() Save
+
+            div(class='mt-2')
+                ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
+                    
+        
+      
+    
+    script.
+        document.addEventListener("DOMContentLoaded", function() {
+            setFields()
+        })
+
+        async function updateDataBase() {
+            await updateInput()
+            document.getElementById('siteUpdateForm').submit()
+        }

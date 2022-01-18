@@ -8,7 +8,7 @@ html
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
     
-    title Mystery and Mischief Invite
+    title Welcome to Mystery and Mischief!
 
     style.
         .siteCont {
@@ -80,24 +80,18 @@ html
             
         div(class='siteCont pt-4' style='width: 75%; margin-top: 52px; margin-bottom: 32px;' align='center')
             div(style='width: 75%; text-align: start; color: white;' align='left')
-                p Hello
-                    if user
-                        &nbsp;
-                        =user.name
-                    |,
-                p You have been invited to join the awesome DND group Mystery and Mischief! Click the link below to accept the invitation and fill out your profile!
-                p We are exciting for you to join us and are looking forward to gaming with you!
-                p(class='text-right') -Mystery and Myschief Admin
+                //- if user.profileImage
+                //-     div(style='height: 80px; width: 80px; border-radius: 50%; overflow: hidden; margin: auto;' align='center')
+                //-         img(style='max-height: 82px; min-width: 82px; position: relative; transform-origin: 50%; left: 0;' max-height='82px' min-width='82px' src=user.profileImage)
+                p Welcome 
+                    strong=user.userName
+                    | !
                 
-                hr(style='margin-bottom: 18px;' align='center')
-                div(style='width: 100%; text-align: center; position: relative;')
-                    a#invite(href="https://www.mysteryandmischief.com/users/firstform/user=" + user._id align="center")
-                        strong Accept Invite!
-                hr(align='center')
-                //- span(style='font-size: 10pt;') Your Role(s):
-                //-     ul
-                //-         for role in user.access
-                //-             li= role
+                p Thank you for completing your user profile. Please feel free to explore the site. At this early stage there isn't much to do. 
+                    | However, as we have more game sessions and create charaters, lore and maps, that information will be added to site for you to explore. 
+                    | Until then, sit tight and we will see you at our next session!
+                
+                p -Mystery and Myschief Admin
 
         div#footer(style='position: relative; bottom: unset; border-radius: 0 0 8px 8px; height: unset;' align='center')
             p

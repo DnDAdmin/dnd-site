@@ -39,6 +39,14 @@ router.post('/invite', async function(req, res, next) {
     fields._id = newId
     fields.invite = true
 
+    if(fields.access.includes('admin')) {
+      fields.adminRole = {
+        name: 'Admin',
+        class: 'siteAdmin'
+      }
+    }
+
+
     await ops.addToDatabase(req.db.db('dndgroup'), 'users', [fields])
 
     var emailURL = await eml.emailVar(req)
@@ -371,6 +379,35 @@ router.get('/updatedrafts', authUser('super'), async function(req, res, next) {
   })
 })
 
+router.get('/edit/draft=:id', ops.authUser('super'), async function(req, res, next) {
+  var draft = await ops.findItem(req.db.db('dndgroup'), 'site_updates', {_id: ObjectId(req.params.id)})
+  res.render('secure/editUpdateDraft', {
+    title: mainHeader,
+    draft: draft,
+    user: req.session.user
+  })
+})
+
+router.post('/edit/draft=:id', ops.authUser('super'), async function(req, res, next) {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    if(fields.draft) {
+      fields.draft = true
+    } else {
+      fields.draft = false
+    }
+    fields.date = new Date(Date.now())
+    
+    await ops.updateItem(req.db.db('dndgroup'), 'site_updates', {_id: ObjectId(req.params.id)}, {$set: fields})
+    
+    if(fields.draft) {
+      res.redirect('/admin/updatedrafts')
+    } else {
+      res.redirect('/siteupdates')
+    }
+  })
+})
+
 router.post('/siteupdate', ops.authUser('super'), async function(req, res, next) {
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
@@ -380,8 +417,14 @@ router.post('/siteupdate', ops.authUser('super'), async function(req, res, next)
       fields.draft = false
     }
     fields.date = new Date(Date.now())
+    
     await ops.addToDatabase(req.db.db('dndgroup'), 'site_updates', [fields])
-    res.redirect('/siteupdates')
+    
+    if(fields.draft) {
+      res.redirect('/admin/updatedrafts')
+    } else {
+      res.redirect('/siteupdates')
+    }
   })
 })
 
