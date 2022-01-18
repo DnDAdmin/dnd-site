@@ -429,6 +429,9 @@ router.post('/updateprofile/:id', ops.authUser('userId'), async function(req, re
       if(files.profileImage) {
           var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
           var oldpath = fs.readFileSync(files.profileImage.filepath)
+          if(user.profileImageKey) {
+            await ops.deleteFile(s3User, 'dndgroup-user-images', user.profileImageKey)
+          }
           var data = await ops.uploadFile(s3User, 'dndgroup-user-images', user._id + '-profileImage' + path.extname(files.profileImage.originalFilename), oldpath, 'public-read')
           if(data) {
               console.log('Profile image uploaded.')

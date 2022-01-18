@@ -378,10 +378,15 @@ block content
                     origImg = proImg.src
                 }
                 img = file
-
+                
                 document.getElementById('removeImgBut').style.display = 'block'
                 proImg.style.display = 'block'
-                profLetter.style.display = 'none'
+                if(profLetter) {
+                    profLetter.style.display = 'none'
+                }
+                
+                
+                
                 proImg.src = imgReader.result
                 imgData = imgReader.result
 

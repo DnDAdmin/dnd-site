@@ -10,9 +10,6 @@ function authUser(access) {
         if(loggedUser) {
             var user = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(loggedUser.id)})
             if(user) {
-                console.log(loggedUser)
-                console.log(user)
-                console.log(hash.verify(loggedUser.key, user.sessions[loggedUser.index].key))
                 if(hash.verify(loggedUser.key, user.sessions[loggedUser.index].key)) {
                     if(user.access.includes('super')) {
                         console.log('Super-User Access')
