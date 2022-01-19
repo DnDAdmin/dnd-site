@@ -10,12 +10,6 @@ const hash = require('password-hash')
 
 var mainHeader = 'Mystery and Mischief | '
 
-// Old. Uneeded
-router.post('/commstat/:id', ops.authUser('admin'), async function(req, res, next) {
-  await ops.updateItem(req.db.db('nrjsites'), 'data', {name: 'Site Data'}, {$set: {commStatus: req.params.id}})
-  res.send('Commission Status Updated')
-})
-
 // Loads New User Invite Form
 router.get('/invite', ops.authUser('admin'), async function(req, res, next) {
   var access = await ops.findItem(req.db.db('dndgroup'), 'site_data', {name: 'User Permissions'})
@@ -458,5 +452,54 @@ router.get('/site/errors', ops.authUser('super'), async function(req, res, next)
   })
 })
 
+
+router.get('/newgamesess', ops.authUser('admin'), async function(req, res, next) {
+  var quests = await ops.findMany(req.db.db('dndgroup'), 'game_quests', {archived: false})
+  var users = await ops.findMany(req.db.db('dndgroup'), 'users', {invite: null})
+  res.render('secure/newGameSession', {
+    title: mainHeader,
+    quests: quests,
+    users: users,
+    user: req.session.user
+  })
+})
+
+router.post('/newgamesess', ops.authUser('admin'), async function(req, res, next) {
+  var form = new formidable.IncomingForm({multiples: true})
+  form.parse(req, async function (err, fields, files) {
+    var session = {
+      players: {}
+    }
+    
+
+    if(!Array.isArray(fields.participants)) {
+      session.players = [fields.participants]
+    }
+
+    for(var i = 0; i < fields.participants.length; i++) {
+      var player = fields.participants[i]
+      var playerInfo = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(player)})
+      session.players[player] = {
+        userName: playerInfo.userName
+      }
+    }
+
+    if(fields.isNewQuest) {
+      var newID = new ObjectId()
+      var newQuest = {
+        _id: newID,
+        name: fields.newQuest
+      }
+      await ops.addToDatabase(req.db.db('dndgroup'), 'game_quest', [newQuest])
+      session.quest = newID
+    } else {
+      session.quest = fields.quest
+    }
+
+    await ops.addToDatabase(req.db.db('dndgroup'), 'game_sessions', [session])
+
+    res.send(session)
+  })
+})
 
 module.exports = router;

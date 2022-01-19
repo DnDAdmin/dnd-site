@@ -5,11 +5,39 @@ block head
 
 block content
   div#error(class='mt-5')
-    h1= error.msg || message
-    p= error.subMsg || error.status
-    if user
-      if user.permissions.includes('super')
-        hr
-        p= error.url
-        p= error.trace
-    pre #{error.stack}
+    div(class='row')
+      div(class='col-10 mx-auto')
+        div(class='row')
+          div#imageCont(class='col-6')
+            if error.status
+              if error.status == 404
+                img(src='/images/lost.png' class='w-100')
+              else
+                img(src='/images/oops.png' class='w-100')
+            else
+              img(src='/images/oops.png' class='w-100')
+          div(class='col-6')
+            div(style='position: relative; top: 50%; transform: translateY(-50%);')
+              h1 Uh oh!
+              if error.status
+                if error.status == 404
+                  p Looks like you're lost!
+                  p The URL you are looking for doesn't exist.
+                else
+                  p Looks like I might have bungled something!
+              else
+                p Looks like I might have bungled something!
+              hr
+              h3= error.msg || message
+              p= error.subMsg || error.status
+
+
+
+      div(class='col-12')
+        br
+        br
+        if user
+          if user.permissions.includes('super')
+            p= error.url
+            p= error.trace
+        div #{error.stack}

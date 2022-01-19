@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressSession = require('express-session');
+var siteOps = require('./functions/siteOps')
 
 var indexRouter = require('./routes/index');
 var formsRouter = require('./routes/forms');
@@ -64,7 +65,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  err.url = req.protocol + '://' + req.get('host') + req.originalUrl
+  siteOps.saveSiteErr(req, err) // Saves the error in the database to be reviewed later.
   res.render('error', {
+    user: req.session.user,
     error: err
   });
 });

@@ -376,7 +376,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
   req.session.error = null
 
   if(thisUser._id.toString() == userSess.user.toString()) {
-    var allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {_id: {$not: {$eq: ObjectId(req.params.id)}}})
+    var allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {$and: [{_id: {$not: {$eq: ObjectId(req.params.id)}}}, {testUser: {$not: {$eq: true}}}]})
     
     var events = await ops.findMany(req.db.db('dndgroup'), 'events', {})
     events.sort(function(a, b){

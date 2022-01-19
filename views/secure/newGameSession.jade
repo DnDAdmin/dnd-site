@@ -1,0 +1,76 @@
+extends ../layout
+
+block head
+  title= title + 'New Session'
+
+  style.
+    .newQuestBut:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+block content
+    div(class='row mt-5')
+        div(class='col-11')
+            div(class='siteCont')
+                h3(class='text-center') New Session
+                form#form(name='newSession' action='/admin/newgamesess' method="POST" enctype="multipart/form-data")
+                    div(class='formItem')
+                        p(class='formLabel') Session Quest
+                        select#questSel(class='formTextInput' name='quest')
+                            option(disabled selected value=null) --- Select Quest ---
+                            for q in quests
+                                option(value=q._id)= q.name
+                        input#newQuest(type='text' name='newQuest' class='formTextInput d-none' placeholder='New Quest Name' value=null)
+                        input#isNewQuest(type='checkBox' name='isNewQuest' class='d-none' checked=false)
+                        p(class='text-right mt-1')
+                            span(class='newQuestBut' onclick='newQuest(this)') New Quest
+
+                    div(class='formItem ')
+                        p(class='formLabel') Participants
+                        select(class='formSelInput' name='participants' multiple)
+                            for pers in users
+                                if pers.userName != user.userName
+                                    option(selected value=pers._id)= pers.userName
+                                        |  (
+                                        = pers.name
+                                        | )
+                        p(class='formNote')
+                            span(style='color: red;') *
+                            | Note: If you don't see a user, please ensure they have responded to the invite email.
+
+
+                        //- div(class='row')
+                        //-     for pers in users
+                        //-         if pers.userName != user.userName
+                        //-             div(class='col-2')
+                        //-                 label
+                        //-                     span(class='mr-2')= pers.userName
+                        //-                     input#isSub(type='checkbox' name='player-' + pers.userName onchange='loadSubclass(this)' checked=false)
+                        //-                     span
+                                                
+
+                    div(class='row mx-auto mt-4')
+                        div(class='col-12 p-0 text-center mt-2')
+                            button#formButton(class='buttonMain button w-100 amazing' style='right: 0;' onclick="updateDataBase()")
+                                div(class='buttonText')
+                                    p#saveText() Start
+    script.
+        function newQuest(but) {
+            var sel = document.getElementById('questSel')
+            var newQ = document.getElementById('newQuest')
+            var check = document.getElementById('isNewQuest')
+            if(check.checked) {
+                check.checked = false
+                sel.classList.remove('d-none')
+                newQ.classList.add('d-none')
+                newQ.value = null
+                but.innerHTML = 'New Quest'
+            } else {
+                check.checked = true
+                sel.classList.add('d-none')
+                sel.selectedIndex = 0
+                newQ.classList.remove('d-none')
+                but.innerHTML = 'Cancel'
+            }
+            
+        }
