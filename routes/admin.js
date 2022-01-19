@@ -4,7 +4,7 @@ var ops = require('../functions/databaseOps')
 var eml = require('../functions/emailOps')
 const formidable = require('formidable')
 const {ObjectId} = require('mongodb');
-const { authUser, findMany, updateItem } = require('../functions/databaseOps');
+const { authUser, findMany, updateItem, findItem } = require('../functions/databaseOps');
 const { Formidable } = require('formidable');
 const hash = require('password-hash')
 
@@ -467,17 +467,28 @@ router.get('/newgamesess', ops.authUser('admin'), async function(req, res, next)
 router.post('/newgamesess', ops.authUser('admin'), async function(req, res, next) {
   var form = new formidable.IncomingForm({multiples: true})
   form.parse(req, async function (err, fields, files) {
-    var session = {
-      players: {}
-    }
+    var currUser = req.session.user
+    var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(currUser.id)})
+    var thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(userSess.user)})
     
+    var playerArray
+    var session = {
+      players: {
+        [thisUser._id]: {
+          userName: thisUser.userName
+        }
+      },
+      active: true
+    }
 
     if(!Array.isArray(fields.participants)) {
-      session.players = [fields.participants]
+      playerArray = [ fields.participants ]
+    } else {
+      playerArray = fields.participants
     }
 
-    for(var i = 0; i < fields.participants.length; i++) {
-      var player = fields.participants[i]
+    for(var i = 0; i < playerArray.length; i++) {
+      var player = playerArray[i]
       var playerInfo = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(player)})
       session.players[player] = {
         userName: playerInfo.userName
@@ -485,12 +496,14 @@ router.post('/newgamesess', ops.authUser('admin'), async function(req, res, next
     }
 
     if(fields.isNewQuest) {
+      console.log('New Quest')
       var newID = new ObjectId()
       var newQuest = {
         _id: newID,
-        name: fields.newQuest
+        name: fields.newQuest,
+        archived: false
       }
-      await ops.addToDatabase(req.db.db('dndgroup'), 'game_quest', [newQuest])
+      await ops.addToDatabase(req.db.db('dndgroup'), 'game_quests', [newQuest])
       session.quest = newID
     } else {
       session.quest = fields.quest

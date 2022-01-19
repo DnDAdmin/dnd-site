@@ -87,7 +87,7 @@ block content
                             input#name(type='text' class='m-0 editableText text-right pr-2' style='' spellcheck="false" onfocusin='setInfo(this)' oninput='updateInfo(this)' placeholder='Name' data-req='true' data-orig=thisUser.name value=thisUser.name)
                         else
                             div(class='text-right')
-                                p#name(style='margin-left: auto; font-size: 1.75vmin; width: 100px; white-space: nowrap; cursor: help;' data-tip='Your name can only be changed by a site admin')=thisUser.name
+                                p(style='margin-left: auto; font-size: 1.75vmin; width: 100px; white-space: nowrap; cursor: help;' data-tip='Your name can only be changed by a site admin')=thisUser.name
 
                         div(class='mx-auto mt-3' style='height: 120px; width: 120px; position: relative;')
                             button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeNewImage()' style='display: none;') X
@@ -173,12 +173,11 @@ block content
                                 path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                 path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                     if (loggedUser && gameSession)
-                        if gameSession.activities.includes('newCharacters')
-                            div(class='col-12 text-right')
-                                button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + thisUser._id + "'" data-tip='Add New Character')
-                                    div(class='buttonText w-100 h-100')
-                                        svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
-                                            path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
+                        div(class='col-12 text-right')
+                            button(class='buttonMain' style='height: 30px; width: 30px;' onclick="window.location.href='/users/newcharacter/user=" + thisUser._id + "'" data-tip='Add New Character')
+                                div(class='buttonText w-100 h-100')
+                                    svg(xmlns="http://www.w3.org/2000/svg" style='position: relative; top: -4px;' width="100%" height="100%" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16")
+                                        path(d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z")
                     else
                         if user.access.includes('super') || (user.access.includes('admin') && !thisUser.access.includes('super'))
                             div(class='col-12 text-right')
@@ -216,7 +215,7 @@ block content
         
         if loggedUser
             div#rightPanel(class='col-11 col-md-4 mx-auto p-0')  
-                if user.access.includes('admin') || user.access.includes('super')
+                if (user.access.includes('admin') || user.access.includes('super')) && !gameSession
                     div(class='col-12 mt-2 mt-md-0 mb-md-2 pl-md-0')
                         div(class='siteCont')
                             h3(class='titleText text-center') Game Session
@@ -224,6 +223,31 @@ block content
                                 button(class='buttonMain button amazing col-12' onclick='window.location.href="/admin/newgamesess"')
                                     div(class='buttonText')
                                         p Start Game Session
+                else
+                    if (user.access.includes('admin') || user.access.includes('super')) && gameSession
+                        div(class='col-12 mt-2 mt-md-0 mb-md-2 pl-md-0')
+                                div(class='siteCont')
+                                    h3(class='titleText text-center') Game Session
+                                    div#sessButton(class='text-center mt-2')
+                                        button(class='buttonMain button amazing col-12' onclick='window.location.href="/users/gamesession/user=' + thisUser._id + '"')
+                                            div(class='buttonText')
+                                                p Enter Game Session
+                                    div#sessButton(class='text-center mt-2')
+                                        button(class='buttonMain button cation col-12' onclick='window.location.href="/users/gamesession/user=' + thisUser._id + '"')
+                                            div(class='buttonText')
+                                                p End Game Session
+                        
+                    else 
+
+                        if(loggedUser && gameSession)
+                            div(class='col-12 mt-2 mt-md-0 mb-md-2 pl-md-0')
+                                div(class='siteCont')
+                                    h3(class='titleText text-center') Game Session
+                                    div#sessButton(class='text-center mt-2')
+                                        button(class='buttonMain button amazing col-12' onclick='window.location.href="/users/gamesession/user=' + thisUser._id + '"')
+                                            div(class='buttonText')
+                                                p Enter Game Session
+
                 if allUsers
                     div(class='col-12 mt-2 mt-md-0 pl-md-0')
                         div(class='siteCont')
@@ -384,9 +408,7 @@ block content
                 if(profLetter) {
                     profLetter.style.display = 'none'
                 }
-                
-                
-                
+
                 proImg.src = imgReader.result
                 imgData = imgReader.result
 
@@ -424,13 +446,14 @@ block content
             var saveBut = document.getElementById('saveButton')
             var saveText = document.getElementById('saveText')
             var gif = document.getElementById('loadingGif')
-
+            
             var currUrl = window.location.href
             id = currUrl.substring(currUrl.length - 24)
             
             var errors = await checkForErrors({id: id, field: ['name', 'email', 'userName']}, 'users')
-        
+            
             if(errors) {
+                
                 var err = document.getElementById('errorText')
                 err.innerHTML = ''
 
@@ -441,21 +464,27 @@ block content
                 }
                 err.style.display = 'block'
             } else {
+                
                 gif.style.display = 'block'
                 saveText.style.display = 'none'
 
                 const files = document.querySelector('[name=profileImage]').files;
-
+                
                 const formData = new FormData();
-                formData.append('profileImage', img, img.name);
+                
+                if(img) {
+                    formData.append('profileImage', img, img.name);
+                }
+                
+                
                 for(var i = 0; i < Object.keys(info).length; i++) {
                     var item = info[Object.keys(info)[i]]
                     formData.append(Object.keys(info)[i], item)
                 }
                 
-
+                
                 var updated = await updateDB('/users/updateprofile/' + id, formData)
-            
+                
                 if(updated) {
                     if(img) {
                         var profImages = document.getElementsByClassName('profileImage')

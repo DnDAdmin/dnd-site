@@ -1,0 +1,39 @@
+extends ../layout
+
+block head
+  title= title + 'Game Session'
+
+  style.
+    .charLink:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+block content
+  div(class='row mt-5')
+    div(class='col-12 col-md-8 mx-auto')
+      div(class='siteCont')
+        h3(class='text-center') Game Session
+        p
+            strong Quest: 
+                span(class='font-Cinzel')= quest.name
+        hr
+        if characters.length < 1
+            p It looks like you havn't created a character yet. You will need to create one to participate in the quest.
+            div(class='w-100 text-center mt-2')
+                button#formButton(class='buttonMain button great w-100 col-md-4' style='right: 0;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'")
+                    div(class='buttonText')
+                        p#saveText() Create New Character
+        else
+            if !session.players[user._id].character
+                select(name='character' class='formTextInput')
+                    option(selected diabled) --- Select Character ---
+                    for char in characters
+                        option(value=char._id)= char.name
+                p(class='text-right mt-1 charLink')
+                    span(onclick='window.location.href="/users/newcharacter/user=' + user._id + '"') New Character
+                div(class='w-100 text-center mt-2')
+                    button#formButton(class='buttonMain disabled button w-100 col-md-4' disabled style='right: 0;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'")
+                        div(class='buttonText')
+                            p#saveText() Select Character
+        hr

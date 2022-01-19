@@ -339,8 +339,9 @@ function checkForErrors(exmpt, col) {
         var pass1 = document.getElementById('pass1')
         var bio = document.getElementById('bio')
         errors = []
-
+        
         // Checks if items exist, then if they have content, then if they are required, then checks for potential format errors.
+        
         if(name) {
             name.classList.remove('error')
             if(name.value.length < 1) {
@@ -401,6 +402,7 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
+        
         if(userName) {
             userName.classList.remove('error')
             if(userName.getAttribute('data-req') == 'true') {
