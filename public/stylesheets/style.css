@@ -835,6 +835,9 @@
       border-radius: 0 0 2px 0;
       transform: rotate(35deg); */
     }
+    .checkBox.disabled::after {
+      border-color: #6e6e6e;
+    }
     /* small screen */
     @media (min-width: 768px) {
       label > input[type='checkbox'] + *::after {
@@ -962,8 +965,12 @@
       box-shadow: none;
     }
   .bi.bi-question-circle {
-    cursor: help;
+    cursor: pointer;
     margin-top: -4px;
+    border-radius: 50%;
+  }
+  .bi.bi-question-circle:hover {
+    background-color: #222222;
   }
 
   /* NUMBER INPUT */

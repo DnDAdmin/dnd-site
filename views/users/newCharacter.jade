@@ -146,8 +146,8 @@ block content
                                                 option(value=clas.name)= clas.name
                                 div(class='formItem col-4 col-lg-2 text-center')
                                     label(class='') Subclass?
-                                        input#isSub(type='checkbox' onchange='loadSubclass(this)' checked=false)
-                                        div
+                                        input#isSub(type='checkbox' onchange='loadSubclass(this)'  checked=false)
+                                        div(class='checkBox disabled' data-tip='Please select class before subclass')
                         
                         div#subClassMain(class='formItem w-100')
                             p(class='formLabel') Subclass:
@@ -527,7 +527,10 @@ block content
 
         function unCheckBox() {
             var box = document.getElementById("isSub")
+            var div = box.parentNode.children[1]
             box.checked = false
+            div.classList.remove('disabled')
+            div.setAttribute('data-tip', 'Add subclass?')
             loadSubclass(box)
         }
 
@@ -538,6 +541,9 @@ block content
             var subs = false
             if(value == '--- Select Class ---') {
                 box.checked = false
+                box.parentNode.children[1].classList.add('disabled')
+            } else {
+                box.parentNode.children[1].classList.remove('disabled')
             }
             if(box.checked) {
                 for(var i = 0; i < subItem.children[1].children.length; i++) {

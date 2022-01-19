@@ -226,16 +226,16 @@ block content
                 else
                     if (user.access.includes('admin') || user.access.includes('super')) && gameSession
                         div(class='col-12 mt-2 mt-md-0 mb-md-2 pl-md-0')
-                                div(class='siteCont')
-                                    h3(class='titleText text-center') Game Session
-                                    div#sessButton(class='text-center mt-2')
-                                        button(class='buttonMain button amazing col-12' onclick='window.location.href="/users/gamesession/user=' + thisUser._id + '"')
-                                            div(class='buttonText')
-                                                p Enter Game Session
-                                    div#sessButton(class='text-center mt-2')
-                                        button(class='buttonMain button cation col-12' onclick='window.location.href="/users/gamesession/user=' + thisUser._id + '"')
-                                            div(class='buttonText')
-                                                p End Game Session
+                            div(class='siteCont')
+                                h3(class='titleText text-center') Game Session
+                                div#sessButton(class='text-center mt-2')
+                                    button(class='buttonMain button amazing col-12' onclick='window.location.href="/users/gamesession/user=' + thisUser._id + '"')
+                                        div(class='buttonText')
+                                            p Enter Game Session
+                                form#endSessButton(class='text-center mt-2' method='POST' action='/admin/endgamesess' enctype="multipart/form-data")
+                                    button(class='buttonMain button cation col-12')
+                                        div(class='buttonText')
+                                            p End Game Session
                         
                     else 
 
