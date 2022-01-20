@@ -4,26 +4,115 @@ block head
   title= title + 'Site Errors'
 
   style.
+    .siteCont {
+        position: relative;
+    }
+    .siteCont.false::before {
+        content: "";
+        box-shadow: 0 0 1px rgba(0,0,0,0);
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        margin: 0;
+        height: 21px;
+        width: 21px;
+        border-radius: 50%;
+        background-color: #0C3B5D;
+        border: 2px solid white;
+    }
+    p span:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 
 block content
     div(class='row mt-5')
         div(class='col-12')
             h3(class='text-center') Site Errors
+            form#deleteSeenForm(class='text-right' action='/admin/deleteseen' method='POST')
+                p
+                    span(onclick='deleteSeen()') Delete Seen
             -var date
             -var dateCount = 0
+            -var errCount = 0
             for err in errors
-                -var thisDate = err.date.toLocaleString('default', {timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
-                if date != thisDate
-                    -date = thisDate
-                    -dateCount += 1
-                    hr
-                    h3= thisDate
-                div(class='siteCont')
-                    h4= err.msg
-                    p= err.subMsg
-                    p URL: 
-                        =err.url
-                    div(class='col-12')
-                        p= err.trace
+                if errCount < 30
+                    -var thisDate = err.date.toLocaleString('default', {timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+                    if date != thisDate
+                        -date = thisDate
+                        -dateCount += 1
+                        hr
+                        h3= thisDate
+                    div(id=err._id class='siteCont mt-2 ' + err.viewed.toString() data-seen=err.viewed.toString())
+                        h4= err.msg
+                        p= err.subMsg
+                        p URL: 
+                            =err.url
+                        div(class='col-12')
+                            p= err.trace
+                    -errCount++
+    
+    script.
+        document.getElementById('deleteSeenForm').addEventListener("load", setSeen())
+
+        function setSeen() {
+            var errs = document.getElementsByClassName('false')
+            
+            for(var i = 0; i < errs.length; i++) {
+                var err = errs[i]
+                if(err.getAttribute('data-seen') == 'false') {
+                    var position = err.getBoundingClientRect();
+                    // checking for partial visibility
+                    if(position.top >= 0 && position.bottom < window.innerHeight) {
+                        const formData = new FormData();
+                        formData.append('viewed', true)
+                        
+                        var xhttp = new XMLHttpRequest();
+                        
+                        xhttp.responseType = 'json'
+
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                err.setAttribute('data-seen', 'true')
+                                err.classList.remove('false')
+                            }
+                        };
+                        
+                        xhttp.open("POST", '/admin/setseen/err=' + err.id, true);
+                        xhttp.send(formData);
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('scroll', async function() {
+            var errs = document.getElementsByClassName('false')
+            
+            for(var i = 0; i < errs.length; i++) {
+                var err = errs[i]
+                if(err.getAttribute('data-seen') == 'false') {
+                    var position = err.getBoundingClientRect();
+                    if(position.top >= 0 && position.bottom < window.innerHeight) {
+                        const formData = new FormData();
+                        formData.append('viewed', true)
+
+                        var updated = updateDB('/admin/setseen/err=' + err.id, formData)
+
+                        if(updated) {
+                            err.setAttribute('data-seen', 'true')
+                        }
+                    }
+                }
+            }
+            const formData = new FormData();
+            formData.append('viewed', true)
+        });
+
+        function deleteSeen() {
+            document.getElementById('deleteSeenForm').submit()
+        }
+
+        
                 
                         

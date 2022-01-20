@@ -69,6 +69,19 @@ block head
     .editLink:hover {
         text-decoration: underline;
     }
+    .userImage {
+        position: absolute;
+
+        width: 101%;
+        height: 101%;
+        object-fit: cover;
+
+        border:none;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
 block content
     div(class='row mt-5')
@@ -267,7 +280,7 @@ block content
                                             div(class='userId' onclick='window.location.href="/users/dashboard/user=' + mem._id + '"')
                                                 div(class='profileImageCont' style='height: 35px; width: 35px;')
                                                     if mem.profileImage
-                                                        img(class='profileImage' src=mem.profileImage)
+                                                        img(class='userImage' src=mem.profileImage)
                                                     else
                                                         div(class='w-100 h-100 profileImageLetterCont')
                                                             p(class='profileImageLetter')= mem.userName.substring(0,1).toUpperCase()

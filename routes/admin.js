@@ -434,8 +434,13 @@ router.get('/site/errors', ops.authUser('super'), async function(req, res, next)
 
   for(var i = 0; i < errors.length; i++) {
     var err = errors[i]
-    if(!err.viewed) {
-      await updateItem(req.db.db('dndgroup'), 'site_errors', {_id: ObjectId(err._id)}, {$set: err})
+    if(err.viewed) {
+      var dateNow = new Date()
+      var pastDate = dateNow.getDate() - 7
+      if(err.date < pastDate) {
+        console.log('Date is past')
+      }
+      // await updateItem(req.db.db('dndgroup'), 'site_errors', {_id: ObjectId(err._id)}, {$set: err})
     }
   }
 
@@ -452,6 +457,23 @@ router.get('/site/errors', ops.authUser('super'), async function(req, res, next)
   })
 })
 
+router.post('/setseen/err=:id', ops.authUser('super'), async function(req, res, next) {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    await ops.updateItem(req.db.db('dndgroup'), 'site_errors', {_id: ObjectId(req.params.id)}, {$set: fields})
+    res.send('success')
+  })
+})
+
+router.post('/deleteseen', ops.authUser('super'), async function(req, res, next) {
+  var errs = await ops.findMany(req.db.db('dndgroup'), 'site_errors', {viewed: 'true'})
+  for(var i = 0; i < errs.length; i++) {
+    var err = errs[i]
+    await ops.deleteItem(req.db.db('dndgroup'), 'site_errors', {_id: ObjectId(err._id)})
+  }
+  res.redirect('/admin/site/errors')
+})
+
 
 router.get('/newgamesess', ops.authUser('admin'), async function(req, res, next) {
   var currentSess = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {active: true})
@@ -465,7 +487,7 @@ router.get('/newgamesess', ops.authUser('admin'), async function(req, res, next)
     res.render('secure/newGameSession', {
       title: mainHeader,
       quests: quests,
-      users: users,
+      users, users,
       user: req.session.user
     })
   }
@@ -482,39 +504,28 @@ router.post('/newgamesess', ops.authUser('admin'), async function(req, res, next
     var form = new formidable.IncomingForm({multiples: true})
     form.parse(req, async function (err, fields, files) {
       var thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(userSess.user)})
-      
-      var playerArray
+
       var session = {
-        players: {
-          [thisUser._id]: {
-            userName: thisUser.userName
-          }
-        },
         active: true
-      }
-
-      if(!Array.isArray(fields.participants)) {
-        playerArray = [ fields.participants ]
-      } else {
-        playerArray = fields.participants
-      }
-
-      for(var i = 0; i < playerArray.length; i++) {
-        var player = playerArray[i]
-        var playerInfo = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(player)})
-        session.players[player] = {
-          userName: playerInfo.userName
-        }
       }
 
       if(fields.isNewQuest) {
         console.log('New Quest')
         var newID = new ObjectId()
+
         var newQuest = {
           _id: newID,
           name: fields.newQuest,
+          players: {
+            [thisUser._id]: {
+              userName: thisUser.userName,
+              role: 'DM'
+            }
+          },
+          dm: fields.dm,
           archived: false
         }
+        
         await ops.addToDatabase(req.db.db('dndgroup'), 'game_quests', [newQuest])
         session.quest = newID
       } else {
@@ -535,6 +546,51 @@ router.post('/endgamesess', ops.authUser('admin'), async function(req, res, next
   req.session.sub = true
   req.session.message = 'Session ended'
   res.redirect('/users/dashboard')
+})
+
+router.post('/updatequestplayers/quest=:qst', ops.authUser('admin'), async function(req, res, next) {
+  var form = new formidable.IncomingForm({multiples: true})
+  form.parse(req, async function (err, fields, files) {
+    var quest = await ops.findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(req.params.qst)})
+    var players = []
+    if(Array.isArray(fields.players)) {
+      players = fields.players
+    } else {
+      players = [fields.players]
+    }
+
+    for(var i = 0; i < Object.keys(quest.players).length; i++) {
+      var player = Object.keys(quest.players)[i]
+      if(!players.includes(player)) {
+        if(player != quest.dm) {
+          delete quest.players[player]
+        }
+      }
+    }
+    
+    if(fields.players) {
+      for(var i = 0; i < players.length; i++) {
+        var player = players[i]
+        var playerInfo = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(player)})
+        if(!quest.players[player]) {
+          quest.players[player] = {
+            userName: playerInfo.userName,
+            role: 'player'
+          }
+        }
+      }
+    }
+    
+
+    await ops.updateItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(req.params.qst)}, {$set: quest})
+
+    var currUser = req.session.user
+    var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(currUser.id)})
+
+    res.redirect('/users/gamesession/user=' + userSess.user)
+
+  })
+
 })
 
 module.exports = router;

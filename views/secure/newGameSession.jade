@@ -23,21 +23,17 @@ block content
                         input#newQuest(type='text' name='newQuest' class='formTextInput d-none' placeholder='New Quest Name' value=null)
                         input#isNewQuest(type='checkBox' name='isNewQuest' class='d-none' checked=false)
                         p(class='text-right mt-1')
-                            span(class='newQuestBut' onclick='newQuest(this)') New Quest
+                            span(class='newQuestBut' onclick='newQuest(this)') New Quest                                                
 
-                    div(class='formItem ')
-                        p(class='formLabel') Participants
-                        select(class='formSelInput' name='participants' multiple)
+                    div#selDM(class='formItem d-none')
+                        p(class='formLabel') Quest DM
+                        select(class='formSelInput' name='dm')
+                            option(selected disabled value=null) --- Select DM ---
                             for pers in users
-                                if pers.userName != user.userName
-                                    option(selected value=pers._id)= pers.userName
-                                        |  (
-                                        = pers.name
-                                        | )
-                        p(class='formNote')
-                            span(style='color: red;') *
-                            | Note: If you don't see a user, please ensure they have responded to the invite email.
-                                                
+                                option(value=pers._id)= pers.userName
+                                    |  (
+                                    = pers.name
+                                    | )
 
                     div(class='row mx-auto mt-4')
                         div(class='col-12 p-0 text-center mt-2')
@@ -49,15 +45,18 @@ block content
             var sel = document.getElementById('questSel')
             var newQ = document.getElementById('newQuest')
             var check = document.getElementById('isNewQuest')
+            var selDM = document.getElementById('selDM')
             if(check.checked) {
                 check.checked = false
                 sel.classList.remove('d-none')
+                selDM.classList.add('d-none')
                 newQ.classList.add('d-none')
                 newQ.value = null
                 but.innerHTML = 'New Quest'
             } else {
                 check.checked = true
                 sel.classList.add('d-none')
+                selDM.classList.remove('d-none')
                 sel.selectedIndex = 0
                 newQ.classList.remove('d-none')
                 but.innerHTML = 'Cancel'

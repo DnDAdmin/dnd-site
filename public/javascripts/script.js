@@ -163,8 +163,9 @@ function compDB(db, col, key, value, exempt) {
 
 function updateDB(url, data) {
     return new Promise(resolve => {
+        
         var xhttp = new XMLHttpRequest();
-
+        
         xhttp.responseType = 'json'
 
         xhttp.onreadystatechange = function() {

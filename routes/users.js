@@ -377,10 +377,13 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
 
   if(thisUser._id.toString() == userSess.user.toString()) {
     var allUsers = await ops.findMany(req.db.db('dndgroup'), 'users', {$and: [{_id: {$not: {$eq: ObjectId(req.params.id)}}}, {testUser: {$not: {$eq: true}}}]})
-    var query = 'players.' + req.params.id + '.userName'
-    var gameSession = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {$and: [{[query]: thisUser.userName}, {active: true}]})
+    var gameSession = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {active: true})
     var events = await ops.findMany(req.db.db('dndgroup'), 'events', {})
-    console.log(gameSession)
+
+    if(gameSession) {
+      var quest = await ops.findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(gameSession.quest)})
+      gameSession.players = quest.players
+    }
     events.sort(function(a, b){
       if(a.date < b.date) { return -1; }
       if(a.date > b.date) { return 1; }
@@ -763,25 +766,36 @@ router.get('/allcharacters', authUser(), async function(req, res, next) {
 })
 
 
-router.get('/gamesession/user=:id', authUser(), async function(req, res, next) {
+router.get('/gamesession/user=:id', authUser(), ops.verifyGame(), async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-  var query = 'players.' + req.params.id + '.userName'
-  var gameSession = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {$and: [{[query]: user.userName}, {active: true}]})
+  var gameSession = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {active: true})
   var characters = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {user: ObjectId(req.params.id)})
+  var quest = await ops.findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(gameSession.quest)})
+  var users = await ops.findMany(req.db.db('dndgroup'), 'users', {invite: null})
   
   if(gameSession) {
-    var quest = await ops.findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(gameSession.quest)})
     res.render('game/session', {
       title: mainHeader,
       characters: characters,
       session: gameSession,
       quest: quest,
+      users: users,
       user: user
     })
   } else {
-    res.redirect('/users/dashboard/user=' + req.params.id)
+    siteOps.error(req, res, 'Error finding game session in database.', null, req.originalUrl, 'Please contact site admin.')
   }
 
+})
+
+router.post('/gamesession/selchar/user=:id/game=:gm', authUser(), ops.verifyGame(), async function(req, res, next) {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    var game = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {_id: ObjectId(req.params.gm)})
+    var quest = await ops.findItem(req.db.db('dndgroup'), 'quests', {_id: ObjectId(game.quest)})
+    game.players[req.params.id].character = ObjectId(req.params.gm)
+    await ops.updateItem(req.db.db('dndgroup'), 'gameSessions')
+  })
 })
 
 module.exports = router;

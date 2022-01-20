@@ -76,6 +76,37 @@ function authUser(access) {
     }
 }
 
+ function verifyGame() {
+    return async (req, res, next) => {
+        console.log('Verifying game session')
+        var userSess = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
+        var gameSession = await findItem(req.db.db('dndgroup'), 'game_sessions', {active: true})
+        
+        if(gameSession) {
+            var quest = await findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(gameSession.quest)})
+            if(quest.players[userSess.user]) {
+                console.log('Sessions verified. Coninueing...')
+                next()
+            } else {
+                if(quest.dm == userSess.user) {
+                    console.log('Sessions verified (DM Access). Coninueing...')
+                    next()
+                } else {
+                    console.log('User not on player list.')
+                    req.session.sub = true
+                    req.session.error = 'You are not part of the current quest. If you believe you should be, contact the group DM.'
+                    res.redirect('/users/dashboard/user=' + userSess.user)
+                }
+            }
+        } else {
+            console.log('No active game session.')
+            req.session.sub = true
+            req.session.error = 'There must be an active game session for you to view that page.'
+            res.redirect('/users/dashboard/user=' + userSess.user)
+        }
+    }
+}
+
 function getRandom (db, col, cond, count) {
     return new Promise(async resolve => {
         console.log('Getting Random Items in database.')
@@ -216,4 +247,4 @@ function deleteFile(user, bucket, key) {
     })
 }
 
-module.exports = {getRandom, addToDatabase, updateItem, findItem, findMany, getCollection, deleteItem, uploadFile, downloadFile, deleteFile, authUser }
+module.exports = {getRandom, addToDatabase, updateItem, findItem, findMany, getCollection, deleteItem, uploadFile, downloadFile, deleteFile, authUser, verifyGame }

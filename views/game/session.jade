@@ -18,6 +18,31 @@ block content
             strong Quest: 
                 span(class='font-Cinzel')= quest.name
         hr
+        if user.access.includes('admin') || user.access.includes('super')
+            form#playerForm(class='formItem' method='POST', action='/admin/updatequestplayers/quest=' + quest._id enctype="multipart/form-data")
+                p(class='formLabel') Quest Players
+                select(class='formSelInput' name='players' multiple)
+                    for pers in users
+                        if pers.userName != user.userName
+                            if quest.players[pers._id]
+                                option(selected value=pers._id)= pers.userName
+                                    |  (
+                                    = pers.name
+                                    | )
+                            else
+                                option(value=pers._id)= pers.userName
+                                    |  (
+                                    = pers.name
+                                    | )
+                p(class='formNote')
+                    span(style='color: red;') *
+                    | Note: If you don't see a user, please ensure they have responded to the invite email.
+                div(class='w-100 text-center mt-2')
+                    button#selCharButton(class='buttonMain button w-100 col-md-6' style='right: 0;')
+                        div(class='buttonText')
+                            p#saveText() Update Quest Players
+                
+            hr
         if characters.length < 1
             p It looks like you havn't created a character yet. You will need to create one to participate in the quest.
             div(class='w-100 text-center mt-2')
@@ -25,15 +50,23 @@ block content
                     div(class='buttonText')
                         p#saveText() Create New Character
         else
-            if !session.players[user._id].character
-                select(name='character' class='formTextInput')
-                    option(selected diabled) --- Select Character ---
-                    for char in characters
-                        option(value=char._id)= char.name
-                p(class='text-right mt-1 charLink')
-                    span(onclick='window.location.href="/users/newcharacter/user=' + user._id + '"') New Character
-                div(class='w-100 text-center mt-2')
-                    button#formButton(class='buttonMain disabled button w-100 col-md-4' disabled style='right: 0;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'")
-                        div(class='buttonText')
-                            p#saveText() Select Character
+            if !quest.players[user._id].character
+                form(method='POST' action='/users/gamesession/selchar/user=' + user._id + '/game=' + session._id enctype="multipart/form-data")
+                    select(name='character' class='formTextInput' onchange='setButton()')
+                        option(selected disabled) --- Select Character ---
+                        for char in characters
+                            option(value=char._id)= char.name
+                    p(class='text-right mt-1 charLink')
+                        span(onclick='window.location.href="/users/newcharacter/user=' + user._id + '"') New Character
+                    div(class='w-100 text-center mt-2')
+                        button#selCharButton(class='buttonMain disabled button w-100 col-md-6' disabled style='right: 0;')
+                            div(class='buttonText')
+                                p#saveText() Add Character to Quest
         hr
+    
+    script.
+        function setButton() {
+            var but = document.getElementById('selCharButton')
+            but.disabled = false
+            but.classList.remove('disabled')
+        }
