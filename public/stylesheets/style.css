@@ -722,6 +722,43 @@
     background-color: rgba(255, 255, 255, 0.856);
     transition: .25s;
   }
+  .closingPanel {
+    background-color: #555555;
+    padding: 8px;
+    border-radius: 4px;
+    margin-left: 26px;
+    position: relative;
+    min-height: 22px;
+    transition: .25s;
+  }
+  .closingPanel.closed {
+    font-size: 8pt;
+    padding: 3px 0 0 8px;
+    transition: .25s;
+  }
+  .closingPanel.closed .closingPanelCont {
+    display: none;
+  }
+  .closingPanelCloser {
+    height: 0;
+    width: 0;
+    left: -26px;
+    top: 0;
+
+    border-top: 10px solid white;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid transparent;
+
+    cursor: pointer;
+    position: absolute;
+    transition: .25s;
+  }
+  .closingPanel.closed .closingPanelCloser {
+    transform: rotate(-90deg);
+    transition: .25s;
+  }
+
   .multSel {
     width: 100%;
     border-radius: 2px;
@@ -1104,7 +1141,7 @@
     border-radius: 2px;
     width: 100%;
     border: 1px solid;
-    padding: 12px;
+    padding: 12px 12px 0 12px;
     display: none;
   }
   #formMessage.error {
@@ -1488,6 +1525,7 @@
   .charTitle {
     font-size: 8pt;
     margin: 0;
+    text-align: center;
   }
   .charTitle p {
     font-size: 8pt;

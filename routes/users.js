@@ -773,10 +773,14 @@ router.get('/gamesession/user=:id', authUser(), ops.verifyGame(), async function
   var quest = await ops.findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(gameSession.quest)})
   var users = await ops.findMany(req.db.db('dndgroup'), 'users', {invite: null})
   
+  
   if(gameSession) {
+    var gameChar = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(quest.players[req.params.id].character)})
+    console.log(gameChar)
     res.render('game/session', {
       title: mainHeader,
       characters: characters,
+      gameChar: gameChar,
       session: gameSession,
       quest: quest,
       users: users,
@@ -792,9 +796,10 @@ router.post('/gamesession/selchar/user=:id/game=:gm', authUser(), ops.verifyGame
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
     var game = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {_id: ObjectId(req.params.gm)})
-    var quest = await ops.findItem(req.db.db('dndgroup'), 'quests', {_id: ObjectId(game.quest)})
-    game.players[req.params.id].character = ObjectId(req.params.gm)
-    await ops.updateItem(req.db.db('dndgroup'), 'gameSessions')
+    var quest = await ops.findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(game.quest)})
+    quest.players[req.params.id].character = ObjectId(fields.character)
+    await ops.updateItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(quest._id)}, {$set: quest})
+    res.redirect('/users/gamesession/user=' + req.params.id)
   })
 })
 

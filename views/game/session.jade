@@ -19,38 +19,136 @@ block content
                 span(class='font-Cinzel')= quest.name
         hr
         if user.access.includes('admin') || user.access.includes('super')
-            form#playerForm(class='formItem' method='POST', action='/admin/updatequestplayers/quest=' + quest._id enctype="multipart/form-data")
-                p(class='formLabel') Quest Players
-                select(class='formSelInput' name='players' multiple)
-                    for pers in users
-                        if pers.userName != user.userName
-                            if quest.players[pers._id]
-                                option(selected value=pers._id)= pers.userName
-                                    |  (
-                                    = pers.name
-                                    | )
-                            else
-                                option(value=pers._id)= pers.userName
-                                    |  (
-                                    = pers.name
-                                    | )
-                p(class='formNote')
-                    span(style='color: red;') *
-                    | Note: If you don't see a user, please ensure they have responded to the invite email.
-                div(class='w-100 text-center mt-2')
-                    button#selCharButton(class='buttonMain button w-100 col-md-6' style='right: 0;')
-                        div(class='buttonText')
-                            p#saveText() Update Quest Players
+            form#playerForm(class='closingPanel closed' method='POST', action='/admin/updatequestplayers/quest=' + quest._id enctype="multipart/form-data")
+                div(class='closingPanelCloser' onclick='closePanel(this)')
+                p(class='formLabel') Select Quest Players
+                div(class='closingPanelCont')
+                    select(class='formSelInput mt-2' name='players' multiple)
+                        for pers in users
+                            if pers.userName != user.userName
+                                if quest.players[pers._id]
+                                    option(selected value=pers._id)= pers.userName
+                                        |  (
+                                        = pers.name
+                                        | )
+                                else
+                                    option(value=pers._id)= pers.userName
+                                        |  (
+                                        = pers.name
+                                        | )
+                    p(class='formNote')
+                        span(style='color: red;') *
+                        | Note: If you don't see a user, please ensure they have responded to the invite email.
+                    div(class='w-100 text-center mt-2')
+                        button(class='buttonMain button w-100 col-md-6' style='right: 0;')
+                            div(class='buttonText')
+                                p#saveText() Update Quest Players
                 
             hr
-        if characters.length < 1
-            p It looks like you havn't created a character yet. You will need to create one to participate in the quest.
-            div(class='w-100 text-center mt-2')
-                button#formButton(class='buttonMain button great w-100 col-md-4' style='right: 0;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'")
-                    div(class='buttonText')
-                        p#saveText() Create New Character
+        
+        
+        if gameChar
+            p(class='font-Cinzel')= gameChar.name
+            div(class='row')
+                -clas = ''
+                if gameChar.artWork
+                    div(class='col-6 col-md-3 p-0')
+                        div(class='charImgMain')
+                            div(class='charImgCont')
+                                img(src=gameChar.artWork class='charImg')
+                    -clas = 'col-md-9'
+                div(class='col-12 mt-2 text-center mx-auto text-md-left font-Merriweather ' + clas)
+                    div(class='row mx-1')
+                        div(class='col-sm-6 col-md-4 p-0')
+                            div(class='charInfo')
+                                p(class='m-0')= gameChar.race
+                            hr(class='m-0')
+                            div(class='charTitle text-left')
+                                p() Race
+
+                        div(class='col-sm-6 col-md-4 p-0')
+                            div(class='charInfo')
+                                if gameChar.class || gameChar.level
+                                    p(class='m-0')
+                                        if gameChar.class
+                                            span= gameChar.class
+                                            &nbsp;
+                                        if gameChar.level
+                                            span= gameChar.level
+                                        else
+                                            span 0
+                                        
+                            hr(class='m-0')
+                            div(class='charTitle text-left')
+                                p() Class/Level
+
+                        div(class='col-sm-6 col-md-4 p-0')
+                            div(class='charInfo')
+                                p(class='m-0')= gameChar.background
+                            hr(class='m-0')
+                            div(class='charTitle text-left')
+                                p() Background
+                        
+                        div(class='col-sm-6 col-md-4 p-0')
+                            div(class='charInfo')
+                                p(class='m-0')= gameChar.alignment
+                            hr(class='m-0')
+                            div(class='charTitle text-left')
+                                p() Alignment
+                        
+                        div(class='col-sm-6 col-md-4 p-0')
+                            div(class='charInfo')
+                                p(class='m-0')= gameChar.experience
+                            hr(class='m-0')
+                            div(class='charTitle text-left')
+                                p() Experience Points
+                    div(class='row')
+                        div(class='col-4 col-sm-3 col-xl-2 px-3 pt-2')
+                            div(class='col-12 charInfoNumCont')
+                                div(class='charInfoNum')
+                                    p(class='m-0')= gameChar.strength
+                            p(class='charTitle num') Strength
+
+                        div(class='col-4 col-sm-3 col-xl-2 px-3 pt-2')
+                            div(class='col-12 charInfoNumCont')
+                                div(class='charInfoNum')
+                                    p(class='m-0')= gameChar.dexterity
+                            p(class='charTitle num') Dexterity
+                        
+                        div(class='col-4 col-sm-3 col-xl-2 px-3 pt-2')
+                            div(class='col-12 charInfoNumCont')
+                                div(class='charInfoNum')
+                                    p(class='m-0')= gameChar.constitution
+                            p(class='charTitle num') Constitution
+
+                        div(class='col-4 col-sm-3 col-xl-2 px-3 pt-2')
+                            div(class='col-12 charInfoNumCont')
+                                div(class='charInfoNum')
+                                    p(class='m-0')= gameChar.intelligence
+                            p(class='charTitle num') Intelligence
+
+                        div(class='col-4 col-sm-3 col-xl-2 px-3 pt-2')
+                            div(class='col-12 charInfoNumCont')
+                                div(class='charInfoNum')
+                                    p(class='m-0')= gameChar.wisdom
+                            p(class='charTitle num') Wisdom
+
+                        div(class='col-4 col-sm-3 col-xl-2 px-3 pt-2')
+                            div(class='col-12 charInfoNumCont')
+                                div(class='charInfoNum')
+                                    p(class='m-0')= gameChar.charisma
+                            p(class='charTitle num') Charisma
+
+
+
         else
-            if !quest.players[user._id].character
+            if characters.length < 1
+                p It looks like you havn't created a character yet. You will need to create one to participate in the quest.
+                div(class='w-100 text-center mt-2')
+                    button#formButton(class='buttonMain button great w-100 col-md-4' style='right: 0;' onclick="window.location.href='/users/newcharacter/user=" + user._id + "'")
+                        div(class='buttonText')
+                            p#saveText() Create New Character
+            else
                 form(method='POST' action='/users/gamesession/selchar/user=' + user._id + '/game=' + session._id enctype="multipart/form-data")
                     select(name='character' class='formTextInput' onchange='setButton()')
                         option(selected disabled) --- Select Character ---
@@ -62,6 +160,7 @@ block content
                         button#selCharButton(class='buttonMain disabled button w-100 col-md-6' disabled style='right: 0;')
                             div(class='buttonText')
                                 p#saveText() Add Character to Quest
+                
         hr
     
     script.

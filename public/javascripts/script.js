@@ -321,6 +321,15 @@ function closePromt() {
     promt.classList.remove('show')
 }
 
+function closePanel(but) {
+    var mainPanel = but.parentNode
+    if(mainPanel.classList.contains('closed')) {
+        mainPanel.classList.remove('closed')
+    } else {
+        mainPanel.classList.add('closed')
+    }
+}
+
 // Checks forms for errors
 function checkForErrors(exmpt, col) {
     return new Promise(async resolve => {
