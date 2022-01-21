@@ -295,7 +295,9 @@ router.get('/firstform/user=:id', async function(req, res, next) {
           newUser: user
         })
       } else {
-        res.redirect('/users/dashboard/user=' + req.params.id)
+        req.session.sub = true
+        req.session.error = 'Cannot submit new user form while logged in.'
+        res.redirect('/users/dashboard')
       }
       
     } else {

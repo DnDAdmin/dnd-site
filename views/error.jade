@@ -1,7 +1,10 @@
 extends layout
 
 block head
-  title= 'Errors'
+  if error.status
+    title= 'Error | ' + error.status
+  else
+    title= 'Error'
 
 block content
   div#error(class='mt-5')
