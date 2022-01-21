@@ -82,10 +82,7 @@ router.get('/login', async function(req, res, next) {
 router.post('/login', async function(req, res, next) {
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
-      var user = await ops.findItem(req.db.db('dndgroup'), 'users', {$or: [{userName: fields.name}, {email: fields.name}]})
-      
-      
-
+      var user = await ops.findItem(req.db.db('dndgroup'), 'users', {$or: [{userName: fields.nameEmail}, {email: fields.nameEmail}]})
       if(user) {
         var errors = null
         if(user.access.includes('super')) {

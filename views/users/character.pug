@@ -1,0 +1,151 @@
+extends ../layout
+
+block head
+  title= title + 'Character'
+
+block content
+    div(class='row mt-5')
+        div(class='col-12')
+            div(class='siteCont')
+                if isOwner || user.permissions.includes('admin') || user.permissions.includes('super')
+                    div(class='row mx-auto text-right')
+                        a(style='color: white;' class='col-1 ml-auto' href='/users/newcharacter/shop/char=' + char._id + '/user=' + owner._id) Shop
+                        span(class='col-1' onclick=href='window.location.href="/users/edit/char=' + char._id + '/user=' + owner._id + '"')
+                            svg(cursor='pointer' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16")
+                                path(d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z")
+
+                div(class='row mx-auto')
+                    -var clas = ''
+                    if char.artWork
+                        div(class='col-6 col-md-3 mx-auto p-0 pr-2')
+                            div(class='charImgMain')
+                                div(class='charImgCont')
+                                    img(src=char.artWork class='charImg')
+                        -clas = 'col-md-9'
+                    div(class='col-12 mt-2 text-center mx-auto text-md-left font-Merriweather ' + clas)
+                        h1(class='charName')= char.name
+                        //- hr
+                        div(class='row mx-1')
+                            div(class='col-sm-6 col-md-4 p-0')
+                                div(class='charInfo')
+                                    p(class='m-0')= char.race
+                                hr(class='m-0')
+                                div(class='charTitle text-left')
+                                    p() Race
+
+                            div(class='col-sm-6 col-md-4 p-0')
+                                div(class='charInfo')
+                                    if char.class || char.level
+                                        p(class='m-0')
+                                            if char.class
+                                                span= char.class
+                                                | &nbsp;
+                                            if char.level
+                                                span= char.level
+                                            else
+                                                span 0
+                                            
+                                hr(class='m-0')
+                                div(class='charTitle text-left')
+                                    p() Class/Level
+
+                            div(class='col-sm-6 col-md-4 p-0')
+                                div(class='charInfo')
+                                    p(class='m-0')= char.background
+                                hr(class='m-0')
+                                div(class='charTitle text-left')
+                                    p() Background
+                            
+                            div(class='col-sm-6 col-md-4 p-0')
+                                div(class='charInfo')
+                                    p(class='m-0')= char.alignment
+                                hr(class='m-0')
+                                div(class='charTitle text-left')
+                                    p() Alignment
+                            
+                            div(class='col-sm-6 col-md-4 p-0')
+                                div(class='charInfo')
+                                    p(class='m-0')= char.experience
+                                hr(class='m-0')
+                                div(class='charTitle text-left')
+                                    p() Experience Points
+                        
+                        div(class='row mx-md-1 mt-4')
+                            div(class='col-md-1 text-center')
+                                div(class='row')
+                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='col-12 charInfoNumCont')
+                                            div(class='charInfoNum')
+                                                p(class='m-0')= char.strength
+                                        p(class='charTitle num') Strength
+
+                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='col-12 charInfoNumCont')
+                                            div(class='charInfoNum')
+                                                p(class='m-0')= char.dexterity
+                                        p(class='charTitle num') Dexterity
+                                    
+                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='col-12 charInfoNumCont')
+                                            div(class='charInfoNum')
+                                                p(class='m-0')= char.constitution
+                                        p(class='charTitle num') Constitution
+
+                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='col-12 charInfoNumCont')
+                                            div(class='charInfoNum')
+                                                p(class='m-0')= char.intelligence
+                                        p(class='charTitle num') Intelligence
+
+                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='col-12 charInfoNumCont')
+                                            div(class='charInfoNum')
+                                                p(class='m-0')= char.wisdom
+                                        p(class='charTitle num') Wisdom
+
+                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='col-12 charInfoNumCont')
+                                            div(class='charInfoNum')
+                                                p(class='m-0')= char.charisma
+                                        p(class='charTitle num') Charisma
+                            
+                            div(class='col-12 col-md-10 ml-md-auto text-left')
+                                div(class='charInfo')
+                                    p(class='m-0') Personality:
+                                    div(class='charInfoText')
+                                        | !{char.personality}
+                                
+                                div(class='charInfo')
+                                    p(class='m-0') Ideals:
+                                    div(class='charInfoText')
+                                        | !{char.ideals}
+                                
+                                div(class='charInfo')
+                                    p(class='m-0') Bonds:
+                                    div(class='charInfoText')
+                                        | !{char.bonds}
+                                
+                                div(class='charInfo')
+                                    p(class='m-0') Flaws:
+                                    div(class='charInfoText')
+                                        | !{char.flaws}
+                div(class='row mx-auto mt-3')
+                    div(class='col-12')
+                        p(class='m-0') Notes:
+                            div(class='charInfoText')
+                                | !{char.notes}
+                
+                div(class='row mx-auto mt-2 text-right' style='font-size: 10pt;')
+                    div(class='col-12')
+                        p Owner: 
+                            a(href='/users/dashboard/user=' + owner._id)= owner.userName
+                    div(class='col-12')
+                        p= 'ID: ' + char._id
+                        
+
+        
+                    
+        
+      
+    
+    

@@ -1,0 +1,38 @@
+extends layout
+
+block head
+  title= title + event.name
+
+  style.
+    #eventDetails p {
+      margin: 0;
+      line-height: 1.1;
+    }
+    #eventDetails strong {
+      font-family: 'Merriweather Sans', sans-serif;
+    }
+    a {
+      color: white;
+    }
+    a:hover {
+      color: white;
+    }
+
+block content
+  div(class='row mt-5')
+    div(class='col-12 col-md-8 mx-auto')
+      div(class='siteCont p-3')
+        if user
+          if user.permissions.includes('admin') || user.permissions.includes('super')
+            div(class='w-100 text-right')
+              a(href='/admin/edit/event=' + event._id) &#9998;
+        h1(class='text-center font-Merriweather')
+          strong= event.name
+        p(class='text-center')= event.date.toLocaleString('default', {timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+        hr
+        div(class='col-10 mx-auto')
+          p
+            strong(class='font-Merriweather') Location: 
+            =event.location
+          div#eventDetails
+            | !{event.details}

@@ -337,6 +337,7 @@ function checkForErrors(exmpt, col) {
         var errors = []
 
         var name = document.getElementById('name')
+        var nameEmail = document.getElementById('nameEmail')
         var location = document.getElementById('location')
         var date = document.getElementById('date')
         var userName = document.getElementById('userName')
@@ -388,6 +389,16 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
+
+        if(nameEmail) {
+            nameEmail.classList.remove('error')
+            if(nameEmail.value.length < 1) {
+                if(nameEmail.getAttribute('data-req') == 'true') {
+                    nameEmail.classList.add('error')
+                    errors.push('Username or Email required')
+                }
+            }
+        }
         
         if(location) {
             location.classList.remove('error')
@@ -412,7 +423,6 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
-        
         if(userName) {
             userName.classList.remove('error')
             if(userName.getAttribute('data-req') == 'true') {

@@ -1,0 +1,57 @@
+extends ../layout
+
+block head
+  title= title + 'Login'
+
+block content
+  div(class='row mt-5')
+    div(class='col-12 col-md-6 mx-auto')
+      h1(class='headingText text-center') Login
+      hr
+      if errors || message
+        if message
+          div#formMessage(class='success')
+              ul
+                li= message
+        else
+          div#formMessage(class='error')
+              h4 Oops...
+              ul
+                li= errors
+      else
+        div#formMessage
+            h4
+            ul
+      form#form(class='formMain mx-auto' action='/users/login'  method='post' enctype="multipart/form-data" onsubmit='return checkForErrors()')
+        div(class='formItem')
+          p(class='formLabel') Username or Email:
+          input#nameEmail(class='formTextInput' type='text' data-req='true' name='nameEmail' value=fields.name)
+        
+        div(class='formItem')
+          p(class='formLabel') Password:
+          input#inputPass(class='formTextInput' type='password' data-req='true' name='pass' value=fields.pass)
+        
+        div(class='formItem text-right my-4')
+          button#formButton(class='buttonMain button great col-12 col-md-4' onclick="logIn(); return false")
+            div(class='buttonText mx-2')
+              p Login
+  
+  script.
+    async function logIn() {
+      var formMessage = document.getElementById('formMessage')
+      formMessage.children[1].innerHTML = ''
+      var errors = await checkForErrors()
+      if(errors) {
+        formMessage.classList.add('error')
+        formMessage.children[0].innerHTML = 'Oops...'
+        for(var i = 0; i< errors.length; i ++) {
+            err = errors[i]
+            var li = document.createElement('LI')
+            li.innerHTML = err
+            formMessage.children[1].appendChild(li)
+        }
+        window.scrollTo(0, 0);
+      } else {
+        document.getElementById('form').submit()
+      }
+    }
