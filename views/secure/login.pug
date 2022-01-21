@@ -11,6 +11,7 @@ block content
       if errors || message
         if message
           div#formMessage(class='success')
+              h4
               ul
                 li= message
         else
@@ -25,7 +26,7 @@ block content
       form#form(class='formMain mx-auto' action='/users/login'  method='post' enctype="multipart/form-data" onsubmit='return checkForErrors()')
         div(class='formItem')
           p(class='formLabel') Username or Email:
-          input#nameEmail(class='formTextInput' type='text' data-req='true' name='nameEmail' value=fields.name)
+          input#nameEmail(class='formTextInput' type='text' data-req='true' name='nameEmail' value=fields.nameEmail)
         
         div(class='formItem')
           p(class='formLabel') Password:
@@ -38,10 +39,12 @@ block content
   
   script.
     async function logIn() {
-      var formMessage = document.getElementById('formMessage')
-      formMessage.children[1].innerHTML = ''
+      var formMessage = document.getElementById('formMessage')      
+
       var errors = await checkForErrors()
+      
       if(errors) {
+        formMessage.children[1].innerHTML = ''
         formMessage.classList.add('error')
         formMessage.children[0].innerHTML = 'Oops...'
         for(var i = 0; i< errors.length; i ++) {

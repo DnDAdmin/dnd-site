@@ -1144,14 +1144,15 @@
     padding: 12px 12px 0 12px;
     display: none;
   }
-  #formMessage.error {
-    border-color: red;
-    color: red;
-    display: block;
-  }
+  
   #formMessage.success {
     border-color: green;
     color: green;
+    display: block;
+  }
+  #formMessage.error {
+    border-color: red;
+    color: red;
     display: block;
   }
   .ql-toolbar.ql-snow.error {

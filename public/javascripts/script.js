@@ -333,7 +333,6 @@ function closePanel(but) {
 // Checks forms for errors
 function checkForErrors(exmpt, col) {
     return new Promise(async resolve => {
-        
         var errors = []
 
         var name = document.getElementById('name')

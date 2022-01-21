@@ -51,9 +51,10 @@ block content
     async function sendMessage() {
       await updateInput()
       var formMessage = document.getElementById('formMessage')
-      formMessage.children[1].innerHTML = ''
+      
       var errors = await checkForErrors()
       if(errors) {
+        formMessage.children[1].innerHTML = ''
         formMessage.classList.add('error')
         formMessage.children[0].innerHTML = 'Oops...'
         for(var i = 0; i< errors.length; i ++) {
