@@ -7,11 +7,13 @@ if user
         div#userMenMain(class='d-none d-sm-block')
             div#userMenu
                 div(class='userMenLink')
-                    a(href='/users/dashboard' class='menDeskLink') User Dashboard
+                    a(href='/users/dashboard' class='') User Dashboard
                 div(class='userMenLink')
-                    a(href='/users/allcharacters' class='menDeskLink') Characters
+                    a(href='/users/allcharacters' class='') Characters
                 div(class='userMenLink')
-                    a(href='/users/logout' class='menDeskLink cation') Logout
+                    a(href='/lore/map' class='') Interactive Map (Beta)
+                div(class='userMenLink')
+                    a(href='/users/logout' class='cation') Logout
                 div#userMenHead
                     hr
                     div#userMenName
@@ -24,9 +26,9 @@ if user
     div#userMenIcon(class='d-none d-sm-block' onclick='toggleUserMen()')
         div(class='d-none d-sm-block')
             div#userMenArrow(class='userMenArrowCont')
-                svg(height="10" width="10")
-                    polygon(points="0,0 10,0 5,10" class='userMenArrow')
-            div(class='profileImageCont userMenImg' style='height: 35px; width: 35px;')
+                svg(height="8" width="8")
+                    polygon(points="0,0 8,0 4,8" class='userMenArrow')
+            div(class='profileImageCont userMenImg' style='height: 30px; width: 30px;')
                 if user.profileImage
                     img(src=user.profileImage class='profileImage')
                 else

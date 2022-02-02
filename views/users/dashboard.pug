@@ -100,7 +100,7 @@ block content
                             input#name(type='text' class='m-0 editableText text-right pr-2' style='' spellcheck="false" onfocusin='setInfo(this)' oninput='updateInfo(this)' placeholder='Name' data-req='true' data-orig=thisUser.name value=thisUser.name)
                         else
                             div(class='text-right')
-                                p(style='margin-left: auto; font-size: 1.75vmin; width: 100px; white-space: nowrap; cursor: help;' data-tip='Your name can only be changed by a site admin')=thisUser.name
+                                p(style='margin-left: auto; font-size: 1.75vmin; width: 100px; white-space: nowrap; cursor: not-allowed;' data-tip='Your name can only be changed by a site admin')=thisUser.name
 
                         div(class='mx-auto mt-3' style='height: 120px; width: 120px; position: relative;')
                             button#removeImgBut(class='buttonMain button removeImgBut' onclick='removeNewImage()' style='display: none;') X
@@ -289,7 +289,15 @@ block content
                                                     if mem.adminRole
                                                         svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill ml-1" viewBox="0 0 16 16" data-tip=mem.adminRole.name)
                                                             path(class=mem.adminRole.class d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z")
-                                    
+
+                div(class='col-12 mt-2 mb-md-2 pl-md-0 d-none d-md-block')
+                    div(class='siteCont picBack')
+                        div(class='picBackCont')
+                            img(class='siteContPic' src="/images/map/mapPrev.png")
+                        div#mapLinkBut(class='text-center mt-2')
+                            button(class='buttonMain button great dark col-12' onclick='window.location.href="/lore/map"')
+                                div(class='buttonText')
+                                    p Interactive Map (Beta)                   
 
                 if loggedUser
                     div(class='col-12 mt-2 pl-md-0')

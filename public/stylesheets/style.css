@@ -88,6 +88,11 @@
     overflow: hidden;
     text-shadow: 0 0 12px black;
   }
+  @media (min-width: 576px) {
+    .topImageCont {
+      top: 40px;
+    }
+  }
   .topImageCont div h1 {
     font-size: 4.5vmin;
   }
@@ -164,19 +169,25 @@
     /* box-shadow: 0 0 2px black; */
     z-index: 10;
   }
+  @media (min-width: 576px) {
+    #header {
+      height: 40px;
+    }
+  }
+
 
   /* LOGO */
     #headerLogoMain {
       margin-left: 20px;
       margin-top: -5px;
-      width: 90px;
+      width: 70px;
       margin-right: 10px;
       -webkit-user-select: none;
       -ms-user-select: none;
       user-select: none;
     }
     #headerLogoCont {
-      width: 110px;
+      width: 80px;
       border-radius: 50%;
       overflow: hidden;
       /* border-bottom: 1px solid #0C3B5D; */
@@ -193,7 +204,7 @@
       transform: translateY(-50%);
       font-family: "Cinzel Decorative", cursive;
       color: rgba(255, 255, 255, 0.856);
-      font-size: 20pt;
+      font-size: 16pt;
       text-shadow: 0 0 5px black;
       -webkit-user-select: none;
       -ms-user-select: none;
@@ -206,9 +217,8 @@
   /* USER MENU */
     .loginDeskBut {
       position: absolute;
-      height: 70px;
+      height: 40px;
       right: 10px;
-      padding-top: 32px;
       top: 0;
       z-index: 11;
       font-family: 'Merriweather Sans', sans-serif;
@@ -239,7 +249,7 @@
     #userMenuBack {
       position: absolute;
       left: 0;
-      top: 70px;
+      top: 40px;
       width: 100%;
       bottom: 0;
       background-color: rgba(0,0,0,.5);
@@ -282,7 +292,7 @@
     
     #userMenu {
       position: absolute;
-      top: 70px;
+      top: 40px;
       right: 0;
       width: 325px;
       bottom: 0;
@@ -292,26 +302,36 @@
       box-shadow: 0 0 4px black;
     }
     .userMenLink {
-      width: 100%;
       text-align: end;
-      margin-top: 8px;
+      margin: 12px 8px 0 0;
+    }
+    .userMenLink a {
+      padding: 6px;
+      font-size: 10pt;
+      color: rgba(255, 255, 255, 0.856);
+      text-decoration: none;
+      border-radius: 2px;
+      transition: .25s;
+    }
+    .userMenLink a:hover {
+      background-color: #0a3350;
     }
     #userMenIcon {
       position: absolute;
       display: inline;
       right: 10px;
-      height: 35px;
+      height: 40px;
       width: 55px;
-      top: 35px;
-      transform: translateY(-25%);
+      top: 0px;
+      padding: 4px 0;
       cursor: pointer;
       z-index: 10000;
     }
     .userMenArrowCont {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      left: 6px;
+      width: 8px;
+      height: 8px;
+      left: 10px;
       top: 50%;
       transform: translateY(-50%);
     }
@@ -374,17 +394,18 @@
   /* DESKTOP MENU */
     #menuDesk {
       position: relative;
-      right: 65px;
+      right: 60px;
       height: 100%;
-      padding: 32px 8px 8px 11px;
     }
     .menDeskLink {
       font-size: 10pt;
       color: rgba(255, 255, 255, 0.856);
-      padding: 4px 8px;
+      padding: 10px 8px; 
+      height: 100%;
+      display: block;
       text-decoration: none;
       border-radius: 2px;
-      margin: 0 4px;
+      margin: 0;
       transition: .25s;
     }
     .menDeskLink:hover, .menDeskLink:active {
@@ -669,11 +690,11 @@
       border: 1px solid white;
       background-color: rgb(119, 22, 15);
     }
-    .menDeskLink.cation {
+    .menDeskLink.cation, .userMenLink a.cation {
       border: none;
       background-color: unset;
     }
-    .menDeskLink.cation:hover {
+    .menDeskLink.cation:hover, .userMenLink a.cation:hover {
       background-color: rgb(119, 22, 15);
       border: none;
     }
@@ -692,6 +713,10 @@
     .great:hover {
       border: 1px solid white;
       background-color: rgb(0, 88, 0);
+    }
+    .dark {
+      border: 1px solid white;
+      background-color: rgba(0,0,0,.4);
     }
 
 /*  --VV-- FORMS --VV--  */
@@ -1219,6 +1244,26 @@
     border-radius: 2px;
     background-color: #444444;
     padding: 2vmin;
+  }
+  .siteCont.picBack {
+    position: relative;
+    background-color: transparent;
+  }
+  .picBackCont{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 2px;
+    overflow: hidden;
+    z-index: -1;
+    opacity: .8;
+  }
+  .siteContPic {
+    width: 101%;
+    height: 101%;
+    object-fit: cover;
   }
   .slideMain {
     display: flex;

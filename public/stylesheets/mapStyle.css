@@ -1,0 +1,1186 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=Noto+Sans+JP:wght@300&family=Katibeh&family=Calistoga&family=Uncial+Antiqua&display=swap');
+:root {
+    --main: rgb(201, 184, 36);
+    --secondary: rgba(226, 47, 15, 0.7);
+    --light: #EBF0F5;
+    --background: rgba(0,0,0,.9);
+    --halfBack: rgba(0,0,0,.5);
+    --backGradiant: linear-gradient(to bottom right, rgb(48, 48, 48), rgb(0, 0, 0));
+    --iconBack: rgb(70,70,70);
+
+    --city: rgb(22, 18, 216);
+    --location: rgb(180, 95, 15);
+    --fortress: rgb(151, 146, 146);
+    --village: rgb(125, 29, 214);
+    --land: rgb(89, 141, 5);
+    --water: rgb(18, 165, 209);
+
+    --oceanText: rgb(11, 47, 82);
+    --countryText: rgb(150, 137, 26);
+    --textHover: rgb(104, 104, 104);
+    --textSelect: rgb(226, 47, 15);
+}
+
+body {
+    background-color: var(--light);
+}
+
+a {
+    /* text-decoration: underline; */
+    color: var(--main);
+}
+
+a:hover {
+    color: var(--secondary);
+}
+
+.loadingText:after {
+    content: 'Loading...';
+    text-shadow: 2px 2px 1px var(--halfBack);
+    margin-top: 20%;
+    color: var(--main);
+    position: absolute;
+    bottom: 30%; 
+    width: 100%;
+    text-align: center;
+    left: 0;
+    font-family: "Katibeh", cursive;
+    font-size: 8vmin;
+    animation-name: loadingText;
+    animation-duration: 2s;
+    animation-delay: 2.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes loadingText {
+    0% {content: "Loading"}
+    25% {content: "Loading."}
+    50% {content: "Loading.."}
+    75% {content: "Loading..."}
+    100% {content: "Loading"}
+
+}
+
+.window {
+    visibility: hidden;
+}
+
+
+.credits {
+    position: absolute;
+    display: none;
+    top:50%;
+    left:50%;
+    height: 50%;
+    width: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: var(--background);
+    border: 2px solid var(--main);
+    border-radius: 2px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding: 12px;
+    z-index: 1000;
+}
+
+.credLink {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.splash {
+    position: absolute;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    justify-content: center;
+    text-align: center;
+    background-image: var(--backGradiant);
+    /* background-color: rgb(0, 0, 0); */
+    /* border: 4px solid rgb(201, 184, 36); */
+    color: var(--main);
+    align-items: center;
+    z-index: 1000;
+}
+
+.splashAfter {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    animation-name: hideSplash;
+    animation-duration: 1s;
+}
+
+@keyframes hideSplash {
+    0% {opacity: 1; visibility: visible};
+    99% {opacity: 0; visibility: visible}
+    100% {opacity: 0; visibility: hidden; display: none;}
+}
+
+.splashText {
+    text-shadow: 2px 2px 1px var(--halfBack);
+    text-align: center;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform:translateX(-50%);
+    font-family: "Cinzel Decorative", cursive;
+}
+
+.splashText.main {
+    will-change: contents;
+    /* background: linear-gradient(-45deg, rgb(201, 184, 36) 49%, rgb(241, 233, 156) 50%, rgb(201, 184, 36) 51%); */
+    background-clip: text;
+	/* -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+    
+	background-size: 400% 100%;
+    animation: gradient 4s linear infinite;
+}
+
+@keyframes gradient {
+    0% {background-position: -75% 50%;}
+    95% {background-position: -95% 50%;}
+    100% {background-position: -95% 50%;}
+	
+}
+
+.splashImg {
+    position: absolute;
+    width: 25%;
+    border-radius: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px var(--halfBack);
+    /* animation-name: loadImg;
+    animation-duration: 3s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; */
+}
+
+@keyframes loadImg {
+    0% {transform: translateX(-50%) translateY(-50%) rotate(0);}
+    100% {transform: translateX(-50%) translateY(-50%) rotate(-360deg);}
+}
+
+#splashImages {
+    transform: translate(0, -50%);
+    border-radius: 50%;
+    box-shadow: 2px 2px 4px var(--background);
+    /* animation-name: load;
+    animation-duration: 3s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; */
+}
+
+#splashImages div {
+    border-radius: 50%;
+    background-color: var(--halfBack);
+    border: 2px solid var(--main);
+    box-shadow: inset 2px 2px 4px var(--background);
+}
+
+@keyframes load {
+    0% {transform: translate(0, -50%) rotate(0)}
+    100% {transform: translate(0, -50%) rotate(360deg)}
+}
+
+.bCorners {
+    width: 50px;
+    position: absolute;
+    pointer-events: none;
+}
+.button{
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    border-radius: 10%;
+    cursor: pointer;
+    background-color: var(--halfBack);
+    border: 1px solid var(--light);
+    color: var(--light);
+}
+
+.cBut {
+    position: absolute;
+    display: none;
+    left: -35px;
+    top: 5px;
+    height: 22px;
+    width: 23px;
+    border-color: var(--main);
+    padding-top: 8px;
+    padding-left: 3.5px;
+}
+
+.cBar {
+    width: 12px;
+    height: 2px;
+    background-color: var(--secondary);
+}
+
+.cBar.c1 {
+    transform: rotate(45deg) translate(1px, 0);
+}
+
+.cBar.c2 {
+    transform: rotate(-45deg) translate(1.1px, 0);
+}
+
+
+.menBut {
+    display: inline-block;
+    cursor: pointer;
+    padding-top: 1px;
+}
+  
+.bar1, .bar2, .bar3 {
+    width: 18px;
+    height: 2px;
+    background-color: var(--light);
+    margin: 4px 0 4px 3px;
+    transition: 0.4s;
+}
+
+.change .bar1 {
+    transform: rotate(-45deg) translate(-4px, 4.5px);
+    background-color: var(--secondary);
+}
+  
+.change .bar2 {
+    opacity: 0;
+}
+
+.change .bar3 {
+    background-color: var(--secondary);
+    transform: rotate(45deg) translate(-4px, -5px);
+}
+
+.change.menBut {
+    border: 1px solid var(--main);
+}
+
+.zBar {
+    width: 10px;
+    height: 2px;
+    background-color: var(--light);
+    margin: 11px 0 0 7px;
+    transition: 0.4s;
+}
+
+.zBar.b1 {
+    margin: -2px 0 0 7px;
+    transform: rotate(90deg);
+}
+
+
+.button:hover{
+    border-color: var(--main);
+    color: var(--main);
+}
+
+.button:hover .zBar{
+    background-color: var(--main);
+}
+
+.button:active {
+    color: var(--secondary);
+}
+
+.button:active .zBar{
+    background-color: var(--secondary);
+}
+
+.zoomOut {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    transform-style: 'preserve-3d';
+    transform: translateX(-50%) translateY(-83%) rotateX(0deg);
+    /* background-image: url('/images/map/icons/iconOut.png'); */
+    background-size: 100% 100%;
+    cursor: pointer;
+    animation-name: fadeIconIn;
+    animation-duration: .5s;
+    z-index: 1;
+}
+
+@keyframes fadeIconIn {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+.zoomOut::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    background: var(--light);
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.zoomOut.capital img {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 12px;
+    border-radius: 50%;
+}
+
+.zoomOut:hover {
+    z-index: 99;
+    /* background-image: url('/images/map/icons/iconOutHover.png'); */
+}
+
+.iconBack {
+    height: 20px;
+    width: 20px;
+    background-color: var(--iconBack);
+    /* box-shadow: 8px 8px 6px rgba(0,0,0,.5); */
+    border: 1.5px solid var(--light);
+    position: absolute;
+    top: 5%;
+    left: 15%;
+    border-radius: 30px 30px 0 30px;
+    transform: rotate(45deg);
+    z-index: -5;
+}
+
+.zoomOut:hover div.iconBack {
+    background-color: var(--background);
+    border: 1.5px solid var(--main);
+}
+
+.zoomIn {
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80px;
+    width: 80px;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 50%;
+    animation-name: fadeLargeIconIn;
+    animation-duration: .5s;
+}
+
+@keyframes fadeLargeIconIn {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+.zoomIn.capital img {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%) translateY(50%);
+    /* background-color: rgba(0,0,0,.5);
+    border: 2px solid rgba(201, 184, 36, 0.7); */
+    width: 12px;
+    border-radius: 50%;
+}
+
+.zoomOut.city::after {
+    background:var(--city);
+}
+.zoomIn.city {
+    background-image: url('/images/map/icons/city.png');
+}
+.zoomIn.city.med {
+    background-image: url('/images/map/icons/city med.png');
+}
+.zoomIn.city.large {
+    background-image: url('/images/map/icons/city large.png');
+}
+
+.zoomOut.location::after {
+    background:var(--location);
+}
+.zoomIn.location {
+    background-image: url('/images/map/icons/location.png');
+}
+
+.zoomOut.fortress::after {
+    background:var(--fortress);
+}
+.zoomIn.fortress {
+    background-image: url('/images/map/icons/fortress.png');
+}
+
+
+.zoomOut.village::after {
+    background:var(--village);
+}
+.zoomIn.village {
+    background-image: url('/images/map/icons/village.png');
+}
+
+.zoomIn.village.large {
+    background-image: url('/images/map/icons/village large.png');
+}
+
+.zoomIn.village.med {
+    background-image: url('/images/map/icons/village med.png');
+}
+
+.zoomOut.land::after {
+    background:var(--land);
+}
+.zoomIn.land {
+    background-image: url('/images/map/icons/land.png');
+}
+.zoomOut.lake::after {
+    background: var(--water);
+}
+
+
+.zoomOut:hover::after {
+    background: var(--main);
+}
+
+
+
+.zoomIn:hover {
+    transform: translateX(-50%) translateY(-50%);
+    margin-top: 2px;
+    cursor: pointer;
+    z-index: 99;
+    background-color: var(--halfBack);
+    border-bottom: 3.5px solid var(--main);
+    border-right: 1px solid var(--main);
+    border-left: 1px solid var(--main);
+    border-top: hidden;
+    box-shadow: inset 0 0 2px var(--background);
+}
+
+.capital.zoomIn:hover {
+    border-bottom: 3px solid var(--main);
+    box-shadow: inset 0 -2px 2px var(--iconBack);
+    border-top: hidden;
+    margin-top: 2px;
+}
+
+.capital.zoomIn:hover img {
+    background-color: var(--halfBack);
+    border: 2px solid var(--main);
+    width: 16px;
+    margin-top: 20px;
+    opacity: 1;
+    animation-name: showStar;
+    animation-duration: .1s;
+}
+
+@keyframes showStar {
+    from {opacity: 0; bottom: 100%;}
+    to {opacity: 1; bottom: 0;}
+}
+
+.iconHoverOver:not(.selected) .locTitle {
+    visibility: visible;
+    animation-name: showName;
+    animation-duration: .1s;
+}
+
+@keyframes showName {
+    from {opacity: 0; top: -20px;  visibility: hidden;}
+    to {opacity: 1; top: -32px; visibility: visible;}
+}
+
+.iconHoverOut:not(.selected) .locTitle {
+    visibility: hidden;
+    animation-name: hideName;
+    animation-duration: .1s;
+}
+
+@keyframes hideName {
+    from {opacity: 1; top: -32px; visibility: visible;}
+    to {opacity: 0; top: -20px; visibility: hidden;}
+}
+
+.locTitle{
+    pointer-events: none;
+    visibility: hidden;
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: 9pt;
+    padding: 2px 5px 2px 5px;
+    background-color: var(--halfBack);
+    border: 2px solid var(--main);
+    border-radius: 8px;
+    color: var(--main);
+    text-shadow: 0 0 5px var(--background);
+    text-align: center;
+    white-space: nowrap;
+    position: relative;
+    top: -32px;
+    left: 50%;
+    z-index: 1;
+}
+
+.selected.zoomIn {
+    transform: translateX(-50%) translateY(-50%);
+    margin-top: 2px;
+    cursor: pointer;
+    z-index: 98;
+    background-color: var(--halfBack);
+    border-bottom: 3.5px solid var(--secondary);
+    border-right: 1px solid var(--secondary);
+    border-left: 1px solid var(--secondary);
+    box-shadow: inset 0 0 2px var(--background);
+}
+
+.selected.zoomOut {
+    z-index: 98;
+    /* background-image: url('/images/map/icons/iconOutSelected.png'); */
+}
+
+.selected.zoomOut div.iconBack {
+    background-color: var(--background);
+    border: 1.5px solid var(--secondary);
+}
+
+.selected.zoomOut::after {
+    background: var(--secondary);
+}
+
+.zoomOut.capital::after {
+    background: none;
+}
+
+.selected.zoomIn.capital {
+    border-top: hidden;
+    margin-top: 2px;
+    box-shadow: inset 0 0 2px var(--background);
+    border-bottom: 3.5px solid var(--secondary);
+    border-right: 1px solid var(--secondary);
+    border-left: 1px solid var(--secondary);
+}
+
+.selected.capital img {
+    width: 16px;
+    display: block;
+    opacity: 1;
+    border: 1px solid var(--secondary);
+    background-color: var(--halfBack);
+}
+
+.selected.capital:hover img {
+    background-color: var(--halfBack);
+    border: 1px solid var(--secondary);
+    animation: none;
+}
+
+.selected.capital.zoomIn img {
+    background-color: var(--halfBack);
+    border: 2px solid var(--secondary);
+}
+
+.selected.capital.zoomIn:hover img {
+    background-color: var(--halfBack);
+    border: 2px solid var(--secondary);
+}
+
+.selected span {
+    visibility: visible;
+    border-color: var(--secondary);
+}
+
+.showIcon {
+    visibility: visible;
+    animation-name: showIcon;
+    animation-duration: .5s;
+}
+@keyframes showIcon {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.hideIcon {
+    visibility: hidden;
+    animation-name: hideIcon;
+    animation-duration: .5s;
+}
+@keyframes hideIcon {
+    from {opacity: 1; visibility: visible;}
+    to {opacity: 0; visibility: visible;}
+}
+
+.show {
+    visibility: visible;
+}
+
+.showL {
+    animation-name: showImageL;
+    animation-duration: .5s;
+}
+
+@keyframes showImageL {
+    from {opacity: 0; transform: translate(120%, 0);}
+    to {opacity: 1; transform: translate(0, 1px);}
+}
+
+.showR {
+    animation-name: showImageR;
+    animation-duration: .5s;
+}
+
+@keyframes showImageR {
+    from {opacity: 0; transform: translate(-120%, 0);}
+    to {opacity: 1; transform: translate(0, 1px);}
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.hideL {
+    visibility: hidden;
+    animation-name: hideImageL;
+    animation-duration: .5s;
+}
+
+@keyframes hideImageL {
+    from {opacity: 1; transform: translateX(0); visibility: visible;}
+    to {opacity: 0; transform: translateX(120%); visibility: hidden;}
+}
+
+.hideR {
+    visibility: hidden;
+    animation-name: hideImageR;
+    animation-duration: .5s;
+}
+
+@keyframes hideImageR {
+    from {opacity: 1; transform: translateX(0); visibility: visible;}
+    to {opacity: 0; transform: translateX(-120%); visibility: hidden;}
+}
+
+.text {
+    will-change: contents;
+    /* text-shadow: 2px 2px 2px rgba(0,0,0,.25); */
+    padding: 6px;
+    background: none;
+    font-family: 'Calistoga', cursive;
+    /* font-family: "Cinzel Decorative", cursive; */
+    z-index: 10;
+    font-size: 21pt;
+    line-height: 1;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    white-space: nowrap;
+    text-shadow: 0 0 6px var(--background);
+    -webkit-text-stroke-width: .45px;
+    -webkit-text-stroke-color: var(--light);
+}
+
+.text.ocean {
+    color: var(--oceanText);
+}
+
+.text.country {
+    color: var(--countryText);    
+}
+
+.text.textSel:hover {
+    color: var(--textHover);
+    z-index: 99;
+}
+
+.text.textSel.selected {
+    color: var(--textSelect);
+    z-index: 98;
+}
+
+.text.faded {
+    opacity: 0;
+}
+
+.textSel:hover {
+    cursor: pointer;
+    color: var(--main);
+}
+
+.textSel.selected {
+    color: var(--secondary);
+}
+
+.nosel {
+    pointer-events: none;
+    opacity: .75;
+}
+
+.nosel.show {
+    animation-name: showNoSel;
+}
+
+@keyframes showNoSel {
+    from {opacity: 0; visibility: hidden;}
+    to {opacity: .6; visibility: visible;}
+}
+
+.nosel.hide {
+    animation-name: hideNoSel;
+}
+
+@keyframes hideNoSel {
+    from {opacity: .6; visibility: visible;}
+    to {opacity: 0; visibility: hidden;}
+}
+
+.infoBox{
+    position: absolute;
+    max-width: 75%;
+    min-width: 5%;
+    bottom: 10px;
+    top: 10px;
+    right: -20%;
+    background-color: var(--background);
+    border: 3px solid var(--background);
+}
+
+#infoImgCont {
+    overflow: hidden;
+}
+
+.infoImageHold {
+    position: relative;
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.infoImageDiv {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+.infoImageDiv.show {
+    opacity: 1;
+    animation-name: bringSlide;
+    animation-duration: 1s;
+}
+@keyframes bringSlide {
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
+.infoImageDiv.hide {
+    opacity: 0;
+    animation-name: throwSlide;
+    animation-duration: 1s;
+}
+@keyframes throwSlide {
+    from{opacity: 1;}
+    to{opacity: 0;}
+}
+
+.infoImage {
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    box-shadow: 0 0 2px var(--background);
+}
+.galBut {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    height: 50px;
+    width: 25px;
+    top: 50%;
+    background-color: var(--light);
+    border-radius: 4px;
+    border: 2px solid var(--main);
+    /* padding: 12px 0 0 6px; */
+    color: var(--main);
+    background-color: var(--halfBack);
+    opacity: .2;
+    z-index: 1;
+    transition: .25s;
+}
+
+.galBut:hover {
+    opacity: 1;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.galBut:active {
+    opacity: .5;
+}
+.galBut:focus {
+    outline: none;
+}
+
+
+.galBut.left {
+    left: 25px;
+    
+}
+.galBut.right {
+    right: 0;
+}
+
+.boxCont {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    text-align: start;
+}
+
+.boxCont .cont.title {
+    flex: 0 1 auto;
+    margin: 0 auto;
+    text-align: center;
+    color: var(--main);
+    font-size: 26pt;
+    padding: 12px;
+    font-family: "Cinzel Decorative", cursive;
+}
+
+.boxCont .cont.info {
+    display: relative;
+    bottom: 20%;
+    color: var(--light);
+    padding: 8px 16px 20px 16px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 10pt;
+    overflow-y: scroll;
+    text-indent: 8px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.boxCont .cont.footer {
+    position: absolute;
+    bottom: 0;
+    display: none;
+    width: 100%;
+    max-height: 70%;
+    min-height: 95px;
+    /* padding-top: 56.25%; */
+    border-top: 1px solid var(--main);
+    background-color: var(--background);
+}
+
+.boxCont .cont.info::-webkit-scrollbar {
+    display: none;
+}
+
+.locList {
+    flex: 1 1 auto;
+    padding: 4px;
+    padding-bottom: 0;
+    overflow-y: scroll;
+    min-height: 120px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    text-align: start;
+}
+
+.infoOpen {
+    right: 10px;
+    min-width: 280px;
+    animation-name: openInfo;
+    animation-duration: .5s;
+    opacity: 1;
+}
+@keyframes openInfo {
+    from {right: -20%; min-width: 20%; opacity: 0;}
+    to {right: 10px; min-width: 280px; opacity: 1;}
+}
+.infoClose {
+    right: -20%;
+    min-width: 20%;
+    animation-name: closeInfo;
+    animation-duration: .5s;
+    opacity: 0;
+    pointer-events: none;
+}
+@keyframes closeInfo {
+    from {right: 10px; min-width: 280px; opacity: 1;}
+    to {right: -20%; min-width: 20%; opacity: 0;}
+}
+
+
+#map {
+    position: absolute;
+    display: block;
+    background-image: url('/images/map/Water.png');
+    background-repeat: repeat;
+    background-size: 1024px 1024px;
+    background-position-y: 0;
+    background-position-x: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 250px var(--background);
+    overflow: hidden;
+    z-index: -1;
+}
+
+#map:hover {
+    cursor: grab;
+}
+
+#map_image {
+    position: absolute;
+}
+.menu {
+    position: absolute;
+    border: 3px solid var(--background);
+    top: 10px;
+    z-index: 1;
+    bottom: 10px;
+    left: -20%;
+    width: 20%;
+    background-color: var(--background);
+}
+.menuOpen {
+    left: 10px;
+    min-width: 280px;
+    animation-name: openMenu;
+    animation-duration: .5s;
+}
+@keyframes openMenu {
+    from {left: -20%; min-width: 20%;}
+    to {left: 10px; min-width: 280px;}
+}
+.menuClose {
+    left: -20%;
+    animation-name: closeMenu;
+    animation-duration: .5s;
+}
+@keyframes closeMenu {
+    from {left: 10px; min-width: 280px;}
+    to {left: -20%; min-width: 20%;}
+}
+
+
+.background {
+    position: absolute;
+    height: 1024px;
+    width: 1024px;
+    z-index: -1;  
+    transform-style: 'preserve-3d';
+    transform: rotateX(0deg) 
+}
+
+.landImage {
+    background-image: url('/images/map/land.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    outline: none;
+}
+
+.landImagePub {
+    background-image: url('/images/map/pubLand.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    outline: none;
+}
+
+.bordersImage {
+    background-image: url('/images/map/borders.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.toggles {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 0;
+    font-family: "Cinzel Decorative", cursive;
+    list-style-type: none;
+}
+
+.checkMain {
+    width: 100%;
+    font-family: "Katibeh", cursive;
+    font-size: 14pt;
+}
+
+.selLink:hover {
+    opacity: 1;
+    color: var(--main);
+}
+
+.specCheck {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    padding: 0;
+    margin: 12px 0;
+}
+
+.specCheck input {
+    display: none;
+}
+
+.checkmark {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 17px;
+    width: 17px;
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    background-color: var(--iconBack);
+}
+
+.specCheck p {
+    position: absolute;
+    display: block;
+    /* font-family: "Katibeh", cursive; */
+    white-space: nowrap;
+    font-family: 'Calistoga', cursive;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10pt;
+    text-indent: 0;
+    padding: 0;
+    margin: 0;
+    color:var(--light);
+}
+
+.selLink {
+    display: inline-block;
+    text-decoration: underline;
+    opacity: .7;
+    cursor: pointer;
+    transform: translateY(4px);
+    font-size: 9pt;
+}
+
+.checkbox:hover, .checkmark:hover, .specCheck label:hover input ~ .checkmark {
+    border-color: var(--main);
+}
+
+
+
+.specCheck input:checked ~ .checkmark {
+    border-color: var(--secondary);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+
+.specCheck input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.specCheck input:checked ~ label {
+    color: var(--light);
+}
+  
+.specCheck:hover label {
+    opacity: .7
+}
+
+.specCheck .checkmark:not(.partMark):after {
+    left: 5px;
+    top: -2px;
+    width: 6px;
+    height: 15px;
+    border: solid var(--main);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.specCheck .partMark:after {
+    left: 4px;
+    top: .5px;
+    width: 6px;
+    height: 10.5px;
+    border: solid var(--light);
+    border-width: 0 3px 0px 0;
+    transform: rotate(90deg);
+}
+
+.ship {
+    position: absolute;
+    
+}
+
+.ship1 {
+    position: relative;
+    left: 1000px;
+    top: 535px;
+    animation-name: sail1;
+    animation-duration: 120s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes sail1 {
+    0% {opacity: 0; transform: translateX(0)}
+    5% {opacity: 1;}
+    95% {opacity: 1;}
+    100% {opacity: 0; transform: translateX(-1000%);}
+}
+
+.ship2 {
+    position: relative;
+    left: 400px;
+    top: 0;
+    animation-name: sail2;
+    animation-duration: 240s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes sail2 {
+    0% {opacity: 0; transform: translateX(0) translateY(0)}
+    5% {opacity: 1;}
+    95% {opacity: 1;}
+    100% {opacity: 0; transform: translateX(-400%) translateY(1000%);}
+}
+
+.ship3 {
+    position: relative;
+    left: 200px;
+    top: 520px;
+    transform: scaleX(-1) rotate(10deg);
+    animation-name: sail3;
+    animation-duration: 120s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes sail3 {
+    0% {opacity: 0; transform: scaleX(-1) translateX(0) translateY(0) rotate(10deg)}
+    2% {opacity: 1;}
+    95% {opacity: 1;}
+    100% {opacity: 0; transform: scaleX(-1) translateX(-750%) translateY(-280%) rotate(10deg)}
+}
+
+.ship4 {
+    position: relative;
+    left: 167px;
+    top: 450px;
+    transform: scaleX(-1);
+    animation-name: sail4;
+    animation-duration: 280s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes sail4 {
+    0% {opacity: 0; transform: scaleX(-1) translateX(0)}
+    2% {opacity: 1;}
+    95% {opacity: 1;}
+    100% {opacity: 0; transform: scaleX(-1) translateX(-900%)}
+}

@@ -1,0 +1,278 @@
+doctype html
+html
+  head
+    title Mystery and Mischief | Interactive Map
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
+    link(rel='stylesheet', href='/stylesheets/mapStyle.css')
+    link(rel='shortcut icon' type='image/png' href='https://dndgroup-site-files.s3.us-east-2.amazonaws.com/logo.ico')
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+
+    meta(content='Mystery and Mischief | Interactive Map' property='og:title')
+    meta(content="Mystery and Mischief's interactive fantasy map!" property='og:description')
+    meta(content='/images/Logo.png' property='og:image')
+    meta(content="website" property='og:type')
+    meta(content='/lore/map' property='og:url')
+    meta(name="twitter:card" content="summary")
+
+    if !public
+      <meta name=”robots” content=”noindex”>
+      <meta name=”robots” content=”noindex,nofollow”>
+
+  -var time = 500
+  if public
+    -time = 1500
+  body(onload='loadMap(' + time + ')' style='user-select: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none;')
+    -var types = []
+    for dot in info
+      -var items = dot.type.split(' ')
+      for item in items
+        if !types.includes(item)
+          -types.push(item)
+    //- vv The screen seen on loadup. Disapears when all elements are loaded or after 1 second, whichever comes last.
+    div#splash(class='splash')
+      div(style='width: 100%; height: 50%; display: block; top: 30%; left: 0; position: absolute; display: inline-block;' align='center')
+        p(class='splashText' style='font-size: 2vmin; line-height: 0;')
+            | Mystery and Mischief's Map Of
+            p(class='splashText main' style='font-size: 14vmin; line-height: 2;')
+                strong Epic-World
+        
+
+      div(class='loadingText')
+      p(class='splashText' style='font-size: 3vmin; font-family: "Katibeh", cursive; position: absolute; width: 100%; top: 85%; text-align: center;' align='center') Have fun exploring!
+      p(style='position: absolute; font-size: 8pt; right: 2%; bottom: 0; color: rgba(255,255,255,.7); text-align: end;') © Created by Nathanael Johnson. All rights reserved.
+    //- vv A pop up with creditation and copyright info
+    div#credits(class='credits')
+      div(id="closeButton" class="button cBut" onclick="toggleCredits(false)" style="display: block; z-index: 1000; left: unset; right: 5px;")
+        div(class='cBar c1')
+        div(class='cBar c2')
+      p(style='text-align: center; font-size: 18pt; color: rgb(201, 184, 36); font-family: "Cinzel Decorative", cursive;') Credits
+      div(style='width: 100%; color: white; font-size: 10pt;')
+        p The map art was created in or taken from the 
+          a(href='https://www.wonderdraft.net/' target='__blank') Wonderdraft
+          |  map making program.
+        p All code was written by Nathanael Johnson. This map is built from a Node.js app. All interactivity is Vanilla JavaScript and CSS.
+        hr(style='background-color:white;')
+        p © Created by Nathanael Johnson
+          if !public
+            |  for the private use by the Dungeons and Dragons group, Mystery and Mischief
+          | . All right reserved. No visitor may redistribute the contents of this page in any way for any reason unless agreed upon in advance and in writing with Nathanael Johnson or a Mistery and Mischief administrator.
+    //- vv All specifically map related elements
+    div#window(class='window' style="z-index: 500; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;" onmouseover='stopScroll()' onmouseout='startScroll()')
+      //- vv Map border
+      div#border(style='height: 100%; width: 100%; pointer-events: none;')
+        svg(height="100%" width="3px" style='position: absolute; left: 10px; top: 60px; padding-bottom: 90px;')
+          line(x1="0" y1="0" x2="0" y2="100%" style="stroke:black;stroke-width:10px")
+        svg(height="100%" width="3px" style='position: absolute; right: 10px; top: 60px; padding-bottom: 90px;')
+          line(x1="0" y1="0" x2="0" y2="100%" style="stroke:black;stroke-width:10px")
+        svg(height="3px" width="100%" style='position: absolute; top: 10px; left: 60px; padding-right: 90px;')
+          line(x1="0" y1="0" x2="100%" y2="0" style="stroke:black;stroke-width:10px")
+        svg(height="3px" width="100%" style='position: absolute; bottom: 10px; left: 60px; padding-right: 90px;')
+          line(x1="0" y1="0" x2="100%" y2="0" style="stroke:black;stroke-width:10px")
+        img(src='/images/map/corner.svg' class='bCorners' style='top: 10px; left: 10px; transform: rotate(90deg)')
+        img(src='/images/map/corner.svg' class='bCorners' style='top: 10px; right: 10px; transform: rotate(180deg)')
+        img(src='/images/map/corner.svg' class='bCorners' style='bottom: 10px; right: 10px; transform: rotate(-90deg)')
+        img(src='/images/map/corner.svg' class='bCorners' style='bottom: 10px; left: 10px;')
+      if public
+        div(style='position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); color: white; font-size: 8pt;')
+          p Locations are added as I make information public.
+      //- vv Menu panel on the left hand of the screen
+      div#menu(class='menu' style='')
+        //- vv Menu and zoom buttons
+        div#buttons(style="position: relative; top: 0; left: 100%;")
+          div(id="menuBut" class="button menBut" onclick='toggleMenu()' style="position: absolute; left: 25px; top: 50px;")
+            div(class='bar1')
+            div(class='bar2')
+            div(class='bar3')
+          div(id="plus" class="button" onclick="zoomIn(.5)" style="position: absolute; left: 25px; top: 80px;")
+            div(class='zBar')
+            div(class='zBar b1')
+          div(id="minus" class="button" onclick="zoomOut(.5)" style="position: absolute; left: 25px; top: 110px;")
+            div(class='zBar')
+          a(title='Mysery and Mischief Home' href='/users/dashboard')
+            div(id="home" class="button" style="position: absolute; left: 25px; top: 140px; padding: 0 0 0 4.5px;")
+              i(class="fa fa-home")
+        //- vv Main menu panel
+        div(class='boxCont' style='')
+          div(class='cont title' style='padding: 4px 4px 0 4px;')
+            p() Menu
+          hr(style='background-color: white; width: 90%; margin: 8px auto;')
+          //- vv Check boxes for different location categories.
+          div(class='cont info' style='padding-bottom: 0;')
+            ul#toggles(class='toggles')
+              p(style='margin-left: -8px;')
+                strong Toggle Location Types:
+              
+              if types.includes('country')
+                div#country(class='specCheck' style='margin-top: 12px;' onclick='toggleCheck(this.id, null)')
+                  input#countryCheck(type='checkbox' name='country' checked=true)
+                  p Countries
+                  div(class='checkmark')
+              if types.includes('city')  
+                div#city(class='specCheck' onclick='toggleCheck(this.id, null)')
+                  input#cityCheck(type='checkbox' name='city' checked=true)
+                  div(class='checkmark')
+                  p(for='city') Cities
+              if types.includes('village')
+                div#village(class='specCheck' onclick='toggleCheck(this.id, null)')
+                  input#villageCheck(type='checkbox' name='village' checked=true)
+                  div(class='checkmark')
+                  p(for='village') Villages and Spreads
+              if types.includes('lake')
+                div#lake(class='specCheck' onclick='toggleCheck(this.id, null)')
+                  input#lakeCheck(type='checkbox' name='lake' checked=true)
+                  div(class='checkmark')
+                  p(for='lake') Lakes and Rivers
+              if types.includes('ocean')
+                div#ocean(class='specCheck' onclick='toggleCheck(this.id, null)')
+                  input#oceanCheck(type='checkbox' name='ocean' checked=true)
+                  div(class='checkmark')
+                  p(for='ocean') Oceans and Seas 
+              if types.includes('location')
+                div#location(class='specCheck' onclick='toggleCheck(this.id, null)')
+                  input#locationCheck(type='checkbox' name='location' checked=true)
+                  div(class='checkmark')
+                  p(for='location') Locations of Interest
+                  hr(style='background-color: white; width: 70%; margin: 0 0 32px 0; transform: translateY(16px); pointer-events: none;')
+              if types.includes('capital')  
+                div#capital(class='specCheck' style='margin-top: 0;' onclick='toggleCheck(this.id, null)')
+                  input#capitalCheck(type='checkbox' name='capital' checked=true)
+                  div(class='checkmark')
+                  p(for='capital') Nation Capitals
+              //- div#borders(class='specCheck' style='margin-top: 0;' onclick='toggleCheck(this.id, null)')
+              //-   input#bordersCheck(type='checkbox' name='borders' checked=false)
+              //-   div(class='checkmark')
+              //-   p(for='borders') Region Borders
+              
+              div#all(class='specCheck' style='margin-top: 0;' onclick='toggleAllChecks(this)')
+                input#allCheck(type='checkbox' name='country' checked=false)
+                div(class='checkmark' style='display: block;')
+                div(class='checkmark partMark' style='display: none;')
+                p(for='location') Toggle All
+            
+            hr(style='background-color: white; width: 100%; margin: 8px auto;')
+            p(style='width: 100%; padding: 8px 0 0 0; line-height: .8; font-family: "Cinzel Decorative", cursive;')
+              strong All Locations:
+            //- vv Checkboxes for each individual location. Runs a loop through the "info" attribute provided by the route.
+            div(class='locList' style='')
+              for dot in info
+                div(id=dot._id + 'CheckMain' class='checkMain' style='')
+                  div(class='specCheck' style='display: inline-block; margin: 4px 0;' onclick='toggleSpecLoc("' + dot._id + '")')
+                    input(id=dot._id + 'Check' type='checkbox' style='pointer-events: none;' checked=true)
+                    div(class='checkmark')
+                    if(dot.name)
+                      p(style='display: inline-block;')= dot.name
+                    else 
+                      p(style='')= 'Empty Location (' + dot.left + ' x ' + dot.top + ')'
+                  if(dot.info && !dot.type.includes("nosel"))
+                    span(id=dot._id + 'Sel' class='selLink' style='' onclick='select("' + dot._id + '")') (Select)
+            
+          //- vv Brief copyright info with link to toggle main.
+          div(style='color: white; font-size: 7pt; line-height: .5; padding: 8px; padding-top: 0;')
+            hr(style='background-color: white; width: 95%; margin: 0 auto 10px auto;')
+            p(onclick='toggleCredits(true)' class='credLink') Credits and Copyright
+            if public
+              p() © Copyright Mystery and Mischief. All rights reserved.
+            else
+              p(style="line-height: 1.4;") © Created for the private use of Mystery and Mischief by Nathanael Johnson
+      //- vv Right hand info panel that load location information.
+      div#info(class='infoBox infoClose' style='width: 280px;')
+        div(id="closeButton" class="button cBut" onclick="toggleInfoBox(true)" style="")
+          div(class='cBar c1')
+          div(class='cBar c2')
+        div(class='boxCont' style='')
+          div(class='cont title')
+            div(style='width: 100%; padding-top: 45px; position: relative; display: none;')
+              div(style='position: absolute; top: 0; left: 0; bottom: 0; right: 0;')
+                img(src='' style='height: 100%; position: absolute; top: 0; left: 50%; transform: translateX(-50%);')
+            div()
+          hr(style='background-color: white; width: 85%; margin-top: 0;')
+          div#infoCont(class='cont info' style='height: 100%;')
+          div#footer(class='cont footer' style='height: 20%')
+            div#caption(style='font-size: .8em; position: absolute; top: 0; width: 100%; color: white; height: 18%; border-bottom: 2px solid black;')
+              p(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap;')
+            div(style='position: absolute; top: 18%; bottom: 0; left: 0; width: 100%; padding-bottom: 4px;')
+              div#galButs(style='display: none;')
+                button(class='galBut left' onclick='galSlide(true)') &#10094;
+                button(class='galBut right' onclick='galSlide(false)') &#10095;
+              div#infoImgCont(style='height: 100%; position: relative;')
+                div#infoImage(class='infoImageHold')
+            div#imgGrabBar(style='position: absolute; width: 100%; height: 7px; top: -7px; border-top: 1px solid black; border-bottom: 2px solid black; background-color: rgba(255,255,255,.1); z-index: 100; cursor: row-resize; box-shadow: inset 0 0 1px black;' onmousemove='sizeUp(this)')
+        div(style='cursor: col-resize; position: absolute; left: -8px; width: 7px; height: 100%; top: 0; background-color: rgba(0,0,0,.5); border-left: 1px solid black; border-right: 2px solid black;' onmousemove='sizeLeft(this)')
+      //- The map, water texture and all icons.
+      div#map(style='display: flex; will-change: contents; position: absolute; left: 0; top: 0;' onmousemove="mousePos(event), dragElement(this)")
+        //- vv Water texture
+        div#background(class="background" style='')
+          //- vv main map image
+          if public
+            img#mapImage(src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class='landImagePub' style='position: relative; height: 100%; width: 100%;')
+          else
+            img#mapImage(src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class='landImage' style='position: relative; height: 100%; width: 100%;')
+         
+          div(style='position: absolute; top: 0; left: 0;  height: 100%; width: 100%;')
+             
+            //- vv animated ships
+                //- div#ships
+                //- span#ship1(class='ship')
+                //-     img(src='/images/map/icons/ship1.png' class='ship1' style='width: 20px')
+                //-     div(style='display:none; left: 1000px; top: 535px;')
+                //- span#ship2(class='ship')
+                //-     img(src='/images/map/icons/ship2.png'  class='ship2' style='width: 20px')
+                //-     div(style='display:none; left: 400px; top: 0;')
+                //- span#ship3(class='ship')
+                //-     img(src='/images/map/icons/ship1.png'  class='ship3' style='width: 20px')
+                //-     div(style='display:none; left: 200px; top: 520px;')
+                //- span#ship4(class='ship')
+                //-     img(src='/images/map/icons/ship1.png'  class='ship4' style='width: 20px')
+                //-     div(style='display:none; left: 167px; top: 450px;')
+            
+            //- vv a loop that places all locations on the map and loads hidden elements to store their information (i.e. coordinates, description)
+            div#allDots
+              for dot in info
+                if dot.type.includes("fortress")
+                  -dot.type = dot.type + ' city'
+                -var rot = ""
+                if dot.rot
+                    if dot.rot.length > 0
+                        -var rot = " transform: translate(-50%, -50%) rotate(" + dot.rot.toString() + "deg);"
+                if(dot.type.includes("text"))
+                    if dot.info
+                        span(id=dot._id class=dot.type + ' textSel showIcon' style='position: absolute; display: block; top: ' + dot.top + '; left:' + dot.left + ';' + rot onclick='select(this.id)')= dot.name
+                            div(style="display: none; top: " + dot.top + "; left: " + dot.left + ";")
+                            span#locTitle(style='display: none;')= dot.name
+                            span(style='display: none;') !{dot.info}
+                            if dot.icon
+                              img(id='icon' + dot._id src=dot.icon style='display: none;')
+                            if dot.images
+                              if dot.images.length > 0
+                                div#locImage(style='display: none;')
+                                  for img in dot.images
+                                    div
+                                      p= img.url
+                                      p= img.caption
+                    else 
+                        span(id=dot._id class=dot.type + ' showIcon' style='position: absolute; display: block; top: ' + dot.top + '; left:' + dot.left + ';' + rot)= dot.name
+                            div(style="display: none; top: " + dot.top + "; left: " + dot.left + ";")
+                    
+                else
+                    span(id=dot._id class=dot.type + ' zoomOut showIcon' style='position: absolute; display: block; top: ' + dot.top + '; left:' + dot.left + ';' onclick='select(this.id)' onmouseover='hover(this, true)' onmouseout='hover(this, false)')
+                        div(style="display: none; top: " + dot.top + "; left: " + dot.left + ";")
+                        span#locTitle(class='locTitle')= dot.name
+                        span(style='display: none;') !{dot.info}
+                        if dot.type.includes('capital')
+                            img(src='/images/map/icons/capital star.png')
+                        if dot.icon
+                          img(id='icon' + dot._id src=dot.icon style='display: none;')
+                        if dot.images
+                          if dot.images.length > 0
+                            div#locImage(style='display: none;')
+                              for img in dot.images
+                                div
+                                  p= img.url
+                                  p= img.caption
+                        div(class='iconBack' style='')
+      
+      //- vv used to display coordinates of mouse to make placing locations easier. Activated in script by adding mousePos(event) to #map
+      div(id="print" style="font-size: 7pt; visibility: hidden; position: absolute; bottom: 18px; right: 55px; color: white;") Error Checker: none
+
+      script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous")
+      script(src='/javascripts/mapScript.js')

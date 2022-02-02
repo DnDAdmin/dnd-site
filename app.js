@@ -11,6 +11,7 @@ var formsRouter = require('./routes/forms');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var emailRouter = require('./routes/emails');
+var loreRouter = require('./routes/lore')
 
 var forceSsl = function (req, res, next) {
   if(req.get('Host').substring(0, 9) !== 'localhost') {
@@ -48,6 +49,7 @@ app.use('/forms', formsRouter)
 app.use('/users', usersRouter)
 app.use('/admin', adminRouter)
 app.use('/emails', emailRouter)
+app.use('/lore', loreRouter)
 
 
 
