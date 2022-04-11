@@ -33,6 +33,8 @@ block content
                     p(class='itemID')= 'ID: ' + shop._id
             div(class='siteCont')
                 h3(class='text-center')= 'Editing ' + shop.name
+                div(class='col text-right')
+                    p Right click will toggle up item details.
                 form#shopForm(name='newitem' action='/admin/edit/shop=' + shop._id method="POST" enctype="multipart/form-data")
                     div(class='row mx-auto')
                         div(class='formItem col-12')
@@ -41,15 +43,11 @@ block content
                         div(class='formItem col-12')
                             p(class='formLabel') Items
                             select#items(name='items' multiple="multiple" class='multSel')
-                                -var currType
                                 for item in items
-                                    if item.type != currType
-                                        -currType = item.type
-                                        option(disabled)= '--' + item.type + '--'
-                                    if shop.items.includes(item._id.toString())
-                                        option(value=item._id selected='true')= item.name
+                                    if shop.items.includes(item.index)
+                                        option(value=item.index selected oncontextmenu='toggleDetails(event, this)' data-apiUrl=item.url title='Right-Click to see details')= item.name
                                     else
-                                        option(value=item._id)= item.name
+                                        option(value=item.index oncontextmenu='toggleDetails(event, this)' data-apiUrl=item.url title='Right-Click to see details')= item.name
 
                     div(class='row mx-auto mt-2')
                         div(class='col-12 text-right mt-2')

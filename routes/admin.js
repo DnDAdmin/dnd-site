@@ -272,17 +272,12 @@ router.get('/shoplist', ops.authUser('admin'), async function(req, res, next) {
 })
 
 router.get('/newshop', ops.authUser('admin'), async function(req, res, next) {
-  var items = await ops.findMany(req.db.db('dndgroup'), 'world-items', {})
-
-  items.sort(function(a, b){
-    if(a.type < b.type) { return -1; }
-    if(a.type > b.type) { return 1; }
-    return 0;
-  });
+  const items = await req.useAPI('/api/equipment')
+  console.log(items)
 
   res.render('secure/newShop', {
     title: mainHeader,
-    items: items,
+    items: items.results,
     user: req.session.user
   })
 })
@@ -305,24 +300,12 @@ router.post('/addshop', ops.authUser('admin'), async function(req, res, next) {
 
 router.get('/edit/shop=:id', ops.authUser('admin'), async function(req, res, next) {
   var shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(req.params.id)})
-  var items = await ops.findMany(req.db.db('dndgroup'), 'world-items', {})
-
-  items.sort(function(a, b){
-    if(parseInt(a.cost) < parseInt(b.cost)) { return -1; }
-    if(parseInt(a.cost) > parseInt(b.cost)) { return 1; }
-    return 0;
-  });
-
-  items.sort(function(a, b){
-    if(a.type < b.type) { return -1; }
-    if(a.type > b.type) { return 1; }
-    return 0;
-  });
+  const items = await req.useAPI('/api/equipment')
 
   res.render('secure/editShop', {
     title: mainHeader,
     shop: shop,
-    items: items,
+    items: items.results,
     user: req.session.user
   })
 })

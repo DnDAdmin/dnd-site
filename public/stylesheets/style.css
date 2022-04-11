@@ -29,9 +29,10 @@
     
   }
   pre {
-    background-color: white;
+    background: none;
+    color: white;
+    white-space: pre-wrap;
   }
-
   .quoteText {
     font-size: 10pt;
     font-style: italic;
@@ -325,7 +326,7 @@
       top: 0px;
       padding: 4px 0;
       cursor: pointer;
-      z-index: 10000;
+      z-index: 11;
     }
     .userMenArrowCont {
       position: absolute;
@@ -788,7 +789,7 @@
     width: 100%;
     border-radius: 2px;
     border: 2px solid rgba(255, 255, 255, 0.856);
-    background-color: #a9a9a9;
+    background: none;
     box-shadow: 0 0 2px rgba(0,0,0,0);
     transition: .25s;
   }
@@ -821,9 +822,16 @@
   }
   option {
     cursor: pointer;
+    background: #444444;
+    color: white;
+  }
+
+  option:hover {
+    background-color: #2a2a2a;
   }
   select {
     cursor: pointer;
+    padding: .5rem;
   }
   .formSelInput:focus {
     outline: none;
@@ -1125,6 +1133,48 @@
   }
   #toolTip p {
     margin: 0;
+  }
+
+/* --VV-- MODAL --VV-- */
+  .myModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 12;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+  }
+  .myModal.show {
+    opacity: 1;
+    pointer-events: all;
+    transition: .25s;
+  }
+  .modal-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #00000070;
+  }
+  .modal-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 20vw;
+    min-height: calc(20vw * .5629);
+    max-width: 85vw;
+    max-height: 85vh;
+    overflow-y: scroll;
+    background-color: #444444;
+    z-index: 12;
+    border-radius: 2px;
+    box-shadow: 0 0 4px black;
+    padding: 1rem;
   }
 
 /* --VV-- RICH TEXT EDITOR --VV-- */s

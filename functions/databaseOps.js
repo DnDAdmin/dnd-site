@@ -6,73 +6,74 @@ const hash = require('password-hash')
 function authUser(access) {
     return async (req, res, next) => {
         console.log('Checking user access.')
-        var loggedUser = req.session.user
-        if(loggedUser) {
-            var user = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(loggedUser.id)})
-            if(user) {
-                if(hash.verify(loggedUser.key, user.sessions[loggedUser.index].key)) {
-                    if(user.access.includes('super')) {
-                        console.log('Super-User Access')
-                        next()
-                    } else {
-                        if(access) {
-                            if(access != 'super') {
-                                if(user.access.includes('admin')) {
-                                    console.log('Admin-User Access')
-                                    next()
-                                }
-                            }
-                            if(access == 'userId') {
-                                var id = req.params.id
+        next()
+    //     var loggedUser = req.session.user
+    //     if(loggedUser) {
+    //         var user = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(loggedUser.id)})
+    //         if(user) {
+    //             if(hash.verify(loggedUser.key, user.sessions[loggedUser.index].key)) {
+    //                 if(user.access.includes('super')) {
+    //                     console.log('Super-User Access')
+    //                     next()
+    //                 } else {
+    //                     if(access) {
+    //                         if(access != 'super') {
+    //                             if(user.access.includes('admin')) {
+    //                                 console.log('Admin-User Access')
+    //                                 next()
+    //                             }
+    //                         }
+    //                         if(access == 'userId') {
+    //                             var id = req.params.id
 
-                                userSess = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
+    //                             userSess = await findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
 
-                                if(userSess.user.toString() == id) {
-                                    console.log('User ID Access Permitted')
-                                    next()
-                                } else {
-                                    console.log('User does not have access.')
-                                    req.session.sub = true
-                                    req.session.error = 'You do not have access to that page.'
-                                    res.redirect('/users/dashboard')
-                                }
-                            } else {
-                                if(user.access.includes(access)) {
-                                    console.log('Access Permitted')
-                                    next()
-                                } else {
-                                    console.log('User does not have access.')
-                                    res.send('Access Denied')
-                                }
-                            }
+    //                             if(userSess.user.toString() == id) {
+    //                                 console.log('User ID Access Permitted')
+    //                                 next()
+    //                             } else {
+    //                                 console.log('User does not have access.')
+    //                                 req.session.sub = true
+    //                                 req.session.error = 'You do not have access to that page.'
+    //                                 res.redirect('/users/dashboard')
+    //                             }
+    //                         } else {
+    //                             if(user.access.includes(access)) {
+    //                                 console.log('Access Permitted')
+    //                                 next()
+    //                             } else {
+    //                                 console.log('User does not have access.')
+    //                                 res.send('Access Denied')
+    //                             }
+    //                         }
                             
-                        } else {
-                            console.log('Access beyond user login not needed.')
-                            next()
-                        }
-                    }
-                } else {
-                    console.log('Key mismatch')
-                    req.session.user = null
-                    req.session.errors = 'User session keys do not match. Please log in again.'
-                    req.session.sub = true
-                    res.redirect('/users/login')
-                }
-            } else {
-                console.log('No userSession')
-                req.session.user = null
-                req.session.errors = 'Session Expired, please log in.'
-                req.session.sub = true
-                res.redirect('/users/login')
-            }
-        } else {
-            console.log('No user.')
-            req.session.redir = req.protocol + '://' + req.get('host') + req.originalUrl
-            req.session.user = null
-            req.session.errors = 'You must be logged in to view that page.'
-            req.session.sub = true
-            res.redirect('/users/login')
-        }     
+    //                     } else {
+    //                         console.log('Access beyond user login not needed.')
+    //                         next()
+    //                     }
+    //                 }
+    //             } else {
+    //                 console.log('Key mismatch')
+    //                 req.session.user = null
+    //                 req.session.errors = 'User session keys do not match. Please log in again.'
+    //                 req.session.sub = true
+    //                 res.redirect('/users/login')
+    //             }
+    //         } else {
+    //             console.log('No userSession')
+    //             req.session.user = null
+    //             req.session.errors = 'Session Expired, please log in.'
+    //             req.session.sub = true
+    //             res.redirect('/users/login')
+    //         }
+    //     } else {
+    //         console.log('No user.')
+    //         req.session.redir = req.protocol + '://' + req.get('host') + req.originalUrl
+    //         req.session.user = null
+    //         req.session.errors = 'You must be logged in to view that page.'
+    //         req.session.sub = true
+    //         res.redirect('/users/login')
+    //     }     
     }
 }
 

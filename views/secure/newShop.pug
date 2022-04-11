@@ -16,18 +16,16 @@ block content
                     div(class='row mx-auto')
                         div(class='formItem col-12')
                             input#name(class='formTextInput' type='text' name='name' placeholder='Shop Name')
+                            div(class='col text-right')
+                                p Right click will toggle up item details.
                         
                         
                         
                         div(class='formItem col-12')
                             p(class='formLabel') Items
                             select#items(name='items' multiple="multiple" class='multSel')
-                                -var currType
                                 for item in items
-                                    if item.type != currType
-                                        -currType = item.type
-                                        option(disabled)= '--' + item.type + '--'
-                                    option(value=item._id)= item.name
+                                    option(value=item.index oncontextmenu='toggleDetails(event, this)' data-apiUrl=item.url title='Right-Click to see details')= item.name
                         
                         //- div(class='formItem col-2 text-center')
                         //-     label(class='') Sellable?

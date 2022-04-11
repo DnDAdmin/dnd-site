@@ -571,13 +571,13 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
 
 })
 
-router.get('/newcharacter/shop/char=:char/user=:id'/*, authUser('userId') */, async function( req, res, next) {
+router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async function( req, res, next) {
   var character = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.char)})
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-  const items = await req.useAPI('/api/equipment')
-  console.log(items.count)
-  const data = await Promise.all(items.results.map(async item => {
-    return await req.useAPI(item.url)
+  const shop = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'First Shop'})
+  console.log(shop)
+  const data = await Promise.all(shop.items.map(async item => {
+    return await req.useAPI(`/api/equipment/${item}`)
   }))
 
   data.sort((a,b) => {

@@ -1,3 +1,5 @@
+const apiUrl = 'https://www.dnd5eapi.co'
+
 // Function for opening and closing the mobile menu
 function toggleMobileMenu() {
     var mobileMenu = document.getElementById('mobileMenBox')
@@ -6,6 +8,14 @@ function toggleMobileMenu() {
     mobileBut.classList.toggle("change");
     mobileMenu.classList.toggle('mobMenShow')
     
+}
+
+// Toggles pop up modal
+function toggleModal(title, content) {
+    var modal = document.getElementById('modal')
+    if(title) modal.children[1].children[0].innerHTML = title
+    if(content) modal.children[1].children[2].innerHTML = content
+    modal.classList.toggle('show')
 }
 
 // Stops scrolling when interacting with the map.
@@ -139,6 +149,27 @@ function updateInput() {
             }
         }
         resolve()
+    })
+}
+
+async function toggleDetails(event, option) {
+    event.preventDefault()
+    const info = await ajaxRequest('GET', apiUrl + option.getAttribute('data-apiUrl'))
+    const data = JSON.parse(info)
+    toggleModal(`${data.name} Details:`, `<pre> ${JSON.stringify(data, null, 2)}</pre>`)
+}
+
+function ajaxRequest(method, url) {
+    return new Promise(resolve => {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                resolve(this.response)
+            }
+        };
+        xhttp.open(method, url);
+        xhttp.send();
     })
 }
 
