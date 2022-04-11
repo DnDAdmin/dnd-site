@@ -236,12 +236,10 @@ router.post('/login', async function(req, res, next) {
         } else {
           console.log('error matching passwords.')
           error('Invalid password.')
-          res.redirect('/users/login')
         }
       } else {
         console.log('error finding user')
         error('Could not find user in database.')
-        res.redirect('/users/login')
       }
     function error(err) {
       req.session.errors = err
