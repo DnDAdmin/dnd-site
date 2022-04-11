@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.975.0",
+    "axios": "^0.26.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",

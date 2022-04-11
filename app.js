@@ -15,6 +15,8 @@ var adminRouter = require('./routes/admin');
 var emailRouter = require('./routes/emails');
 var loreRouter = require('./routes/lore')
 
+const apiFunc = require('./functions/DndApiReq')
+
 var forceSsl = function (req, res, next) {
   if(req.get('Host').substring(0, 9) !== 'localhost') {
     if (req.headers['x-forwarded-proto'] !== 'https') {
@@ -45,6 +47,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false, secure: true}))
 app.use(expressMongoDb(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true}));
+
+app.use(apiFunc())
 
 app.use('/', indexRouter)
 app.use('/forms', formsRouter)

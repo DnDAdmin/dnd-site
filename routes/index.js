@@ -7,6 +7,7 @@ var mainHeader = 'Mystery and Mischief | '
 
 /* GET home page. */
 router.get('/', async function(req, res, next) {
+  console.log(req.api)
   var events = await ops.findMany(req.db.db('dndgroup'), 'events', {})
 
   events.sort(function(a, b){
