@@ -806,6 +806,14 @@
     box-shadow: 0 0 2px rgba(0,0,0,1);
     background-color: rgba(255, 255, 255, 0.856);
   }
+  .formNumInput {
+    width: 6rem;
+    border-radius: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.856);
+    background-color: #444444;
+    color: white;
+    padding-left: 1rem;
+  }
   .formSelInput {
     width: 100%;
     border-radius: 2px;

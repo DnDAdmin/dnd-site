@@ -1,0 +1,67 @@
+extends ../layout
+
+block head
+  title= title + 'New Item'
+
+  style.
+
+block content
+    template#ability-score-template 
+        div(class='formItem col-12')
+            label(for="name" class='formLabel') Name:
+            input(class='formTextInput' type="text" name='name' placeholder='Ability Score Name')
+        div(class='formItem col-12')
+            label(for='desc' class='formLabel') Description
+            div(data-name='desc' data-placeHolder='Describe the Ability Score' data-tab=3 class='richEdit')
+            input#desc(style='display: none;' data-req='true' type='text' name='desc')
+        div(class='formItem col-12')
+            label(for='skills' class='formLabel') Skills:
+            input(class='formTextInput' type="text" name='name' placeholder='No caps. Seperate words with a hyphen and sperate each skill with a comma. (i.e. intimidation, performance)')
+
+
+    div(class='row mt-5')
+        div(class='col-11')
+            div(class='siteCont')
+                h3(class='text-center') New Homebrew Element
+                form#itemForm(name='newitem' action='/admin/additem' method="POST" enctype="multipart/form-data")
+                    div(class='formItem col-12')
+                            p(class='formLabel') Type:
+                            select#items(name='type' class='formSelInput' onchange='alert()')
+                                option(value=null selected disabled) --- Select Element Type ---
+                                option(value='ability-scores') Ability Score
+                                option(value='classes') Class
+                                option(value='equipment') Equipment
+                                option(value='features') Feature
+                                option(value='race') Race
+                                option(value='spells') Spell
+                                option(value='skills') Skill
+                    div#elemForm()
+                        div(class='formItem col-12')
+                            label(for="name" class='formLabel') Name:
+                            input(class='formTextInput' type="text" name='name' placeholder='Class Name')
+                        div(class='formItem col-12')
+                            label(for="hit_die" class='formLabel') Hit Dice:
+                            br
+                            input(class='formNumInput' type="number" value=0 name='hit_die')
+                        div(class='formItem col-12')
+                            label(for='desc' class='formLabel') Description
+                            div(data-name='desc' data-placeHolder='Describe the Class' data-tab=3 class='richEdit')
+                            input#desc(style='display: none;' data-req='true' type='text' name='desc')
+                        div(class='formItem col-12')
+                            label(for='proficiency_choices' class='formLabel') Proficiency Choices:
+                            div(class='formItem mb-2')
+                                label(for="choose" class='formLabel') Max Choice:
+                                br
+                                input(class='formNumInput' type="number" value=2 name='choose')
+                            input(class='formTextInput' type="text" name='proficiency_choices' placeholder='No caps. Seperate words with a hyphen and sperate each choice with a comma. (i.e. skill-animal-handling, skill-athletics)')
+                        
+
+                                
+                                
+                        
+
+                    div(class='row mx-auto mt-2')
+                        div(class='col-12 text-right mt-2')
+                            button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                                div(class='buttonText')
+                                    p#saveText() Save

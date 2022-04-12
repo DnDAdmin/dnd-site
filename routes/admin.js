@@ -116,45 +116,16 @@ router.post('/edit/event=:id', ops.authUser('admin'), async function(req, res, n
 })
 
 
-router.get('/itemlist', ops.authUser('admin'), async function(req, res, next) {
-  var items = await ops.findMany(req.db.db('dndgroup'), 'world-items', {})
-  var types = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Item Types'})
-
-  items.sort(function(a, b){
-    if(parseInt(a.cost) < parseInt(b.cost)) { return -1; }
-    if(parseInt(a.cost) > parseInt(b.cost)) { return 1; }
-    return 0;
-  });
-
-  items.sort(function(a, b){
-    if(a.type < b.type) { return -1; }
-    if(a.type > b.type) { return 1; }
-    return 0;
-  });
-
-  types.types.sort(function(a, b){
-    if(a.class < b.class) { return -1; }
-    if(a.class > b.class) { return 1; }
-    return 0;
-  });
-
-  res.render('secure/itemList', {
+router.get('/homebrew', ops.authUser('admin'), async function(req, res, next) {
+  res.render('secure/homebrew', {
     title: mainHeader,
-    items: items,
-    types: types.types,
     user: req.session.user
   })
-
 })
 
-router.get('/newitem', ops.authUser('admin'), async function(req, res, next) {
-  var types = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'Item Types'})
-  var shops = await ops.findMany(req.db.db('dndgroup'), 'game_data', {shop: true})
-
-  res.render('secure/newItem', {
+router.get('/newhomebrew', ops.authUser('admin'), async function(req, res, next) {
+  res.render('secure/newHomebrew', {
     title: mainHeader,
-    types: types.types,
-    shops: shops,
     user: req.session.user
   })
 })
