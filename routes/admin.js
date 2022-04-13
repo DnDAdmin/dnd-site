@@ -130,33 +130,39 @@ router.get('/newhomebrew', ops.authUser('admin'), async function(req, res, next)
   })
 })
 
-router.post('/additem', ops.authUser('admin'), async function(req, res, next) {
+router.post('/newhomebrew', ops.authUser('admin'), async function(req, res, next) {
   var form = new formidable.IncomingForm({multiples: true})
   form.parse(req, async function (err, fields, files) {
-    var itemId = new ObjectId()
-    fields._id = itemId
+    let items = {}
+    let errors = []
 
-    if(fields.shop) {
-      if(Array.isArray(fields.shop)) {
-        for(var i = 0; i < fields.shop.length; i++) {
-          var shop = fields.shop[i]
-          await ops.updateItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(shop)}, {$push: {items: itemId}})
-        }
+    let required = []
+    fields.required ? required = fields.required.split(',') : null
+
+    console.log(required)
+
+    for(let key in fields) {
+      let val = fields[key]
+
+      val.includes(',') ? val = val.split(',') : null
+
+      if(key.includes('/')) {
+        key = key.split('/')
+        console.log(`${key[0]} > ${key[1]}: ${val}`)
+        items[key[0]] ? items[key[0]][key[1]] = val : items[key[0]] = {[key[1]]: val}
+
+        required.includes(key[1]) && val.length < 1 ? errors.push({field: `${key[1]}/${key[1]}`, message: `${key[1]} is required.`}) : null
+
       } else {
-        await ops.updateItem(req.db.db('dndgroup'), 'game_data', {_id: ObjectId(fields.shop)}, {$push: {items: itemId}})
+        items[key] = val
+        console.log(key)
+        required.includes(key.toString()) && val.length < 1 ? errors.push({field: key, message: `${key} is required.`}) : null
       }
+      
     }
-    
-    await ops.addToDatabase(req.db.db('dndgroup'), 'world-items', [fields])
-    console.log('Item Added')
 
-    req.session.message = 'Item Added!'
-    req.session.sub = true
-    req.session.fields = fields
+    errors.length > 0 ? res.json({ok: false, resp: errors}) : res.json({ok: true})
 
-    res.redirect('/users/dashboard')
-
-    // res.send(fields)
 
   })
 })

@@ -6,7 +6,7 @@ block head
   style.
 
 block content
-    template#ability-score-template 
+    template#ability-scores-template 
         div(class='formItem col-12')
             label(for="name" class='formLabel') Name:
             input(class='formTextInput' type="text" name='name' placeholder='Ability Score Name')
@@ -124,70 +124,101 @@ block content
             br
             input(class='formNumInput' type="number" value=1 name='level')
 
+    template#spells-template
+        div(class='formItem col-12')
+            label(for="name" class='formLabel') Name:
+            input(class='formTextInput' type="text" name='name' placeholder='Spell Name')
+        div(class='formItem col-12')
+            label(for='desc' class='formLabel') Description:
+            div(data-name='desc' data-placeHolder='Describe the Spell' data-tab=3 class='richEdit')
+            input#desc(style='display: none;' data-req='true' type='text' name='desc')
+        div(class='formItem col-12')
+            label(for='higher_level' class='formLabel') Higher Level:
+            div(data-name='higher_level' data-placeHolder='What happens when this spell is cast at a higher level?' data-tab=3 class='richEdit')
+            input#higher_level(style='display: none;' data-req='true' type='text' name='higher_level')
+        div(class='formItem col-12')
+            label(for="range" class='formLabel') Range:
+            input(class='formTextInput' type="text" name='range' placeholder='(i.e. 30 feet)')
+        div(class='formItem col-12')
+            label(for="components" class='formLabel') Components:
+            input(class='formTextInput' type="text" name='components' placeholder='Componants should be their uppercase initial. Seperate each componant with a comma (i.e. V, S).')
+        div(class='formItem col-12')
+            label(for="material" class='formLabel') Material:
+            input(class='formTextInput' type="text" name='material' placeholder='What material is needed to cast this spell?')
+        div(class='row mx-auto')
+            div(class='formItem col-3 col-md-1 text-center')
+                label(for="ritual") Ritual
+                    input#ritual(type='checkbox' name="ritual" onchange=''  checked=false)
+                    div(class='checkBox')
+            div(class='formItem col-3 col-md-1 text-center')
+                label(for="concentration" class='ml-4') Concentration
+                    input#concentration(type='checkbox' name="concentration" onchange=''  checked=false)
+                    div(class='checkBox')  
+        div(class='formItem col-12')
+            label(for="duration" class='formLabel') Duration:
+            input(class='formTextInput' type="text" name='duration' placeholder='(i.e. 1 round)')
+        div(class='formItem col-12')
+            label(for="casting_time" class='formLabel') Casting Time:
+            input(class='formTextInput' type="text" name='casting_time' placeholder='(i.e. 1 action)')
+        div(class='formItem col-12')
+            label(for="level" class='formLabel') Level:
+            br
+            input(class='formNumInput' type="number" value=0 name='level')
+        div(class='formItem col-12')
+            label(for="attack_type" class='formLabel') Attack Type:
+            input(class='formTextInput' type="text" name='attack_type' placeholder='No caps (i.e. ranged)')
+        div(class='formItem col-12')
+            label(for="damage/damage_type" class='formLabel') Damage Type:
+            input(class='formTextInput' type="text" name='damage/damage_type' placeholder='No caps. Seperate words with a hyphen and each type with a comma.')
+        div(class='formItem col-12')
+            label(for="damage/damage_at_character_level" class='formLabel') Damage at Character Level:
+            input(class='formTextInput' type="text" name='damage/damage_at_character_level' placeholder='No caps. Format should be: level, colon, space, damage. Seperate each damage level with a comma. (i.e. 1: 1d8, 5: 2d8)')
+        div(class='formItem col-12')
+            label(for="school" class='formLabel') School:
+            input(class='formTextInput' type="text" name='school' placeholder='No caps. Seperate any words with a hyphen.')
+        div(class='formItem col-12')
+            label(for="classes" class='formLabel') Classes:
+            input(class='formTextInput' type="text" name='classes' placeholder='No caps. Seperate words with a hyphen and each class with a comma.')
+        div(class='formItem col-12')
+            label(for="subclasses" class='formLabel') Subclasses:
+            input(class='formTextInput' type="text" name='subclasses' placeholder='No caps. Seperate words with a hyphen and each subclass with a comma.')
+        input(class='d-none' type='text' name='required' value='name, duration, casting_time, level, damage_type')
+
+    template#skills-template
+        div(class='formItem col-12')
+            label(for="name" class='formLabel') Name:
+            input(class='formTextInput' type="text" name='name' placeholder='Skill Name')
+        div(class='formItem col-12')
+            label(for='desc' class='formLabel') Description
+            div(data-name='desc' data-placeHolder='Describe the Skill' data-tab=3 class='richEdit')
+            input#desc(style='display: none;' data-req='true' type='text' name='desc')
+        div(class='formItem col-12')
+            label(for="ability_score" class='formLabel') Ability Score:
+            input(class='formTextInput' type="text" name='ability_score' placeholder='No caps. Ability scores are abreviated to their first three letters (i.e. dex).')
+    
     div(class='row mt-5')
         div(class='col-11')
             div(class='siteCont')
                 h3(class='text-center') New Homebrew Element
-                form#itemForm(name='newitem' action='/admin/additem' method="POST" enctype="multipart/form-data")
+                form#homeBrewForm(name='newitem' action='/admin/newhomebrew' method="POST" enctype="multipart/form-data" onsubmit="submitForm(this); return false")
                     div(class='formItem col-12')
                             p(class='formLabel') Type:
-                            select#items(name='type' class='formSelInput' onchange='alert()')
+                            select#items(name='type' class='formSelInput' onchange='loadForm(this)')
                                 option(value=null selected disabled) --- Select Element Type ---
                                 option(value='ability-scores') Ability Score
                                 option(value='classes') Class
                                 option(value='equipment') Equipment
                                 option(value='features') Feature
-                                option(value='race') Race
+                                option(value='races') Race
                                 option(value='spells') Spell
                                 option(value='skills') Skill
                     div#elemForm
-                        div(class='formItem col-12')
-                            label(for="name" class='formLabel') Name:
-                            input(class='formTextInput' type="text" name='name' placeholder='Spell Name')
-                        div(class='formItem col-12')
-                            label(for='desc' class='formLabel') Description:
-                            div(data-name='desc' data-placeHolder='Describe the Spell' data-tab=3 class='richEdit')
-                            input#desc(style='display: none;' data-req='true' type='text' name='desc')
-                        div(class='formItem col-12')
-                            label(for='higher_level' class='formLabel') Higher Level:
-                            div(data-name='higher_level' data-placeHolder='What happens when this spell is cast at a higher level?' data-tab=3 class='richEdit')
-                            input#higher_level(style='display: none;' data-req='true' type='text' name='higher_level')
-                        div(class='formItem col-12')
-                            label(for="range" class='formLabel') Range:
-                            input(class='formTextInput' type="text" name='range' placeholder='(i.e. 30 feet)')
-                        div(class='formItem col-12')
-                            label(for="components" class='formLabel') Components:
-                            input(class='formTextInput' type="text" name='components' placeholder='Componants should be their uppercase initial. Seperate each componant with a comma (i.e. V, S).')
-                        div(class='formItem col-12')
-                            label(for="material" class='formLabel') Material:
-                            input(class='formTextInput' type="text" name='material' placeholder='What material is needed to cast this spell?')
-                        div(class='row mx-auto')
-                            div(class='formItem col-3 col-md-1 text-center')
-                                label(for="ritual") Ritual
-                                    input#ritual(type='checkbox' name="ritual" onchange=''  checked=false)
-                                    div(class='checkBox')
-                            div(class='formItem col-3 col-md-1 text-center')
-                                label(for="concentration" class='ml-4') Concentration
-                                    input#concentration(type='checkbox' name="concentration" onchange=''  checked=false)
-                                    div(class='checkBox')  
-                        div(class='formItem col-12')
-                            label(for="duration" class='formLabel') Duration:
-                            input(class='formTextInput' type="text" name='duration' placeholder='(i.e. 1 round)')
-                        div(class='formItem col-12')
-                            label(for="casting_time" class='formLabel') Casting Time:
-                            input(class='formTextInput' type="text" name='casting_time' placeholder='(i.e. 1 action)')
-                        div(class='formItem col-12')
-                            label(for="level" class='formLabel') Level:
-                            br
-                            input(class='formNumInput' type="number" value=0 name='level')
-                        div(class='formItem col-12')
-                            label(for="attack_type" class='formLabel') Attack Type:
-                            input(class='formTextInput' type="text" name='attack_type' placeholder='No caps (i.e. ranged)')
+                        
 
-                    div(class='formItem col-12')
+                    div#notesBox(class='formItem col-12 d-none')
                         label(for='notes' class='formLabel') Notes:
                         div(data-name='notes' data-placeHolder='What else needs to be said?' data-tab=3 class='richEdit')
-                        input#desc(style='display: none;' type='text' name='notes')
+                        input#notes(style='display: none;' type='text' name='notes')
                         
 
                                 
@@ -196,6 +227,32 @@ block content
 
                     div(class='row mx-auto mt-2')
                         div(class='col-12 text-right mt-2')
-                            button#formButton(class='buttonMain button w-100 col-md-4' style='right: 0;' onclick="updateDataBase()")
+                            button#submitButton(class='buttonMain button w-100 col-md-4 disabled' style='right: 0;')
                                 div(class='buttonText')
                                     p#saveText() Save
+    script.
+        function loadForm(select) {
+            const formLoader = document.getElementById("elemForm")
+            const button = document.getElementById("submitButton")
+            const notes = document.getElementById("notesBox")
+            const template = document.getElementById(`${select.value}-template`)
+
+            formLoader.innerHTML = ''
+
+            const fields = template.content.cloneNode(true);
+
+            formLoader.append(fields)
+            notes.classList.remove('d-none')
+            button.classList.remove('disabled')
+
+            const editors = formLoader.getElementsByClassName('richEdit')
+            loadRichEdits(editors)
+        }
+
+        async function submitForm(form) {
+            const data = new FormData(form)
+            
+            const post = await ajaxRequest('POST', '/admin/newhomebrew', data)
+
+            alert(post)
+        }

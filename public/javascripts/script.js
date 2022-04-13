@@ -159,7 +159,7 @@ async function toggleDetails(event, option) {
     toggleModal(`${data.name} Details:`, `<pre> ${JSON.stringify(data, null, 2)}</pre>`)
 }
 
-function ajaxRequest(method, url) {
+function ajaxRequest(method, url, data) {
     return new Promise(resolve => {
         var xhttp = new XMLHttpRequest();
 
@@ -169,7 +169,8 @@ function ajaxRequest(method, url) {
             }
         };
         xhttp.open(method, url);
-        xhttp.send();
+
+        data ? xhttp.send(data) : xhttp.send()
     })
 }
 
@@ -246,25 +247,30 @@ var toolbarOptions = [
 ];
 
 
-var editors = document.getElementsByClassName('richEdit')
-if(editors.length > 0) {
-    for(var i = 0; i < editors.length; i++) {
-        var thisEdit = editors[i]
-        new Quill(thisEdit, {
-            theme: 'snow',
-            modules: {
-                toolbar: {
-                    container: toolbarOptions,
-                    handlers: {
-                        image: imageHandler
+const editors = document.getElementsByClassName('richEdit')
+loadRichEdits(editors)
+
+function loadRichEdits(editors) {
+    if(editors.length > 0) {
+        for(var i = 0; i < editors.length; i++) {
+            var thisEdit = editors[i]
+            new Quill(thisEdit, {
+                theme: 'snow',
+                modules: {
+                    toolbar: {
+                        container: toolbarOptions,
+                        handlers: {
+                            image: imageHandler
+                        }
                     }
-                }
-            },
-            placeholder: thisEdit.getAttribute('data-placeHolder')
-        })
-        thisEdit.children[0].tabIndex = thisEdit.getAttribute('data-tab')
+                },
+                placeholder: thisEdit.getAttribute('data-placeHolder')
+            })
+            thisEdit.children[0].tabIndex = thisEdit.getAttribute('data-tab')
+        }
     }
 }
+
 
 
 function imageHandler() {
