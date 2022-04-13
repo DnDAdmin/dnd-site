@@ -113,7 +113,7 @@ block content
                                         path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                         path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                             //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
-                            select#race(name='race' class='formTextInput')
+                            select#race(name='race' class='formSelInput')
                                 if fields.race
                                     for race in races.pureBlood
                                         if race == fields.race
@@ -133,7 +133,7 @@ block content
                                                 path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                                 path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                                     //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
-                                    select#class(name='class' class='formTextInput' onchange='unCheckBox()')
+                                    select#class(name='class' class='formSelInput' onchange='unCheckBox()')
                                         if fields.class
                                             for clas in classes.baseClasses
                                                 if clas.name == fields.class
@@ -151,7 +151,7 @@ block content
                         
                         div#subClassMain(class='formItem w-100')
                             p(class='formLabel') Subclass:
-                            select#subClass(name='subClass' class='formTextInput')
+                            select#subClass(name='subClass' class='formSelInput')
                                 option(selected disabled value=null) --- Select Subclass ---
                                 for clas in classes.baseClasses
                                     if clas.subClasses
@@ -165,7 +165,7 @@ block content
                                         path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                         path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                             //- input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
-                            select#background(name='background' class='formTextInput' cursor='pointer')
+                            select#background(name='background' class='formSelInput' cursor='pointer')
                                 if fields.background
                                     for back in backgrounds.options
                                         if back == fields.background
@@ -179,7 +179,7 @@ block content
                         div(class='formItem w-100')
                             p(class='formLabel') Alignment:
                             //- input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
-                            select#alignment(name='alignment' class='formTextInput' cursor='pointer')
+                            select#alignment(name='alignment' class='formSelInput' cursor='pointer')
                                 if fields.alignment
                                     for align in alignments.options
                                         if align == fields.alignment

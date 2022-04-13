@@ -742,6 +742,9 @@
     box-shadow: 0 0 2px rgba(0,0,0,0);
     transition: .25s;
   }
+  .formTextInput.short {
+    width: 6rem;
+  }
   .formTextInput:focus{
     outline: none;
     box-shadow: 0 0 2px rgba(0,0,0,1);

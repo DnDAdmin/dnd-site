@@ -17,7 +17,112 @@ block content
         div(class='formItem col-12')
             label(for='skills' class='formLabel') Skills:
             input(class='formTextInput' type="text" name='name' placeholder='No caps. Seperate words with a hyphen and sperate each skill with a comma. (i.e. intimidation, performance)')
+    
+    template#classes-template
+        div(class='formItem col-12')
+            label(for="name" class='formLabel') Name:
+            input(class='formTextInput' type="text" name='name' placeholder='Class Name')
+        div(class='formItem col-12')
+            label(for="hit_die" class='formLabel') Hit Dice:
+            br
+            input(class='formNumInput' type="number" value=0 name='hit_die')
+        div(class='formItem col-12')
+            label(for='desc' class='formLabel') Description:
+            div(data-name='desc' data-placeHolder='Describe the Class' data-tab=3 class='richEdit')
+            input#desc(style='display: none;' data-req='true' type='text' name='desc')
+        div(class='formItem col-12')
+            label(for='proficiency_choices' class='formLabel') Proficiency Choices:
+            div(class='formItem mb-2 mt-0')
+                label(for="choose" class='formLabel') Max Choices:
+                br
+                input(class='formNumInput' type="number" value=2 name='choose')
+            input(class='formTextInput' type="text" name='proficiency_choices' placeholder='No caps. Seperate words with a hyphen and seperate each choice with a comma. (i.e. skill-animal-handling, skill-athletics)')
+        div(class='formItem col-12')
+            label(for='proficiencies' class='formLabel') Proficiencies:
+            input(class='formTextInput' type="text" name='proficiencies' placeholder='No caps. Seperate words with a hyphen and seperate each choice with a comma. (i.e. shields, light-armor)')
+        div(class='formItem col-12')
+            label(for='saving_throws' class='formLabel') Saving Throws:
+            input(class='formTextInput' type="text" name='saving_throws' placeholder='No caps. Seperate each choice with a comma. Saving Throws are abreviated. (i.e. wis, cha)')
+        div(class='formItem col-12')
+            label(for='subclasses' class='formLabel') Subclasses:
+            input(class='formTextInput' type="text" name='subclasses' placeholder='No caps. Seperate words with a hyphen and each choice with a comma.')
 
+    template#equipment-template
+        div(class='formItem col-12')
+            label(for="name" class='formLabel') Name:
+            input(class='formTextInput' type="text" name='name' placeholder='Equipment Name')
+        div(class='formItem col-12')
+            label(for='desc' class='formLabel') Description:
+            div(data-name='desc' data-placeHolder='Describe the Item' data-tab=3 class='richEdit')
+            input#desc(style='display: none;' data-req='true' type='text' name='desc')
+        div(class='formItem col-12')
+            label(for="equipment_category" class='formLabel') Equipment Category:
+            input(class='formTextInput' type="text" name='equipment_category' placeholder='No caps. Seperate words with a hyphen.')
+        div(class='formItem col-12')
+            label(class='formLabel') Cost:
+            br
+            input(class='formNumInput' type="number" value=0 name='cost/quantity')
+            input(class='formTextInput short ml-2' type="text" name='cost/unit' placeholder='Unit (i.e. gp)')
+        div(class='formItem col-12')
+            label(for="weight" class='formLabel') Weight:
+            br
+            input(class='formNumInput' type="number" value=0 name='weight')
+
+    template#races-template
+        div(class='formItem col-12')
+            label(for="name" class='formLabel') Name:
+            input(class='formTextInput' type="text" name='name' placeholder='Race Name')
+        div(class='formItem col-12')
+            label(for="speed" class='formLabel') Speed:
+            br
+            input(class='formNumInput' type="number" value=1 name='speed')
+        div(class='formItem col-12')
+            label(for='ability_bonus' class='formLabel') Ability Bonus:
+            input(class='formTextInput' type="text" name='ability_bonus' placeholder='Ability Bonus names are abreviated (i.e. cha = charisma). No caps. Seperate each item with a comma.')
+        div(class='formItem col-12')
+            label(for='alignment' class='formLabel') Alignment:
+            div(data-name='alignment' data-placeHolder="What't the race's tempermant?" data-tab=3 class='richEdit')
+            input#alignment(style='display: none;' data-req='true' type='text' name='alignment')
+        div(class='formItem col-12')
+            label(for='age' class='formLabel') Age:
+            div(data-name='age' data-placeHolder="How long do they live?" data-tab=3 class='richEdit')
+            input#age(style='display: none;' data-req='true' type='text' name='age')
+        div(class='formItem col-12')
+            label(for="size" class='formLabel') Size:
+            input(class='formTextInput' type="text" name='size' placeholder='How big are they?')
+        div(class='formItem col-12')
+            label(for='size_description' class='formLabel') Size Description:
+            div(data-name='size_description' data-placeHolder="How and why are they the size they are?" data-tab=3 class='richEdit')
+            input#size_description(style='display: none;' data-req='true' type='text' name='size_description')
+        div(class='formItem col-12')
+            label(for="languages" class='formLabel') Languages:
+            input(class='formTextInput' type="text" name='languages' placeholder='No caps. Seperate words with a hyphen and seperate each language with a comma.')
+        div(class='formItem col-12')
+            label(for='language_description' class='formLabel') Language Description:
+            div(data-name='language_description' data-placeHolder="How and why do they speak what they do?" data-tab=3 class='richEdit')
+            input#language_description(style='display: none;' data-req='true' type='text' name='language_description')
+        div(class='formItem col-12')
+            label(for="traits" class='formLabel') Traits:
+            input(class='formTextInput' type="text" name='traits' placeholder='No caps. Seperate words with a hyphen and seperate each trait with a comma.')
+        div(class='formItem col-12')
+            label(for="subraces" class='formLabel') Subraces:
+            input(class='formTextInput' type="text" name='subraces' placeholder='No caps. Seperate words with a hyphen and seperate each subrace with a comma.')
+
+    template#features-template
+        div(class='formItem col-12')
+            label(for="name" class='formLabel') Name:
+            input(class='formTextInput' type="text" name='name' placeholder='Feature Name')
+        div(class='formItem col-12')
+            label(for='desc' class='formLabel') Description:
+            div(data-name='desc' data-placeHolder='Describe the Feature' data-tab=3 class='richEdit')
+            input#desc(style='display: none;' data-req='true' type='text' name='desc')
+        div(class='formItem col-12')
+            label(for='class' class='formLabel') Class:
+            input(class='formTextInput' type="text" name='class' placeholder='No caps. Seperate any words with a hyphen.')
+        div(class='formItem col-12')
+            label(for="level" class='formLabel') Level:
+            br
+            input(class='formNumInput' type="number" value=1 name='level')
 
     div(class='row mt-5')
         div(class='col-11')
@@ -35,25 +140,54 @@ block content
                                 option(value='race') Race
                                 option(value='spells') Spell
                                 option(value='skills') Skill
-                    div#elemForm()
+                    div#elemForm
                         div(class='formItem col-12')
                             label(for="name" class='formLabel') Name:
-                            input(class='formTextInput' type="text" name='name' placeholder='Class Name')
+                            input(class='formTextInput' type="text" name='name' placeholder='Spell Name')
                         div(class='formItem col-12')
-                            label(for="hit_die" class='formLabel') Hit Dice:
-                            br
-                            input(class='formNumInput' type="number" value=0 name='hit_die')
-                        div(class='formItem col-12')
-                            label(for='desc' class='formLabel') Description
-                            div(data-name='desc' data-placeHolder='Describe the Class' data-tab=3 class='richEdit')
+                            label(for='desc' class='formLabel') Description:
+                            div(data-name='desc' data-placeHolder='Describe the Spell' data-tab=3 class='richEdit')
                             input#desc(style='display: none;' data-req='true' type='text' name='desc')
                         div(class='formItem col-12')
-                            label(for='proficiency_choices' class='formLabel') Proficiency Choices:
-                            div(class='formItem mb-2')
-                                label(for="choose" class='formLabel') Max Choice:
-                                br
-                                input(class='formNumInput' type="number" value=2 name='choose')
-                            input(class='formTextInput' type="text" name='proficiency_choices' placeholder='No caps. Seperate words with a hyphen and sperate each choice with a comma. (i.e. skill-animal-handling, skill-athletics)')
+                            label(for='higher_level' class='formLabel') Higher Level:
+                            div(data-name='higher_level' data-placeHolder='What happens when this spell is cast at a higher level?' data-tab=3 class='richEdit')
+                            input#higher_level(style='display: none;' data-req='true' type='text' name='higher_level')
+                        div(class='formItem col-12')
+                            label(for="range" class='formLabel') Range:
+                            input(class='formTextInput' type="text" name='range' placeholder='(i.e. 30 feet)')
+                        div(class='formItem col-12')
+                            label(for="components" class='formLabel') Components:
+                            input(class='formTextInput' type="text" name='components' placeholder='Componants should be their uppercase initial. Seperate each componant with a comma (i.e. V, S).')
+                        div(class='formItem col-12')
+                            label(for="material" class='formLabel') Material:
+                            input(class='formTextInput' type="text" name='material' placeholder='What material is needed to cast this spell?')
+                        div(class='row mx-auto')
+                            div(class='formItem col-3 col-md-1 text-center')
+                                label(for="ritual") Ritual
+                                    input#ritual(type='checkbox' name="ritual" onchange=''  checked=false)
+                                    div(class='checkBox')
+                            div(class='formItem col-3 col-md-1 text-center')
+                                label(for="concentration" class='ml-4') Concentration
+                                    input#concentration(type='checkbox' name="concentration" onchange=''  checked=false)
+                                    div(class='checkBox')  
+                        div(class='formItem col-12')
+                            label(for="duration" class='formLabel') Duration:
+                            input(class='formTextInput' type="text" name='duration' placeholder='(i.e. 1 round)')
+                        div(class='formItem col-12')
+                            label(for="casting_time" class='formLabel') Casting Time:
+                            input(class='formTextInput' type="text" name='casting_time' placeholder='(i.e. 1 action)')
+                        div(class='formItem col-12')
+                            label(for="level" class='formLabel') Level:
+                            br
+                            input(class='formNumInput' type="number" value=0 name='level')
+                        div(class='formItem col-12')
+                            label(for="attack_type" class='formLabel') Attack Type:
+                            input(class='formTextInput' type="text" name='attack_type' placeholder='No caps (i.e. ranged)')
+
+                    div(class='formItem col-12')
+                        label(for='notes' class='formLabel') Notes:
+                        div(data-name='notes' data-placeHolder='What else needs to be said?' data-tab=3 class='richEdit')
+                        input#desc(style='display: none;' type='text' name='notes')
                         
 
                                 
