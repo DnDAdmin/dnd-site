@@ -17,7 +17,8 @@ block content
         div(class='formItem col-12')
             label(for='skills' class='formLabel') Skills:
             input(class='formTextInput' type="text" name='name' placeholder='No caps. Seperate words with a hyphen and sperate each skill with a comma. (i.e. intimidation, performance)')
-    
+        input(class='d-none' type='text' name='required' value='name,skills')
+
     template#classes-template
         div(class='formItem col-12')
             label(for="name" class='formLabel') Name:
@@ -46,6 +47,7 @@ block content
         div(class='formItem col-12')
             label(for='subclasses' class='formLabel') Subclasses:
             input(class='formTextInput' type="text" name='subclasses' placeholder='No caps. Seperate words with a hyphen and each choice with a comma.')
+        input(class='d-none' type='text' name='required' value='name,hit_dice')
 
     template#equipment-template
         div(class='formItem col-12')
@@ -67,6 +69,7 @@ block content
             label(for="weight" class='formLabel') Weight:
             br
             input(class='formNumInput' type="number" value=0 name='weight')
+        input(class='d-none' type='text' name='required' value='name,cost,weight')
 
     template#races-template
         div(class='formItem col-12')
@@ -107,6 +110,7 @@ block content
         div(class='formItem col-12')
             label(for="subraces" class='formLabel') Subraces:
             input(class='formTextInput' type="text" name='subraces' placeholder='No caps. Seperate words with a hyphen and seperate each subrace with a comma.')
+        input(class='d-none' type='text' name='required' value='name')
 
     template#features-template
         div(class='formItem col-12')
@@ -123,6 +127,7 @@ block content
             label(for="level" class='formLabel') Level:
             br
             input(class='formNumInput' type="number" value=1 name='level')
+        input(class='d-none' type='text' name='required' value='name,class,level')
 
     template#spells-template
         div(class='formItem col-12')
@@ -163,7 +168,7 @@ block content
         div(class='formItem col-12')
             label(for="level" class='formLabel') Level:
             br
-            input(class='formNumInput' type="number" value=0 name='level')
+            input(class='formNumInput' type="number" name='level')
         div(class='formItem col-12')
             label(for="attack_type" class='formLabel') Attack Type:
             input(class='formTextInput' type="text" name='attack_type' placeholder='No caps (i.e. ranged)')
@@ -182,7 +187,7 @@ block content
         div(class='formItem col-12')
             label(for="subclasses" class='formLabel') Subclasses:
             input(class='formTextInput' type="text" name='subclasses' placeholder='No caps. Seperate words with a hyphen and each subclass with a comma.')
-        input(class='d-none' type='text' name='required' value='name, duration, casting_time, level, damage_type')
+        input(class='d-none' type='text' name='required' value='name,duration,casting_time,level,damage_type')
 
     template#skills-template
         div(class='formItem col-12')
@@ -195,11 +200,16 @@ block content
         div(class='formItem col-12')
             label(for="ability_score" class='formLabel') Ability Score:
             input(class='formTextInput' type="text" name='ability_score' placeholder='No caps. Ability scores are abreviated to their first three letters (i.e. dex).')
+        input(class='d-none' type='text' name='required' value='name,ability_score')
     
     div(class='row mt-5')
         div(class='col-11')
             div(class='siteCont')
                 h3(class='text-center') New Homebrew Element
+                div(class='col-12')
+                    div#formMessage
+                        h4 Oops...
+                        ul
                 form#homeBrewForm(name='newitem' action='/admin/newhomebrew' method="POST" enctype="multipart/form-data" onsubmit="submitForm(this); return false")
                     div(class='formItem col-12')
                             p(class='formLabel') Type:
@@ -253,6 +263,23 @@ block content
             const data = new FormData(form)
             
             const post = await ajaxRequest('POST', '/admin/newhomebrew', data)
+            const resp = JSON.parse(post)
 
-            alert(post)
+            if(resp.ok) {
+
+            } else {
+                const msg = document.getElementById('formMessage')
+                msg.children[1].innerHTML = ''
+                for(let index in resp.resp) {
+                    const err = resp.resp[index]
+                    const li = document.createElement('LI')
+
+                    li.innerHTML = err.message
+                    msg.children[1].append(li)
+
+                    document.getElementsByName(err.field)[0].classList.add('error')
+                }
+                msg.classList.add('error')
+                msg.scrollIntoView()
+            }
         }

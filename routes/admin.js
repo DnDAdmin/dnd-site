@@ -139,28 +139,32 @@ router.post('/newhomebrew', ops.authUser('admin'), async function(req, res, next
     let required = []
     fields.required ? required = fields.required.split(',') : null
 
-    console.log(required)
+    
 
     for(let key in fields) {
       let val = fields[key]
+      if(key != 'required') {
+        val.includes(',') ? val = val.split(',') : null
 
-      val.includes(',') ? val = val.split(',') : null
+        if(key.includes('/')) {
+          let subKey = key.split('/')
+          key = subKey[1]
+          console.log(`${key[0]} > ${subKey[1]}: ${val}`)
+          items[subKey[0]] ? items[subKey[0]][subKey[1]] = val : items[subKey[0]] = {[subKey[1]]: val}
 
-      if(key.includes('/')) {
-        key = key.split('/')
-        console.log(`${key[0]} > ${key[1]}: ${val}`)
-        items[key[0]] ? items[key[0]][key[1]] = val : items[key[0]] = {[key[1]]: val}
+          required.includes(subKey[1]) && val.length < 1 ? errors.push({field: `${subKey[0]}/${subKey[1]}`, message: `${subKey[1].split('_').join(' ')} is required.`}) : null
 
-        required.includes(key[1]) && val.length < 1 ? errors.push({field: `${key[1]}/${key[1]}`, message: `${key[1]} is required.`}) : null
+        } else {
+          items[key] = val
+          console.log(key)
+          required.includes(key.toString()) && val.length < 1 ? errors.push({field: key, message: `${key.split('_').join(' ')} is required.`}) : null
+        }
 
-      } else {
-        items[key] = val
-        console.log(key)
-        required.includes(key.toString()) && val.length < 1 ? errors.push({field: key, message: `${key} is required.`}) : null
+        const inDb = ops.findItem(req.db.db('dndgroup'), 'homebrew', {[key]: val})
+
       }
-      
     }
-
+    
     errors.length > 0 ? res.json({ok: false, resp: errors}) : res.json({ok: true})
 
 
