@@ -17,24 +17,11 @@ var loreRouter = require('./routes/lore')
 
 const apiFunc = require('./functions/DndApiReq')
 
-// var forceSsl = function (req, res, next) {
-//   if(req.get('Host').substring(0, 9) !== 'localhost') {
-//     if (req.headers['x-forwarded-proto'] !== 'https') {
-//       return res.redirect(['https://', req.get('Host'), req.url].join(''));
-//     }
-//     return next();
-//   } else {
-//     return next();
-//   }
-// };
-
 var expressMongoDb = require('mongo-express-req');
 
-var mongoURL = 'mongodb+srv://dndgroupsuper:Mongo399049@cluster0.lufhz.mongodb.net/dndgroup?retryWrites=true&w=majority'
+var mongoURL = process.env.MONGO_URL
 
 var app = express();
-
-// app.use(forceSsl);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
