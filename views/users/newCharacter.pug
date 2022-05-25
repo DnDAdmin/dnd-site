@@ -204,7 +204,33 @@ block content
                 //- div(class='formItem col-4 col-md-2')
                 //-     p(class='formLabel' style='white-space: nowrap;') Experience Points:
                 //-     input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
-                    
+
+                section(class='row mt-2')
+                    div(class='col-4')
+                        div(class='row')
+                            div(class='formItem col-12')                    
+                                label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
+                                    span
+                                    input#porficiencyBonus(class='formTextInput countable' min=0 max=20 value=0 type='number' name='porficiencyBonus')
+                                    div(class='countVal row mx-auto')
+                                        div(class='col-3 px-0 countBut min' onclick='shiftNum(this, false)') -
+                                        div(class='col-6 px-0 text-center countNum') 0
+                                        div(class='col-3 px-0 countBut plus' onclick='shiftNum(this, true)') + 
+                            div(class='formItem col-12')                    
+                                label(class='formLabel w-100' style='white-space: nowrap;') Inspiration:
+                                    span
+                                    input#inspiration(class='formTextInput countable' min=0 max=20 value=0 type='number' name='inspiration')
+                                    div(class='countVal row mx-auto')
+                                        div(class='col-3 px-0 countBut min' onclick='shiftNum(this, false)') -
+                                        div(class='col-6 px-0 text-center countNum') 0
+                                        div(class='col-3 px-0 countBut plus' onclick='shiftNum(this, true)') + 
+                        
+
+
+                    div(class='col-4')
+                        p Hello!
+                    div(class='col-4')
+                        p Hello!
                     
                     
                     
@@ -345,6 +371,21 @@ block content
         document.getElementById('editor-container').children[0].tabIndex = 8;
 
         
+        function shiftNum(field, inc) {
+            let valText = field.parentNode.children[1]
+            let input = field.parentNode.parentNode.children[1]
+            let val = parseInt(input.value)
+            
+            inc ? val++ : val--
+
+            val < input.min ? val = input.min : null
+            val > input.max ? val = input.max : null
+
+            input.value = val
+            valText.innerHTML = val
+        }
+
+
         function checkPoints(field, inc) {
             var remText = document.getElementById('points')
             var valText = field.parentNode.children[1]
