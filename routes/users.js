@@ -382,8 +382,8 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
       gameSession.players = quest.players
     }
     events.sort(function(a, b){
-      if(a.date < b.date) { return -1; }
-      if(a.date > b.date) { return 1; }
+      if(a.date > b.date) { return -1; }
+      if(a.date < b.date) { return 1; }
       return 0;
     });
     res.render('users/dashboard', {

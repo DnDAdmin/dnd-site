@@ -396,7 +396,7 @@ function checkForErrors(exmpt, col) {
                     name.classList.add('error')
                     errors.push('Name required')
                 }
-            } else {
+            } else if(!name.hasAttribute('data-contact')) {
                 if(name.value.length < 3) {
                     name.classList.add('error')
                     errors.push('Name must be at least three characters')
@@ -508,7 +508,7 @@ function checkForErrors(exmpt, col) {
                     if(!re.test(String(email.value).toLowerCase())) {
                         email.classList.add('error')
                         errors.push('Email address invalid')
-                    } else {
+                    } else if(!email.hasAttribute('data-contact')) {
                         if(exmpt) {
                             if(exmpt.field.includes('email')) {
                                 var taken = await compDB('dndgroup', col, 'email', email.value, exmpt.id)
@@ -534,6 +534,7 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
+        
         if(selects.length > 0) {
             for(var i = 0; i < selects.length; i++) {
                 sel = selects[i]
@@ -651,6 +652,7 @@ function checkForErrors(exmpt, col) {
                 }
             }
         }
+
         
         if(errors.length > 0) {
             resolve(errors)

@@ -922,6 +922,9 @@
       border-radius: 0 0 2px 0;
       transform: rotate(35deg); */
     }
+    label.error > input[type='checkbox'] + *::after {
+      border-color: red;
+    }
     .checkBox.disabled::after {
       border-color: #6e6e6e;
     }

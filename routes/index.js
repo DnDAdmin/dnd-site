@@ -11,8 +11,8 @@ router.get('/', async function(req, res, next) {
   var events = await ops.findMany(req.db.db('dndgroup'), 'events', {})
 
   events.sort(function(a, b){
-    if(a.date < b.date) { return -1; }
-    if(a.date > b.date) { return 1; }
+    if(a.date > b.date) { return -1; }
+    if(a.date < b.date) { return 1; }
     return 0;
   });
 

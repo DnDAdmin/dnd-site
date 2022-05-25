@@ -20,16 +20,16 @@ block content
         p(class='text-right')
             span(style='color: red;') *
             |  = required
-        form#form(class='formMain mx-auto' action='/forms/contact'  method='post' enctype="multipart/form-data" onsubmit='return checkForErrors()')
+        form#form(class='formMain mx-auto' action='/forms/contact'  method='post' enctype="multipart/form-data" onsubmit='sendMessage(event); return false')
           div(class='formItem')
             p(class='formLabel') Your Name:
               span  *
-            input#name(class='formTextInput' type='text' data-req='true' name='name' placeholder='ext. John Doe' tabindex='1')
+            input#name(class='formTextInput' type='text' data-req='true' name='name' placeholder='ext. John Doe' data-contact=true tabindex='1')
           
           div(class='formItem')
             p(class='formLabel') Your Email:
               span  *
-            input#email(class='formTextInput' type='text' data-req='true' name='email' placeholder='ext. johndoe@site.com' tabindex='2')
+            input#email(class='formTextInput' type='text' data-req='true' name='email' data-contact=true placeholder='ext. johndoe@site.com' tabindex='2')
           
           div(class='formItem')
             p(class='formLabel') Message:
@@ -37,8 +37,15 @@ block content
             div#editor-container(data-name='details' data-placeHolder='Say what you need to say.' data-tab=3 class='richEdit')
             input#details(style='display: none;' data-req='true' type='text' name='details')
           
+          div(class='formItem')
+            p(class='formLabel') I Am Human:
+              span  *
+            label
+              input#human(class='formTextInput' type='checkbox' data-req='true' name='human' tabindex='4')
+              div(class='checkBox' data-tip='Please Check the Box')
+          
           div(class='formItem text-right my-4')
-            button#formButton(class='buttonMain button great col-12 col-md-4' onclick="sendMessage(); return false")
+            button#formButton(class='buttonMain button great col-12 col-md-4')
               div(class='buttonText mx-2')
                 p Submit
     
@@ -48,12 +55,24 @@ block content
 
   
   script.
-    async function sendMessage() {
+    document.getElementById('form').addEventListener('submit', async (event) => {
+      event.preventDefault()
+
+      const formMessage = document.getElementById('formMessage')
+      const human = document.getElementById('human')
+
       await updateInput()
-      var formMessage = document.getElementById('formMessage')
-      
-      var errors = await checkForErrors()
-      if(errors) {
+
+      let errors = await checkForErrors() || []
+
+      if(human.checked) {
+        human.parentNode.classList.remove('error')
+      } else {
+        errors.push('Please verify your humanity.')
+        human.parentNode.classList.add('error')
+      }
+
+      if(errors.length > 0) {
         formMessage.children[1].innerHTML = ''
         formMessage.classList.add('error')
         formMessage.children[0].innerHTML = 'Oops...'
@@ -67,6 +86,44 @@ block content
       } else {
         document.getElementById('form').submit()
       }
-    }
+    })
+
+
+
+    //- async function sendMessage(event) {
+    //-   event.preventDefault()
+    //-   await updateInput()
+
+    //-   const formMessage = document.getElementById('formMessage')
+    //-   const human = document.getElementById('human')
+      
+    //-   let errors = await checkForErrors() || []
+      
+    //-   if(errors.length < 0) {
+    //-     alert()
+    //-   }
+
+    //-   //- if(human.checked) {
+    //-   //-   errors.push('Please verify your humanity.')
+    //-   //-   human.parentNode.classList.add('error')
+    //-   //- } else {
+    //-   //-   human.parentNode.classList.remove('error')
+    //-   //- }
+
+    //-   //- if(errors.length > 0) {
+    //-   //-   formMessage.children[1].innerHTML = ''
+    //-   //-   formMessage.classList.add('error')
+    //-   //-   formMessage.children[0].innerHTML = 'Oops...'
+    //-   //-   for(var i = 0; i< errors.length; i ++) {
+    //-   //-       err = errors[i]
+    //-   //-       var li = document.createElement('LI')
+    //-   //-       li.innerHTML = err
+    //-   //-       formMessage.children[1].appendChild(li)
+    //-   //-   }
+    //-   //-   window.scrollTo(0, 0);
+    //-   //- } else {
+    //-   //-   document.getElementById('form').submit()
+    //-   //- }
+    //- }
 
 

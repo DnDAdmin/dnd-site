@@ -27,10 +27,20 @@ router.post('/contact', async function(req, res, next) {
     var form = new formidable.IncomingForm()
     form.parse(req, async function (err, fields, files) {
         var mailOptions = {
-            from: fields.name + ' - Via Site <' + fields.email + '>',
-            to: 'dndgroupsuper@gmail.com',
+            from: `${fields.name} - Via Site <admin@mysteryandmischief.com>`,
+            to: 'admin@mysteryandmischief.com',
             subject: 'Message From ' + fields.name,
-            html: '<p>From: ' + fields.name + ' (' + fields.email + ')<br>' + fields.details
+            html : `<div style="background-color: #aaa; padding: 12px; border-radius: 8px;">
+                    <p><strong>From:</strong> 
+                        ${fields.name} (${fields.email})
+                    </p>
+                    <hr>
+                    <div style="padding-left: 8px;">
+                        ${fields.details}
+                    </div>
+                    <hr style="margin-bottom: 2px;">
+                    <p style="font-size: 9pt;"><i>Do not reply to this email. To respond to sender, create a new message using the provided email above.</i></p>
+                </div>`
         };
         await sendMail(mailOptions)
         req.session.success = true
