@@ -1794,6 +1794,17 @@
     box-shadow: 0 0 4px black;
     transition: .25s;
   }
+
+.attribute {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+}
+.bonus-number {
+  position: absolute;
+  width:  100%;
+  height: 75%;
+}
    
 
 /* Used to help visualize layout while coding */
