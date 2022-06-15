@@ -1795,11 +1795,23 @@
     transition: .25s;
   }
 
+<<<<<<< HEAD
 .input-box {
   border: 2px solid #0a3350;
   border-radius: 4px;
   padding: .5rem;
   min-height: 8rem;
+=======
+.attribute {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+}
+.bonus-number {
+  position: absolute;
+  width:  100%;
+  height: 75%;
+>>>>>>> e26aa8aa66d490a6e68044db2fc4eeb1f3635408
 }
    
 
