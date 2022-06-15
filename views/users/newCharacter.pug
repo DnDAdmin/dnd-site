@@ -205,10 +205,81 @@ block content
                 //-     p(class='formLabel' style='white-space: nowrap;') Experience Points:
                 //-     input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
 
-                section(class='row mt-4')
-                    div(class='col-4')
+                section(class='row mt-4 p-3')
+                    div(class='col-12 col-md-6 col-xl-3 input-set py-2')
+                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                            label(class='formLabel w-100 mb-0 text-center' for='strength') Strength
+                            input#strengthAtt(class='attribute' type='number' name='strengthAtt' value=0)
+                            div(class='col-12 p-0')
+                                div(class='w-100')
+                                    span(class='point-cost')
+                                    input#strength(class='formTextInput countable' value=10 type='number' name='strength')
+                                    div(class='countVal row mx-auto' data-att='strength')
+                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                        div(class='col-6 px-0 text-center countNum') 10
+                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                            label(class='formLabel w-100 mb-0 text-center' for='strength') Dexterity
+                            input#dexterityAtt(class='attribute' type='number' name='dexterityAtt' value=0)
+                            div(class='col-12 p-0')
+                                div(class='w-100')
+                                    span(class='point-cost')
+                                    input#dexterity(class='formTextInput countable' value=10 type='number' name='dexterity')
+                                    div(class='countVal row mx-auto' data-att='dexterity')
+                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                        div(class='col-6 px-0 text-center countNum') 10
+                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                            label(class='formLabel w-100 mb-0 text-center' for='strength') Constitution
+                            input#constitutionAtt(class='attribute' type='number' name='constitutionAtt' value=0)
+                            div(class='col-12 p-0')
+                                div(class='w-100')
+                                    span(class='point-cost')
+                                    input#constitution(class='formTextInput countable' value=10 type='number' name='constitution')
+                                    div(class='countVal row mx-auto' data-att='constitution')
+                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                        div(class='col-6 px-0 text-center countNum') 10
+                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                            label(class='formLabel w-100 mb-0 text-center' for='strength') Intelligence
+                            input#intelligenceAtt(class='attribute' type='number' name='intelligenceAtt' value=0)
+                            div(class='col-12 p-0')
+                                div(class='w-100')
+                                    span(class='point-cost')
+                                    input#intelligence(class='formTextInput countable' value=10 type='number' name='intelligence')
+                                    div(class='countVal row mx-auto' data-att='intelligence')
+                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                        div(class='col-6 px-0 text-center countNum') 10
+                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                            label(class='formLabel w-100 mb-0 text-center' for='strength') Wisdom
+                            input#wisdomAtt(class='attribute' type='number' name='wisdomAtt' value=0)
+                            div(class='col-12 p-0')
+                                div(class='w-100')
+                                    span(class='point-cost')
+                                    input#wisdom(class='formTextInput countable' value=10 type='number' name='wisdom')
+                                    div(class='countVal row mx-auto' data-att='wisdom')
+                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                        div(class='col-6 px-0 text-center countNum') 10
+                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                            label(class='formLabel w-100 mb-0 text-center' for='strength') Charisma
+                            input#charismaAtt(class='attribute' type='number' name='charismaAtt' value=0)
+                            div(class='col-12 p-0')
+                                div(class='w-100')
+                                    span(class='point-cost')
+                                    input#charisma(class='formTextInput countable' value=10 type='number' name='charisma')
+                                    div(class='countVal row mx-auto' data-att='charisma')
+                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                        div(class='col-6 px-0 text-center countNum') 10
+                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
                         div(class='row')
-                            div(class='formItem col-12')                    
+                            div(class='col-12 mt-1 mt-md-5 pointCounter')
+                                p Remaining points: 
+                                    span#points 20
+                    div(class='col-12 col-md-6 col-xl-3')
+                        div(class='row')
+                            div(class='formItem col-12 mt-0')                    
                                 label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
                                     span
                                     input#porficiencyBonus(class='formTextInput countable' min=0 max=20 value=0 type='number' name='porficiencyBonus')
@@ -224,32 +295,113 @@ block content
                                         div(class='col-3 px-0 countBut min' onclick='shiftNum(this, false)') -
                                         div(class='col-6 px-0 text-center countNum') 0
                                         div(class='col-3 px-0 countBut plus' onclick='shiftNum(this, true)') + 
-                        
-                        div(class='row w-100 mx-auto mt-2 input-box')
-                            label(class='formLabel w-100 mb-0' for='strength') Strength:
-                            div(class='col-5 p-0')
-                                div(class='w-100')
-                                    span
-                                    input#strength(class='formTextInput countable' min=0 max=20 value=0 type='number' name='strength')
-                                    div(class='countVal row mx-auto')
-                                        div(class='col-3 px-0 countBut min' onclick='shiftNum(this, false)') -
-                                        div(class='col-6 px-0 text-center countNum') 0
-                                        div(class='col-3 px-0 countBut plus' onclick='shiftNum(this, true)') + 
-                            div(class='col-7 p-0')
-                                label(class='formLabel') Saving Throw
-
-
-                        div(class='row')
-                            div(class='col-8')
-                                div(class='attribute')
-                                    input(type='number' class='bonus-number')
+                        div(class='row mt-3')
+                            div(class='col-12 ')
+                                div(class='input-set p-3')
+                                    p(class='formLabel text-center mb-2') Saving Throws
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Strength
+                                        input(class='formNumInput small-input' type='number' name='strengthSave')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Dexterity
+                                        input(class='formNumInput small-input' type='number' name='dexteritySave')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Constitution
+                                        input(class='formNumInput small-input' type='number' name='constitutionSave')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Intelligence
+                                        input(class='formNumInput small-input' type='number' name='intelligenceSave')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Wisdom
+                                        input(class='formNumInput small-input' type='number' name='wisdomSave')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Charisma
+                                        input(class='formNumInput small-input' type='number' name='charismaSave')
+                        div(class='row mt-3')
+                            div(class='col-12 ')
+                                div(class='input-set p-3')
+                                    p(class='formLabel text-center mb-2') Skills
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Acrobatics
+                                            span(class='faded')  (Dex)
+                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        
+                                        
                                     
                         
 
 
-                    div(class='col-4')
+                    div(class='col-12 col-md-6 col-xl-3')
                         p Hello again!
-                    div(class='col-4')
+                    div(class='col-12 col-md-6 col-xl-3')
                         p Hello again!
                     
                     
@@ -282,60 +434,57 @@ block content
                             div(data-name='flaws' data-placeHolder="How will you mess things up, I wonder?" class='richEdit')
                             input#flaws(style='display: none;' name='flaws' type='text' value=fields.flaws)
                 
-                div(class='row')
-                    div(class='formItem col-6 col-md-3 col-lg-2')                    
-                        label(class='formLabel w-100' style='white-space: nowrap;') Strength:
-                            span
-                            input#strength(class='formTextInput countable countPool' type='number' name='strength')
-                            div(class='countVal row mx-auto')
-                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                                div(class='col-6 px-0 text-center countNum') 10
-                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-6 col-md-3 col-lg-2')
-                        label(class='formLabel w-100' style='white-space: nowrap;') Dexterity:
-                            span
-                            input#dexterity(class='formTextInput countable countPool' type='number' name='dexterity')
-                            div(class='countVal row mx-auto')
-                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                                div(class='col-6 px-0 text-center countNum') 10
-                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-6 col-md-3 col-lg-2')
-                        label(class='formLabel w-100' style='white-space: nowrap;') Constitution:
-                            span
-                            input#constitution(class='formTextInput countable countPool' type='number' name='constitution')
-                            div(class='countVal row mx-auto')
-                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                                div(class='col-6 px-0 text-center countNum') 10
-                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-6 col-md-3 col-lg-2')
-                        label(class='formLabel w-100' style='white-space: nowrap;') Intelligence:
-                            span
-                            input#intelligence(class='formTextInput countable countPool' type='number' name='intelligence')
-                            div(class='countVal row mx-auto')
-                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                                div(class='col-6 px-0 text-center countNum') 10
-                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-6 col-md-3 col-lg-2')
-                        label(class='formLabel w-100' style='white-space: nowrap;') Wisdom:
-                            span
-                            input#wisdom(class='formTextInput countable countPool' type='number' name='wisdom')
-                            div(class='countVal row mx-auto')
-                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                                div(class='col-6 px-0 text-center countNum') 10
-                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                    div(class='formItem col-6 col-md-3 col-lg-2')
-                        label(class='formLabel w-100' style='white-space: nowrap;') Charisma:
-                            span
-                            input#charisma(class='formTextInput countable countPool' type='number' name='charisma')
-                            div(class='countVal row mx-auto')
-                                div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                                div(class='col-6 px-0 text-center countNum') 10
-                                div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
+                //- div(class='row')
+                //-     div(class='formItem col-6 col-md-3 col-lg-2')                    
+                //-         label(class='formLabel w-100' style='white-space: nowrap;') Strength:
+                //-             span
+                //-             input#strength(class='formTextInput countable countPool' type='number' name='strength')
+                //-             div(class='countVal row mx-auto')
+                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                //-                 div(class='col-6 px-0 text-center countNum') 10
+                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
+                //-     div(class='formItem col-6 col-md-3 col-lg-2')
+                //-         label(class='formLabel w-100' style='white-space: nowrap;') Dexterity:
+                //-             span
+                //-             input#dexterity(class='formTextInput countable countPool' type='number' name='dexterity')
+                //-             div(class='countVal row mx-auto')
+                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                //-                 div(class='col-6 px-0 text-center countNum') 10
+                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
+                //-     div(class='formItem col-6 col-md-3 col-lg-2')
+                //-         label(class='formLabel w-100' style='white-space: nowrap;') Constitution:
+                //-             span
+                //-             input#constitution(class='formTextInput countable countPool' type='number' name='constitution')
+                //-             div(class='countVal row mx-auto')
+                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                //-                 div(class='col-6 px-0 text-center countNum') 10
+                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
+                //-     div(class='formItem col-6 col-md-3 col-lg-2')
+                //-         label(class='formLabel w-100' style='white-space: nowrap;') Intelligence:
+                //-             span
+                //-             input#intelligence(class='formTextInput countable countPool' type='number' name='intelligence')
+                //-             div(class='countVal row mx-auto')
+                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                //-                 div(class='col-6 px-0 text-center countNum') 10
+                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
+                //-     div(class='formItem col-6 col-md-3 col-lg-2')
+                //-         label(class='formLabel w-100' style='white-space: nowrap;') Wisdom:
+                //-             span
+                //-             input#wisdom(class='formTextInput countable countPool' type='number' name='wisdom')
+                //-             div(class='countVal row mx-auto')
+                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                //-                 div(class='col-6 px-0 text-center countNum') 10
+                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
+                //-     div(class='formItem col-6 col-md-3 col-lg-2')
+                //-         label(class='formLabel w-100' style='white-space: nowrap;') Charisma:
+                //-             span
+                //-             input#charisma(class='formTextInput countable countPool' type='number' name='charisma')
+                //-             div(class='countVal row mx-auto')
+                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
+                //-                 div(class='col-6 px-0 text-center countNum') 10
+                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
 
-                div(class='row')
-                    div(class='col-12 mt-1 pointCounter')
-                        p Remaining points: 
-                            span#points 20
+                
                 
                 div(class='row')
                     div(class='formItem col-6 col-md-3 col-lg-2')
@@ -398,11 +547,23 @@ block content
             
             inc ? val++ : val--
 
-            val < input.min ? val = input.min : null
-            val > input.max ? val = input.max : null
+            input.min ? val < input.min ? val = input.min : null : null
+            input.max ? val > input.max ? val = input.max : null : null
 
             input.value = val
             valText.innerHTML = val
+        }
+
+        function countAttribute(button) {
+            const att = document.getElementById(`${button.parentNode.getAttribute('data-att')}Att`)
+            const val = button.parentNode.parentNode.children[1].value
+
+            let math = (val - 10) / 2
+
+            Number.isInteger(math) ? math > 0 ? att.value = `+${math}` : att.value = math : null
+
+            //- console.log(math)
+
         }
 
 
@@ -428,22 +589,22 @@ block content
             }
 
             if(val > 13) {
-                costText.innerHTML = ' +1'
+                costText.innerHTML = 'Cost: +1'
                 change = 2
                 if(val > 16) {
-                    costText.innerHTML = ' +2'
+                    costText.innerHTML = 'Cost: +2'
                     change = 3
                     if(val > 19) {
-                        costText.innerHTML = ' +3'
+                        costText.innerHTML = 'Cost: +3'
                         change = 4
                         if(val > 22) {
-                            costText.innerHTML = ' +4'
+                            costText.innerHTML = 'Cost: +4'
                             change = 5
                             if(val > 25) {
-                                costText.innerHTML = ' +5'
+                                costText.innerHTML = 'Cost: +5'
                                 change = 6
                                 if(val > 28) {
-                                    costText.innerHTML = ' +6'
+                                    costText.innerHTML = 'Cost: +6'
                                     change = 7
                                 } else {
                                     if(val == 28) {
@@ -492,6 +653,9 @@ block content
                 costText.innerHTML = ''
             }
             
+            //- Prevents increases of points above 80
+            //- Prevents decreses of points below 0;
+            //- Remove if checks if you want to go beyond those limits.
             if(inc) {
                 if(80 - (count + change) > -1) {
                     count += change

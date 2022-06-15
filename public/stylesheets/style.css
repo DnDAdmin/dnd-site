@@ -820,6 +820,12 @@
     color: white;
     padding-left: 1rem;
   }
+  .formNumInput:focus {
+    box-shadow: none;
+    outline: none;
+    background-color: #eee;
+    color: black;
+  }
   .formNumInput.error {
     border-color: red;
   }
@@ -1070,7 +1076,7 @@
     .countVal {
         position: relative;
         width: 100%;
-        height: 30px;
+        height: 2rem;
         border: 1px solid white;
         text-align: center;
         color: white;
@@ -1796,20 +1802,67 @@
   }
 
 .input-box {
-  border: 2px solid #0a3350;
+  /* border: 2px solid #0a3350; */
   border-radius: 4px;
   padding: .5rem;
   min-height: 8rem;
+  background-color: #444;
+}
+.faded {
+  opacity: 40%;
+}
+.point-cost {
+  font-size: 8pt;
+  position: absolute;
+  bottom: 2rem;
+}
+.input-set {
+  background-color: #333;
+  border-radius: 4px;
 }
 .attribute {
   position: relative;
   width: 100%;
-  padding-bottom: 100%;
+  padding: 8px 0 8px 0;
+  margin-bottom: .5rem;
+  text-align: center;
+  -moz-appearance: textfield;
+  line-height: 0;
+  font-size: 20pt;
+  background: none;
+  color: white;
+  border: none;
+  outline: none;
+  pointer-events: none;
+}
+.attribute::-webkit-outer-spin-button, .attribute::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .bonus-number {
   position: absolute;
   width:  100%;
   height: 75%;
+}
+.small-label {
+  font-size: 10pt;
+  margin: 0;
+}
+.small-input {
+  position: absolute;
+  height: 1.5rem;
+  font-size: 8pt;
+  width: 30%;
+  right: .25rem;
+  top: .25rem;
+}
+.input-back {
+  position: relative;
+  background-color: #444;
+  padding: .25rem;
+  padding-left: .5rem;
+  border-radius: 4px;
+  margin-bottom: .25rem;
 }
 
 /* Contact form human checker */
