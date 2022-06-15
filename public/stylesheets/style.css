@@ -1794,6 +1794,55 @@
     box-shadow: 0 0 4px black;
     transition: .25s;
   }
+
+.input-box {
+  border: 2px solid #0a3350;
+  border-radius: 4px;
+  padding: .5rem;
+  min-height: 8rem;
+}
+.attribute {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+}
+.bonus-number {
+  position: absolute;
+  width:  100%;
+  height: 75%;
+}
+
+/* Contact form human checker */
+.human-check {
+  position: relative;
+  height: 1rem;
+  width: 1rem;
+  border: 2px solid #ffffff95;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.error .human-check {
+  border-color: red;
+}
+.human-check::after {
+  content: "";
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 1px;
+  background-color: #ffffff95;
+  display: block;
+  position: absolute;
+  opacity: 0;
+  transition: .25s;
+}
+.human-check.human::after {
+  opacity: 1;
+  transition: .25s;
+}
+/* ^^^ Contact form human checker */
+
    
 
 /* Used to help visualize layout while coding */

@@ -205,7 +205,7 @@ block content
                 //-     p(class='formLabel' style='white-space: nowrap;') Experience Points:
                 //-     input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
 
-                section(class='row mt-2')
+                section(class='row mt-4')
                     div(class='col-4')
                         div(class='row')
                             div(class='formItem col-12')                    
@@ -225,12 +225,32 @@ block content
                                         div(class='col-6 px-0 text-center countNum') 0
                                         div(class='col-3 px-0 countBut plus' onclick='shiftNum(this, true)') + 
                         
+                        div(class='row w-100 mx-auto mt-2 input-box')
+                            label(class='formLabel w-100 mb-0' for='strength') Strength:
+                            div(class='col-5 p-0')
+                                div(class='w-100')
+                                    span
+                                    input#strength(class='formTextInput countable' min=0 max=20 value=0 type='number' name='strength')
+                                    div(class='countVal row mx-auto')
+                                        div(class='col-3 px-0 countBut min' onclick='shiftNum(this, false)') -
+                                        div(class='col-6 px-0 text-center countNum') 0
+                                        div(class='col-3 px-0 countBut plus' onclick='shiftNum(this, true)') + 
+                            div(class='col-7 p-0')
+                                label(class='formLabel') Saving Throw
+
+
+                        div(class='row')
+                            div(class='col-8')
+                                div(class='attribute')
+                                    input(type='number' class='bonus-number')
+                                    
+                        
 
 
                     div(class='col-4')
-                        p Hello!
+                        p Hello again!
                     div(class='col-4')
-                        p Hello!
+                        p Hello again!
                     
                     
                     
