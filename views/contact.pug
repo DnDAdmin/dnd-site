@@ -37,12 +37,18 @@ block content
             div#editor-container(data-name='details' data-placeHolder='Say what you need to say.' data-tab=3 class='richEdit')
             input#details(style='display: none;' data-req='true' type='text' name='details')
           
+          //- A lot of spam comes through the contact form, in an attempt to elimate that I created this human checker.
+          //- The idea behind it is that the bots that go through the site are likely searching for input tags, if it finds a check box it checks it.
+          //-   This button is a div that immitates a check box, so bots shouldn't notice it.
+          //-   But if it doesn't have the "human" class the form will not submit.
           div(class='formItem')
             p(class='formLabel') I Am Human:
               span  *
-            label
-              input#human(class='formTextInput' type='checkbox' data-req='true' name='human' tabindex='4')
-              div(class='checkBox' data-tip='Please Check the Box')
+            div#human(class='human-check' onclick='toggleHuman(this)')
+            script.
+              function toggleHuman(but) {
+                but.classList.toggle('human')
+              }
           
           div(class='formItem text-right my-4')
             button#formButton(class='buttonMain button great col-12 col-md-4')
@@ -65,7 +71,7 @@ block content
 
       let errors = await checkForErrors() || []
 
-      if(human.checked) {
+      if(human.classList.contains('human')) {
         human.parentNode.classList.remove('error')
       } else {
         errors.push('Please verify your humanity.')
