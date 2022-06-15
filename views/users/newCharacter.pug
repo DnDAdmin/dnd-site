@@ -81,8 +81,8 @@ block head
         
 
 block content
-    div(class='row mt-5')
-        form#charForm(class='col-11 col-md-12 mx-auto' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
+    div(class='row mt-1 mt-md-5')
+        form#charForm(class='col-12 p-0 mx-auto' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
             div(class='siteCont')
                 h2(class='text-center') New Character
                 hr
@@ -133,7 +133,7 @@ block content
                                                 path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                                 path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                                     //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
-                                    select#class(name='class' class='formSelInput' onchange='unCheckBox()')
+                                    select#class(name='clas' class='formSelInput' onchange='unCheckBox()')
                                         if fields.class
                                             for clas in classes.baseClasses
                                                 if clas.name == fields.class
@@ -205,9 +205,9 @@ block content
                 //-     p(class='formLabel' style='white-space: nowrap;') Experience Points:
                 //-     input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
 
-                section(class='row mt-4 p-3')
-                    div(class='col-12 col-md-6 col-xl-3 input-set py-2')
-                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                section(class='row mt-4 p-3 justify-content-between')
+                    div(class='col-12 col-md-4 col-xl-2 input-set py-2')
+                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
                             label(class='formLabel w-100 mb-0 text-center' for='strength') Strength
                             input#strengthAtt(class='attribute' type='number' name='strengthAtt' value=0)
                             div(class='col-12 p-0')
@@ -218,7 +218,7 @@ block content
                                         div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
                                         div(class='col-6 px-0 text-center countNum') 10
                                         div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
                             label(class='formLabel w-100 mb-0 text-center' for='strength') Dexterity
                             input#dexterityAtt(class='attribute' type='number' name='dexterityAtt' value=0)
                             div(class='col-12 p-0')
@@ -229,7 +229,7 @@ block content
                                         div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
                                         div(class='col-6 px-0 text-center countNum') 10
                                         div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
                             label(class='formLabel w-100 mb-0 text-center' for='strength') Constitution
                             input#constitutionAtt(class='attribute' type='number' name='constitutionAtt' value=0)
                             div(class='col-12 p-0')
@@ -240,7 +240,7 @@ block content
                                         div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
                                         div(class='col-6 px-0 text-center countNum') 10
                                         div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
                             label(class='formLabel w-100 mb-0 text-center' for='strength') Intelligence
                             input#intelligenceAtt(class='attribute' type='number' name='intelligenceAtt' value=0)
                             div(class='col-12 p-0')
@@ -251,7 +251,7 @@ block content
                                         div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
                                         div(class='col-6 px-0 text-center countNum') 10
                                         div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
                             label(class='formLabel w-100 mb-0 text-center' for='strength') Wisdom
                             input#wisdomAtt(class='attribute' type='number' name='wisdomAtt' value=0)
                             div(class='col-12 p-0')
@@ -262,7 +262,7 @@ block content
                                         div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
                                         div(class='col-6 px-0 text-center countNum') 10
                                         div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-5 input-box')
+                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
                             label(class='formLabel w-100 mb-0 text-center' for='strength') Charisma
                             input#charismaAtt(class='attribute' type='number' name='charismaAtt' value=0)
                             div(class='col-12 p-0')
@@ -277,12 +277,12 @@ block content
                             div(class='col-12 mt-1 mt-md-5 pointCounter')
                                 p Remaining points: 
                                     span#points 20
-                    div(class='col-12 col-md-6 col-xl-3')
+                    div(class='col-12 col-md-6 col-xl-3 mt-3 mt-md-0')
                         div(class='row')
                             div(class='formItem col-12 mt-0')                    
                                 label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
                                     span
-                                    input#porficiencyBonus(class='formTextInput countable' min=0 max=20 value=0 type='number' name='porficiencyBonus')
+                                    input#porficiencyBonus(class='formTextInput countable' min=0 max=20 value=0 type='number' name='proficiencyBonus')
                                     div(class='countVal row mx-auto')
                                         div(class='col-3 px-0 countBut min' onclick='shiftNum(this, false)') -
                                         div(class='col-6 px-0 text-center countNum') 0
@@ -324,85 +324,120 @@ block content
                                     div(class='input-item input-back')
                                         label(class='small-label mr-4') Acrobatics
                                             span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        input(class='formNumInput small-input' type='number' name='skillAcrobatics')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Animal Handeling
+                                            span(class='faded')  (Wis)
+                                        input(class='formNumInput small-input' type='number' name='skillAnimalHandeling')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Arcana
+                                            span(class='faded')  (Int)
+                                        input(class='formNumInput small-input' type='number' name='skillArcana')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Athletics
+                                            span(class='faded')  (Str)
+                                        input(class='formNumInput small-input' type='number' name='skillAthletics')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Deception
+                                            span(class='faded')  (Cha)
+                                        input(class='formNumInput small-input' type='number' name='skillDeception')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') History
+                                            span(class='faded')  (Int)
+                                        input(class='formNumInput small-input' type='number' name='skillHistory')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Insight
+                                            span(class='faded')  (Wis)
+                                        input(class='formNumInput small-input' type='number' name='skillInsight')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Intimidation
+                                            span(class='faded')  (Cha)
+                                        input(class='formNumInput small-input' type='number' name='skillIntimidation')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Investigation
+                                            span(class='faded')  (Int)
+                                        input(class='formNumInput small-input' type='number' name='skillInvestigation')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Medicine
+                                            span(class='faded')  (Wis)
+                                        input(class='formNumInput small-input' type='number' name='skillMedicine')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Nature
+                                            span(class='faded')  (Int)
+                                        input(class='formNumInput small-input' type='number' name='skillNature')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Perception
+                                            span(class='faded')  (Wis)
+                                        input(class='formNumInput small-input' type='number' name='skillPerception')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Perfomance
+                                            span(class='faded')  (Cha)
+                                        input(class='formNumInput small-input' type='number' name='skillPerformance')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Persuasion
+                                            span(class='faded')  (Cha)
+                                        input(class='formNumInput small-input' type='number' name='skillPersuasion')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Religion
+                                            span(class='faded')  (Int)
+                                        input(class='formNumInput small-input' type='number' name='skillReligion')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
+                                        label(class='small-label mr-4') Sleight of Hand
                                             span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        input(class='formNumInput small-input' type='number' name='skillSleightOfHand')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
+                                        label(class='small-label mr-4') Stealth
                                             span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        input(class='formNumInput small-input' type='number' name='skillStealth')
                                     div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' name='acrobaticsSkill')
+                                        label(class='small-label mr-4') Survival
+                                            span(class='faded')  (Wis)
+                                        input(class='formNumInput small-input' type='number' name='skillSurvival')
                                         
                                         
                                     
                         
 
 
-                    div(class='col-12 col-md-6 col-xl-3')
-                        p Hello again!
-                    div(class='col-12 col-md-6 col-xl-3')
-                        p Hello again!
+                    div(class='col-12 mx-auto col-xl-6 mt-3 mt-xl-0')
+                        div(class='row input-set p-3 justify-content-between')
+                            div(class='col-4')
+                                div(class='input-item input-box text-center')
+                                    input(class='large-num-input' type='number' name='armourClass' placeholder=0)
+                                    label(class='formLabel text-center') Armour Class
+                            div(class='col-4')    
+                                div(class='input-item input-box text-center')
+                                    input(class='large-num-input' type='number' name='initiative' placeholder=0)
+                                    label(class='formLabel text-center') Initiative
+                            div(class='col-4')    
+                                div(class='input-item input-box text-center')
+                                    input(class='large-num-input' type='number' name='speed' placeholder=0)
+                                    label(class='formLabel text-center') Speed
+                            div(class='col-4 mt-2 ml-auto')
+                                div(class='input-item input-back')
+                                    input(class='formNumInput small-input' type='number' name='maxHitPoints' placeholder=0)
+                                    label(class='formLabel  small-label') Max Hit Points
+                            div(class='col-12 ')
+                                div(class='input-item input-box text-center')
+                                    input(class='large-num-input' type='number' name='hitPoints' placeholder=0)
+                                    label(class='formLabel text-center') Current Hit Points
+                            div(class='col-12 mb-2')
+                                div(class='input-item input-box text-center mt-2')
+                                    input(class='large-num-input' type='number' name='temporaryHitPoints' placeholder=0)
+                                    label(class='formLabel text-center') Temporary Hit Points
+                            div(class='row w-100 mx-auto')
+                                div(class='col-5 mt-2')
+                                    div(class='input-item input-back')
+                                        input(class='formNumInput small-input' type='number' name='totalHitDice' placeholder=0)
+                                        label(class='formLabel  small-label') Total Hit Dice
+                            div(class='col-5')
+                                div(class='input-item input-box text-center')
+                                    input(class='large-num-input' type='number' name='hitDice' placeholder=0)
+                                    label(class='formLabel text-center') Hit Dice
+                            div(class='col-5')
+                                div(class='input-item input-box text-center')
+                                    input(class='large-num-input' type='number' name='deathSaves' placeholder=0)
+                                    label(class='formLabel text-center') Death Saves
                     
                     
                     
@@ -486,14 +521,14 @@ block content
 
                 
                 
-                div(class='row')
-                    div(class='formItem col-6 col-md-3 col-lg-2')
-                        label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
-                            input#proficiencyBonus(class='formTextInput countable' type='number' name='proficiencyBonus')
-                            div(class='countVal row mx-auto')
-                                div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                                div(class='col-6 px-0 text-center countNum') 0
-                                div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
+                //- div(class='row')
+                //-     div(class='formItem col-6 col-md-3 col-lg-2')
+                //-         label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
+                //-             input#proficiencyBonus(class='formTextInput countable' type='number' name='proficiencyBonus')
+                //-             div(class='countVal row mx-auto')
+                //-                 div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
+                //-                 div(class='col-6 px-0 text-center countNum') 0
+                //-                 div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                                 
             
                 div(class='row')
@@ -504,7 +539,7 @@ block content
                             input#notes(style='display: none;' name='notes' type='text' value=fields.notes)
             
                 div(class='formItem text-right my-4' )
-                    button#formButton(class='buttonMain button great col-12 col-md-3' onclick="updateDataBase(); return false;" )
+                    button#formButton(class='buttonMain button great col-12 col-md-3' onclick='updateInput()')
                         div(class='buttonText')
                             img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
                             p#saveText Next

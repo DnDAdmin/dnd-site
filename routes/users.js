@@ -533,39 +533,56 @@ router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res
 
 // Creates new character
 router.post('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
+  const charSchema = require('../functions/charShema')
+  const Character = require('../functions/charModel')
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
-    var charId = new ObjectId()
-    
-    fields.user = ObjectId(user._id)
-    fields._id = charId
-    fields.wealth = 1000
-    fields.maxWeight = 100
-    fields.equipment = {}
+    fields._id = new ObjectId()
+      
+    let sorted = sortObj(fields)
 
-    if(files.artWork.size > 0) {
-      var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
-      var oldpath = fs.readFileSync(files.artWork.filepath)
-      var data = await ops.uploadFile(s3User, 'dnd-character-images', charId + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
-      if(data) {
-          console.log('Profile image uploaded.')
-          fields.artWork = data.Location
-          fields.artWorkKey = data.Key
-      }
+    function sortObj(obj) {
+      return Object.keys(obj).sort().reduce(function (result, key) {
+        result[key] = obj[key];
+        return result;
+      }, {});
     }
 
-    await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [fields])
-
-    req.session.message = 'Character Created!'
-    req.session.sub = true
-
-    res.redirect('/users/newcharacter/shop/char=' + charId + '/user=' + req.params.id)
+    const character = new Character(new charSchema(sorted))
     
-    // res.redirect('/users/dashboard/user=' + req.params.id)
+    res.send(character)
+    
+    // var charId = new ObjectId()
+    
+    // fields.user = ObjectId(user._id)
+    // fields._id = charId
+    // fields.wealth = 1000
+    // fields.maxWeight = 100
+    // fields.equipment = {}
 
-    // res.send([fields, files])
+    // if(files.artWork.size > 0) {
+    //   var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+    //   var oldpath = fs.readFileSync(files.artWork.filepath)
+    //   var data = await ops.uploadFile(s3User, 'dnd-character-images', charId + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
+    //   if(data) {
+    //       console.log('Profile image uploaded.')
+    //       fields.artWork = data.Location
+    //       fields.artWorkKey = data.Key
+    //   }
+    // }
+
+    // await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [fields])
+
+    // req.session.message = 'Character Created!'
+    // req.session.sub = true
+
+    // res.redirect('/users/newcharacter/shop/char=' + charId + '/user=' + req.params.id)
+    
+    // // res.redirect('/users/dashboard/user=' + req.params.id)
+
+    // // res.send([fields, files])
 
   })
 

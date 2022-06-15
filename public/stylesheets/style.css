@@ -1805,7 +1805,7 @@
   /* border: 2px solid #0a3350; */
   border-radius: 4px;
   padding: .5rem;
-  min-height: 8rem;
+  /* min-height: 8rem; */
   background-color: #444;
 }
 .faded {
@@ -1835,9 +1835,23 @@
   outline: none;
   pointer-events: none;
 }
-.attribute::-webkit-outer-spin-button, .attribute::-webkit-inner-spin-button {
+.attribute::-webkit-outer-spin-button, .attribute::-webkit-inner-spin-button, .large-num-input::-webkit-outer-spin-button, .large-num-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+.large-num-input {
+  position: relative;
+  width: 100%;
+  padding: 1rem 0 1rem 0;
+  margin-bottom: .5rem;
+  text-align: center;
+  -moz-appearance: textfield;
+  line-height: 0;
+  font-size: 20pt;
+  background: #555;
+  color: white;
+  border: 2px solid white;
+  outline: none;
 }
 .bonus-number {
   position: absolute;
@@ -1845,22 +1859,30 @@
   height: 75%;
 }
 .small-label {
-  font-size: 10pt;
+  font-size: 8pt;
   margin: 0;
+  line-height: 0;
 }
 .small-input {
   position: absolute;
-  height: 1.5rem;
+  height: 1.25rem;
   font-size: 8pt;
-  width: 30%;
+  width: 2rem;
   right: .25rem;
   top: .25rem;
+  padding-left: 2px;
+  text-align: end;
+  background-color: #555;
+  -moz-appearance: textfield;
+}
+.small-input::-webkit-outer-spin-button, .small-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .input-back {
   position: relative;
   background-color: #444;
-  padding: .25rem;
-  padding-left: .5rem;
+  padding: 0 .1rem .2rem .5rem;
   border-radius: 4px;
   margin-bottom: .25rem;
 }
