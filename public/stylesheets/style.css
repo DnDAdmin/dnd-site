@@ -1671,7 +1671,19 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, calc(-.4rem - 50%));
+    text-align: center;
+    border-bottom: 1px solid white;
+  }
+  .charInfoNum span {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    bottom: -.6rem;
+  }
+  .saving-throws {
+    font-size: 10pt;
   }
   .charInfoText {
     /* background-color: rgba(255, 255, 255, 0.856); */
@@ -1680,6 +1692,12 @@
     padding: 8px;
     font-size: 8pt;
     border-radius: 2px;
+  }
+  .charInfoText p {
+    margin: 0;
+  }
+  .currency {
+    font-size: 9pt;
   }
 
 /* ---VVV--- SHOP ---VVV--- */
@@ -1811,6 +1829,12 @@
 .faded {
   opacity: 40%;
 }
+.faded.skill {
+  position: absolute;
+  right: 15px;
+  font-size: 8pt;
+  top: 4px;
+}
 .point-cost {
   font-size: 8pt;
   position: absolute;
@@ -1819,6 +1843,7 @@
 .input-set {
   background-color: #333;
   border-radius: 4px;
+  padding-bottom: 8px;
 }
 .attribute {
   position: relative;

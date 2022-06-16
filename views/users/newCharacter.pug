@@ -103,102 +103,100 @@ block content
                             p#fileName File
 
                     div(class='col-md-6 col-lg-8')
-                        div(class='formItem w-100')
-                            p(class='formLabel') Character Name:
-                            input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
-                        div(class='formItem w-100')
-                            p(class='formLabel') Race:  
-                                a(href='https://www.wargamer.com/dnd/races' target='_blank' data-tip='View Info on Races' style='color: white;')
-                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
-                                        path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
-                                        path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
-                            //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
-                            select#race(name='race' class='formSelInput')
-                                if fields.race
-                                    for race in races.pureBlood
-                                        if race == fields.race
-                                            option(selected value=race)= race
-                                        else
+                        div(class='input-set p-3 pt-0')
+                            div(class='row')
+                                div(class='col-9')
+                                    div(class='formItem mt-0 w-100')
+                                        p(class='formLabel') Character Name:
+                                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
+                                div(class='col-3 mt-auto')
+                                    div(class='input-item input-back')
+                                        label(class='small-label mr-4') Level
+                                        input(class='formNumInput small-input' type='number' value=0 name='level')
+                            div(class='formItem w-100')
+                                p(class='formLabel') Race:  
+                                    a(href='https://www.wargamer.com/dnd/races' target='_blank' data-tip='View Info on Races' style='color: white;')
+                                        svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                            path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                            path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                                //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
+                                select#race(name='race' class='formSelInput')
+                                    if fields.race
+                                        for race in races.pureBlood
+                                            if race == fields.race
+                                                option(selected value=race)= race
+                                            else
+                                                option(value=race)= race
+                                    else
+                                        option(selected disabled) --- Select Race ---
+                                        for race in races.pureBlood
                                             option(value=race)= race
-                                else
-                                    option(selected disabled) --- Select Race ---
-                                    for race in races.pureBlood
-                                        option(value=race)= race
-                        div(class='w-100')
-                            div(class='row mx-auto')
-                                div(class='formItem col-8 col-lg-10 pl-0')
-                                    p(class='formLabel') Class:  
-                                        a(href='https://www.wargamer.com/dnd/classes' target='_blank' data-tip='View Info on Classes' style='color: white;')
-                                            svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
-                                                path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
-                                                path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
-                                    //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
-                                    select#class(name='clas' class='formSelInput' onchange='unCheckBox()')
-                                        if fields.class
-                                            for clas in classes.baseClasses
-                                                if clas.name == fields.class
-                                                    option(selected value=clas.name)= clas.name
-                                                else
+                            div(class='w-100')
+                                div(class='row mx-auto')
+                                    div(class='formItem col-8 col-lg-10 pl-0')
+                                        p(class='formLabel') Class:  
+                                            a(href='https://www.wargamer.com/dnd/classes' target='_blank' data-tip='View Info on Classes' style='color: white;')
+                                                svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                                    path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                                    path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                                        //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
+                                        select#class(name='clas' class='formSelInput' onchange='unCheckBox()')
+                                            if fields.class
+                                                for clas in classes.baseClasses
+                                                    if clas.name == fields.class
+                                                        option(selected value=clas.name)= clas.name
+                                                    else
+                                                        option(value=clas.name)= clas.name
+                                            else
+                                                option(selected disabled value=null) --- Select Class ---
+                                                for clas in classes.baseClasses
                                                     option(value=clas.name)= clas.name
-                                        else
-                                            option(selected disabled value=null) --- Select Class ---
-                                            for clas in classes.baseClasses
-                                                option(value=clas.name)= clas.name
-                                div(class='formItem col-4 col-lg-2 text-center')
-                                    label(class='') Subclass?
-                                        input#isSub(type='checkbox' onchange='loadSubclass(this)'  checked=false)
-                                        div(class='checkBox disabled' data-tip='Please select class before subclass')
-                        
-                        div#subClassMain(class='formItem w-100')
-                            p(class='formLabel') Subclass:
-                            select#subClass(name='subClass' class='formSelInput')
-                                option(selected disabled value=null) --- Select Subclass ---
-                                for clas in classes.baseClasses
-                                    if clas.subClasses
-                                        for sub in clas.subClasses
-                                            option(value=sub data-class=clas.name disabled style='display: none;')= sub
-                        
-                        div(class='formItem w-100')
-                            p(class='formLabel' style='white-space: nowrap;') Background:  
-                                a(href='https://www.wargamer.com/dnd/backgrounds-5e' target='_blank' data-tip='View Info on Backgrounds' style='color: white;')
-                                    svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
-                                        path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
-                                        path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
-                            //- input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
-                            select#background(name='background' class='formSelInput' cursor='pointer')
-                                if fields.background
-                                    for back in backgrounds.options
-                                        if back == fields.background
-                                            option(selected value=back)= back
-                                        else
+                                    div(class='formItem col-4 col-lg-2 text-center')
+                                        label(class='') Subclass?
+                                            input#isSub(type='checkbox' onchange='loadSubclass(this)'  checked=false)
+                                            div(class='checkBox disabled' data-tip='Please select class before subclass')
+                            
+                            div#subClassMain(class='formItem w-100')
+                                p(class='formLabel') Subclass:
+                                select#subClass(name='subClass' class='formSelInput')
+                                    option(selected disabled value=null) --- Select Subclass ---
+                                    for clas in classes.baseClasses
+                                        if clas.subClasses
+                                            for sub in clas.subClasses
+                                                option(value=sub data-class=clas.name disabled style='display: none;')= sub
+                            
+                            div(class='formItem w-100')
+                                p(class='formLabel' style='white-space: nowrap;') Background:  
+                                    a(href='https://www.wargamer.com/dnd/backgrounds-5e' target='_blank' data-tip='View Info on Backgrounds' style='color: white;')
+                                        svg(xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16")
+                                            path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
+                                            path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
+                                //- input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
+                                select#background(name='background' class='formSelInput' cursor='pointer')
+                                    if fields.background
+                                        for back in backgrounds.options
+                                            if back == fields.background
+                                                option(selected value=back)= back
+                                            else
+                                                option(value=back)= back
+                                    else
+                                        option(selected disabled) --- Select Background ---
+                                        for back in backgrounds.options
                                             option(value=back)= back
-                                else
-                                    option(selected disabled) --- Select Background ---
-                                    for back in backgrounds.options
-                                        option(value=back)= back
-                        div(class='formItem w-100')
-                            p(class='formLabel') Alignment:
-                            //- input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
-                            select#alignment(name='alignment' class='formSelInput' cursor='pointer')
-                                if fields.alignment
-                                    for align in alignments.options
-                                        if align == fields.alignment
-                                            option(selected value=align)= align
-                                        else
+                            div(class='formItem w-100')
+                                p(class='formLabel') Alignment:
+                                //- input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
+                                select#alignment(name='alignment' class='formSelInput' cursor='pointer')
+                                    if fields.alignment
+                                        for align in alignments.options
+                                            if align == fields.alignment
+                                                option(selected value=align)= align
+                                            else
+                                                option(value=align)= align
+                                    else
+                                        option(selected disabled) --- Select Alignment ---
+                                        for align in alignments.options
                                             option(value=align)= align
-                                else
-                                    option(selected disabled) --- Select Alignment ---
-                                    for align in alignments.options
-                                        option(value=align)= align
-                                
-
-                
-
-                
-                                
-                //-     //- div(class='formItem col-4 col-md-2 pl-1')
-                //-     //-     p(class='formLabel') Level:
-                //-     //-     input#level(class='formTextInput' type='number' name='level' value=fields.level tabindex='4')
                 
 
                 //- div(class='formItem col-4 col-md-2')
@@ -206,77 +204,78 @@ block content
                 //-     input#experience(class='formTextInput' type='number' name='experience' tab-index=7 value=fields.experience tabindex='7')
 
                 section(class='row mt-4 p-3 justify-content-between')
-                    div(class='col-12 col-md-4 col-xl-2 input-set py-2')
-                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
-                            label(class='formLabel w-100 mb-0 text-center' for='strength') Strength
-                            input#strengthAtt(class='attribute' type='number' name='strengthAtt' value=0)
-                            div(class='col-12 p-0')
-                                div(class='w-100')
-                                    span(class='point-cost')
-                                    input#strength(class='formTextInput countable' value=10 type='number' name='strength')
-                                    div(class='countVal row mx-auto' data-att='strength')
-                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
-                                        div(class='col-6 px-0 text-center countNum') 10
-                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
-                            label(class='formLabel w-100 mb-0 text-center' for='strength') Dexterity
-                            input#dexterityAtt(class='attribute' type='number' name='dexterityAtt' value=0)
-                            div(class='col-12 p-0')
-                                div(class='w-100')
-                                    span(class='point-cost')
-                                    input#dexterity(class='formTextInput countable' value=10 type='number' name='dexterity')
-                                    div(class='countVal row mx-auto' data-att='dexterity')
-                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
-                                        div(class='col-6 px-0 text-center countNum') 10
-                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
-                            label(class='formLabel w-100 mb-0 text-center' for='strength') Constitution
-                            input#constitutionAtt(class='attribute' type='number' name='constitutionAtt' value=0)
-                            div(class='col-12 p-0')
-                                div(class='w-100')
-                                    span(class='point-cost')
-                                    input#constitution(class='formTextInput countable' value=10 type='number' name='constitution')
-                                    div(class='countVal row mx-auto' data-att='constitution')
-                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
-                                        div(class='col-6 px-0 text-center countNum') 10
-                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
-                            label(class='formLabel w-100 mb-0 text-center' for='strength') Intelligence
-                            input#intelligenceAtt(class='attribute' type='number' name='intelligenceAtt' value=0)
-                            div(class='col-12 p-0')
-                                div(class='w-100')
-                                    span(class='point-cost')
-                                    input#intelligence(class='formTextInput countable' value=10 type='number' name='intelligence')
-                                    div(class='countVal row mx-auto' data-att='intelligence')
-                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
-                                        div(class='col-6 px-0 text-center countNum') 10
-                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
-                            label(class='formLabel w-100 mb-0 text-center' for='strength') Wisdom
-                            input#wisdomAtt(class='attribute' type='number' name='wisdomAtt' value=0)
-                            div(class='col-12 p-0')
-                                div(class='w-100')
-                                    span(class='point-cost')
-                                    input#wisdom(class='formTextInput countable' value=10 type='number' name='wisdom')
-                                    div(class='countVal row mx-auto' data-att='wisdom')
-                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
-                                        div(class='col-6 px-0 text-center countNum') 10
-                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row w-100 mx-auto mt-2 mt-md-4 input-box')
-                            label(class='formLabel w-100 mb-0 text-center' for='strength') Charisma
-                            input#charismaAtt(class='attribute' type='number' name='charismaAtt' value=0)
-                            div(class='col-12 p-0')
-                                div(class='w-100')
-                                    span(class='point-cost')
-                                    input#charisma(class='formTextInput countable' value=10 type='number' name='charisma')
-                                    div(class='countVal row mx-auto' data-att='charisma')
-                                        div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
-                                        div(class='col-6 px-0 text-center countNum') 10
-                                        div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
-                        div(class='row')
-                            div(class='col-12 mt-1 mt-md-5 pointCounter')
-                                p Remaining points: 
-                                    span#points 20
+                    div(class='col-12 col-md-4 col-xl-2')
+                        div(class='input-set p-2')
+                            div(class='row w-100 mx-auto mt-2 input-box')
+                                label(class='formLabel w-100 mb-0 text-center' for='strength') Strength
+                                input#strengthAtt(class='attribute' type='number' name='strengthAtt' value=0)
+                                div(class='col-12 p-0')
+                                    div(class='w-100')
+                                        span(class='point-cost')
+                                        input#strength(class='formTextInput countable' value=10 type='number' name='strength')
+                                        div(class='countVal row mx-auto' data-att='strength')
+                                            div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                            div(class='col-6 px-0 text-center countNum') 10
+                                            div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                            div(class='row w-100 mx-auto mt-2 input-box')
+                                label(class='formLabel w-100 mb-0 text-center' for='strength') Dexterity
+                                input#dexterityAtt(class='attribute' type='number' name='dexterityAtt' value=0)
+                                div(class='col-12 p-0')
+                                    div(class='w-100')
+                                        span(class='point-cost')
+                                        input#dexterity(class='formTextInput countable' value=10 type='number' name='dexterity')
+                                        div(class='countVal row mx-auto' data-att='dexterity')
+                                            div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                            div(class='col-6 px-0 text-center countNum') 10
+                                            div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                            div(class='row w-100 mx-auto mt-2 input-box')
+                                label(class='formLabel w-100 mb-0 text-center' for='strength') Constitution
+                                input#constitutionAtt(class='attribute' type='number' name='constitutionAtt' value=0)
+                                div(class='col-12 p-0')
+                                    div(class='w-100')
+                                        span(class='point-cost')
+                                        input#constitution(class='formTextInput countable' value=10 type='number' name='constitution')
+                                        div(class='countVal row mx-auto' data-att='constitution')
+                                            div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                            div(class='col-6 px-0 text-center countNum') 10
+                                            div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                            div(class='row w-100 mx-auto mt-2 input-box')
+                                label(class='formLabel w-100 mb-0 text-center' for='strength') Intelligence
+                                input#intelligenceAtt(class='attribute' type='number' name='intelligenceAtt' value=0)
+                                div(class='col-12 p-0')
+                                    div(class='w-100')
+                                        span(class='point-cost')
+                                        input#intelligence(class='formTextInput countable' value=10 type='number' name='intelligence')
+                                        div(class='countVal row mx-auto' data-att='intelligence')
+                                            div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                            div(class='col-6 px-0 text-center countNum') 10
+                                            div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                            div(class='row w-100 mx-auto mt-2 input-box')
+                                label(class='formLabel w-100 mb-0 text-center' for='strength') Wisdom
+                                input#wisdomAtt(class='attribute' type='number' name='wisdomAtt' value=0)
+                                div(class='col-12 p-0')
+                                    div(class='w-100')
+                                        span(class='point-cost')
+                                        input#wisdom(class='formTextInput countable' value=10 type='number' name='wisdom')
+                                        div(class='countVal row mx-auto' data-att='wisdom')
+                                            div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                            div(class='col-6 px-0 text-center countNum') 10
+                                            div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                            div(class='row w-100 mx-auto mt-2 input-box')
+                                label(class='formLabel w-100 mb-0 text-center' for='strength') Charisma
+                                input#charismaAtt(class='attribute' type='number' name='charismaAtt' value=0)
+                                div(class='col-12 p-0')
+                                    div(class='w-100')
+                                        span(class='point-cost')
+                                        input#charisma(class='formTextInput countable' value=10 type='number' name='charisma')
+                                        div(class='countVal row mx-auto' data-att='charisma')
+                                            div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false); countAttribute(this)') -
+                                            div(class='col-6 px-0 text-center countNum') 10
+                                            div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
+                            div(class='row')
+                                div(class='col-12 mt-1 mt-md-5 pointCounter')
+                                    p Remaining points: 
+                                        span#points 20
                     div(class='col-12 col-md-6 col-xl-3 mt-3 mt-md-0')
                         div(class='row')
                             div(class='formItem col-12 mt-0')                    
@@ -438,7 +437,39 @@ block content
                                 div(class='input-item input-box text-center')
                                     input(class='large-num-input' type='number' name='deathSaves' value=0 placeholder=0)
                                     label(class='formLabel text-center') Death Saves
-                    
+                        div(class='row')
+                            div(class='col-12 input-set pb-3 mt-3')
+                                div(class='formItem')
+                                    p(class='formLabel') Attacks and Spells:
+                                    div(data-name='attacks' data-placeHolder="What can your character do?" data-tab=8 class='richEdit')
+                                    input#attacks(style='display: none;' data-req='true' name='attacks' type='text' value=fields.attacks)
+                        div(class='row input-set mt-3 pb-3')
+                            div(class='col-12 pb-3 ')
+                                div(class='formItem')
+                                    p(class='formLabel') Equipment:
+                                    div(data-name='equipment' data-placeHolder="What does your character have in those impossible pockets?" data-tab=8 class='richEdit')
+                                    input#equipment(style='display: none;' data-req='true' name='equipment' type='text' value=fields.equipment)
+                            div(class='col-2 pr-0')
+                                div(class='input-item input-back')
+                                    label(class='formLabel  small-label') CP
+                                    input(class='formNumInput small-input' type='number' name='cp' value=0 placeholder=0)
+                            div(class='col-2 pr-0')
+                                div(class='input-item input-back')
+                                    label(class='formLabel  small-label') SP
+                                    input(class='formNumInput small-input' type='number' name='sp' value=0 placeholder=0)
+                            div(class='col-2 pr-0')
+                                div(class='input-item input-back')
+                                    label(class='formLabel  small-label') EP
+                                    input(class='formNumInput small-input' type='number' name='ep' value=0 placeholder=0)
+                            div(class='col-2 pr-0')
+                                div(class='input-item input-back')
+                                    label(class='formLabel  small-label') GP
+                                    input(class='formNumInput small-input' type='number' name='gp' value=0 placeholder=0)
+                            div(class='col-2 pr-0')
+                                div(class='input-item input-back')
+                                    label(class='formLabel  small-label') PP
+                                    input(class='formNumInput small-input' type='number' name='pp' value=0 placeholder=0)
+                                    
                     
                     
                 
@@ -468,67 +499,6 @@ block content
                             p(class='formLabel') Flaws:
                             div(data-name='flaws' data-placeHolder="How will you mess things up, I wonder?" class='richEdit')
                             input#flaws(style='display: none;' name='flaws' type='text' value=fields.flaws)
-                
-                //- div(class='row')
-                //-     div(class='formItem col-6 col-md-3 col-lg-2')                    
-                //-         label(class='formLabel w-100' style='white-space: nowrap;') Strength:
-                //-             span
-                //-             input#strength(class='formTextInput countable countPool' type='number' name='strength')
-                //-             div(class='countVal row mx-auto')
-                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                //-                 div(class='col-6 px-0 text-center countNum') 10
-                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                //-     div(class='formItem col-6 col-md-3 col-lg-2')
-                //-         label(class='formLabel w-100' style='white-space: nowrap;') Dexterity:
-                //-             span
-                //-             input#dexterity(class='formTextInput countable countPool' type='number' name='dexterity')
-                //-             div(class='countVal row mx-auto')
-                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                //-                 div(class='col-6 px-0 text-center countNum') 10
-                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                //-     div(class='formItem col-6 col-md-3 col-lg-2')
-                //-         label(class='formLabel w-100' style='white-space: nowrap;') Constitution:
-                //-             span
-                //-             input#constitution(class='formTextInput countable countPool' type='number' name='constitution')
-                //-             div(class='countVal row mx-auto')
-                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                //-                 div(class='col-6 px-0 text-center countNum') 10
-                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                //-     div(class='formItem col-6 col-md-3 col-lg-2')
-                //-         label(class='formLabel w-100' style='white-space: nowrap;') Intelligence:
-                //-             span
-                //-             input#intelligence(class='formTextInput countable countPool' type='number' name='intelligence')
-                //-             div(class='countVal row mx-auto')
-                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                //-                 div(class='col-6 px-0 text-center countNum') 10
-                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                //-     div(class='formItem col-6 col-md-3 col-lg-2')
-                //-         label(class='formLabel w-100' style='white-space: nowrap;') Wisdom:
-                //-             span
-                //-             input#wisdom(class='formTextInput countable countPool' type='number' name='wisdom')
-                //-             div(class='countVal row mx-auto')
-                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                //-                 div(class='col-6 px-0 text-center countNum') 10
-                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-                //-     div(class='formItem col-6 col-md-3 col-lg-2')
-                //-         label(class='formLabel w-100' style='white-space: nowrap;') Charisma:
-                //-             span
-                //-             input#charisma(class='formTextInput countable countPool' type='number' name='charisma')
-                //-             div(class='countVal row mx-auto')
-                //-                 div(class='col-3 px-0 countBut min' onclick='checkPoints(this, false)') -
-                //-                 div(class='col-6 px-0 text-center countNum') 10
-                //-                 div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true)') + 
-
-                
-                
-                //- div(class='row')
-                //-     div(class='formItem col-6 col-md-3 col-lg-2')
-                //-         label(class='formLabel w-100' style='white-space: nowrap;') Proficiency Bonus:
-                //-             input#proficiencyBonus(class='formTextInput countable' type='number' name='proficiencyBonus')
-                //-             div(class='countVal row mx-auto')
-                //-                 div(class='col-3 px-0 countBut min' onclick='shiftPoint(this, false)') -
-                //-                 div(class='col-6 px-0 text-center countNum') 0
-                //-                 div(class='col-3 px-0 countBut plus' onclick='shiftPoint(this, true)') + 
                                 
             
                 div(class='row')
@@ -552,6 +522,10 @@ block content
     script.
         var img
         var count = 60
+
+        document.querySelectorAll('input[type="number"]').forEach(inp => {
+            inp.classList.contains('countable') ? inp.value = 10 : inp.value = 0
+        })
 
         document.addEventListener("DOMContentLoaded", function() {
             var numInputs = document.getElementsByClassName('countable')

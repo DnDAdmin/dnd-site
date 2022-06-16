@@ -360,7 +360,7 @@ router.get('/dashboard/user=:id', authUser(), async function(req,res,next) {
   var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(currUser.id)})
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(userSess.user)})
 
-  var userChars = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {user: ObjectId(req.params.id)})
+  var userChars = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {owner: ObjectId(req.params.id)})
 
   console.log('form has been submitted.')
   req.session.sub = null
@@ -573,28 +573,16 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
 
     // character.takeDamage(5)
 
-    res.send(character)
-    
-    // console.log(Character)
-    
-    // var charId = new ObjectId()
-    
-    // fields.user = ObjectId(user._id)
-    // fields._id = charId
-    // fields.wealth = 1000
-    // fields.maxWeight = 100
-    // fields.equipment = {}
+    // res.send(character)    
 
-    
+    await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [character])
 
-    // await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [fields])
-
-    // req.session.message = 'Character Created!'
-    // req.session.sub = true
+    req.session.message = 'Character Created!'
+    req.session.sub = true
 
     // res.redirect('/users/newcharacter/shop/char=' + charId + '/user=' + req.params.id)
     
-    // // res.redirect('/users/dashboard/user=' + req.params.id)
+    res.redirect('/users/dashboard/user=' + req.params.id)
 
     // // res.send([fields, files])
 
@@ -662,11 +650,11 @@ router.get('/newcharacter/shop/char=:char/user=:id', authUser('userId'), async f
 // Loads character page
 router.get('/character=:id', authUser(), async function(req, res, next) {
   var char = await ops.findItem(req.db.db('dndgroup'), 'characters_players', {_id: ObjectId(req.params.id)})
-  var owner = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.user)})
+  var owner = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.owner)})
   var userSess = await ops.findItem(req.db.db('dndgroup'), 'userSessions', {_id: ObjectId(req.session.user.id)})
 
   var isOwner = false
-  if(char.user.toString() == userSess.user.toString()) {
+  if(char.owner.toString() == userSess.user.toString()) {
     isOwner = true
   }
 
@@ -784,18 +772,18 @@ router.get('/allcharacters', authUser(), async function(req, res, next) {
   var owners = {}
 
   playerChars.sort(function(a, b){
-    if(a.user < b.user) { return -1; }
-    if(a.user > b.user) { return 1; }
+    if(a.owner < b.owner) { return -1; }
+    if(a.owner > b.owner) { return 1; }
     return 0;
   });
 
   for(var i = 0; i < playerChars.length; i++) {
     var char = playerChars[i]
-    if(owners[char.user]) {
-      char.user = owners[char.user]
+    if(owners[char.owner]) {
+      char.owner = owners[char.owner]
     } else {
-      char.user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.user)})
-      owners[char.user._id] = char.user
+      char.owner = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(char.owner)})
+      owners[char.owner._id] = char.owner
     }
     
   }
