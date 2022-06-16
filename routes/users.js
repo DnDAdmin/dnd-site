@@ -10,6 +10,7 @@ var siteOps = require('../functions/siteOps')
 const {ObjectId} = require('mongodb');
 const { authUser, findItem, addToDatabase, updateItem } = require('../functions/databaseOps');
 var aws = require('aws-sdk')
+const mongoose = require('../node_modules/mongoose')
 
 var mainHeader = 'Mystery and Mischief | '
 
@@ -533,14 +534,26 @@ router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res
 
 // Creates new character
 router.post('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
-  const charSchema = require('../functions/charShema')
-  const Character = require('../functions/charModel')
+  const {CharSchema} = require('../functions/schemas')
+  const {DndCharacter} = require('../functions/models')
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   
   var form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
     fields._id = new ObjectId()
-      
+    fields.owner = user._id
+    
+    if(files.artWork.size > 0) {
+      var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+      var oldpath = fs.readFileSync(files.artWork.filepath)
+      var data = await ops.uploadFile(s3User, 'dnd-character-images', fields._id + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
+      if(data) {
+          console.log('Character image uploaded.')
+          fields.artWork = data.Location
+          fields.artWorkKey = data.Key
+      }
+    }
+
     let sorted = sortObj(fields)
 
     function sortObj(obj) {
@@ -550,9 +563,19 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
       }, {});
     }
 
-    const character = new Character(new charSchema(sorted))
-    
+    const schemed = new CharSchema(sorted)
+
+    // for(let key in schemed) {
+    //   console.log(key)
+    // }
+
+    const character = new DndCharacter(...Object.values(schemed.toJSON()))
+
+    // character.takeDamage(5)
+
     res.send(character)
+    
+    // console.log(Character)
     
     // var charId = new ObjectId()
     
@@ -562,16 +585,7 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
     // fields.maxWeight = 100
     // fields.equipment = {}
 
-    // if(files.artWork.size > 0) {
-    //   var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
-    //   var oldpath = fs.readFileSync(files.artWork.filepath)
-    //   var data = await ops.uploadFile(s3User, 'dnd-character-images', charId + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
-    //   if(data) {
-    //       console.log('Profile image uploaded.')
-    //       fields.artWork = data.Location
-    //       fields.artWorkKey = data.Key
-    //   }
-    // }
+    
 
     // await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [fields])
 
