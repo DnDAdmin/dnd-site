@@ -65,70 +65,308 @@ block content
                             
                             div(class='col-sm-6 col-md-4 p-0')
                                 div(class='charInfo')
-                                    p(class='m-0')= char.experience
+                                    p(class='m-0')= char.experiencePoints
                                 hr(class='m-0')
                                 div(class='charTitle text-left')
                                     p() Experience Points
                         
                         div(class='row mx-md-1 mt-4')
-                            div(class='col-md-1 text-center')
+                            div(class='col-12 col-md-2 col-lg-1 text-center')
                                 div(class='row')
                                     div(class='col-3 col-md-12 p-0 px-2 px-md-0')
                                         div(class='col-12 charInfoNumCont')
                                             div(class='charInfoNum')
-                                                p(class='m-0')= char.strength
+                                                p(class='m-0')
+                                                    if char.strengthAtt > -1
+                                                        | +
+                                                    = char.strengthAtt
+                                                span(class='small-label')= char.strength 
                                         p(class='charTitle num') Strength
 
                                     div(class='col-3 col-md-12 p-0 px-2 px-md-0')
                                         div(class='col-12 charInfoNumCont')
                                             div(class='charInfoNum')
-                                                p(class='m-0')= char.dexterity
+                                                p(class='m-0')
+                                                    if char.dexterityAtt > -1
+                                                        | +
+                                                    = char.dexterityAtt
+                                                span(class='small-label')= char.dexterity 
                                         p(class='charTitle num') Dexterity
                                     
                                     div(class='col-3 col-md-12 p-0 px-2 px-md-0')
                                         div(class='col-12 charInfoNumCont')
                                             div(class='charInfoNum')
-                                                p(class='m-0')= char.constitution
+                                                p(class='m-0')
+                                                    if char.constitutionAtt > -1
+                                                        | +
+                                                    = char.constitutionAtt
+                                                span(class='small-label')= char.constitution 
                                         p(class='charTitle num') Constitution
 
                                     div(class='col-3 col-md-12 p-0 px-2 px-md-0')
                                         div(class='col-12 charInfoNumCont')
                                             div(class='charInfoNum')
-                                                p(class='m-0')= char.intelligence
+                                                p(class='m-0')
+                                                    if char.intelligenceAtt > -1
+                                                        | +
+                                                    = char.intelligenceAtt
+                                                span(class='small-label')= char.intelligence 
                                         p(class='charTitle num') Intelligence
 
                                     div(class='col-3 col-md-12 p-0 px-2 px-md-0')
                                         div(class='col-12 charInfoNumCont')
                                             div(class='charInfoNum')
-                                                p(class='m-0')= char.wisdom
+                                                p(class='m-0')
+                                                    if char.wisdomAtt > -1
+                                                        | +
+                                                    = char.wisdomAtt
+                                                span(class='small-label')= char.wisdom 
                                         p(class='charTitle num') Wisdom
 
                                     div(class='col-3 col-md-12 p-0 px-2 px-md-0')
                                         div(class='col-12 charInfoNumCont')
                                             div(class='charInfoNum')
-                                                p(class='m-0')= char.charisma
+                                                p(class='m-0')
+                                                    if char.charismaAtt > -1
+                                                        | +
+                                                    = char.charismaAtt
+                                                span(class='small-label')= char.charisma 
                                         p(class='charTitle num') Charisma
+                                hr(class='d-md-none')
                             
-                            div(class='col-12 col-md-10 ml-md-auto text-left')
-                                div(class='charInfo')
-                                    p(class='m-0') Personality:
-                                    div(class='charInfoText')
-                                        | !{char.personality}
-                                
-                                div(class='charInfo')
-                                    p(class='m-0') Ideals:
-                                    div(class='charInfoText')
-                                        | !{char.ideals}
-                                
-                                div(class='charInfo')
-                                    p(class='m-0') Bonds:
-                                    div(class='charInfoText')
-                                        | !{char.bonds}
-                                
-                                div(class='charInfo')
-                                    p(class='m-0') Flaws:
-                                    div(class='charInfoText')
-                                        | !{char.flaws}
+                            div(class='col-12 col-md-10 col-lg-5 col-xl-5 pl-md-5 text-left')
+                                div(class='row input-set p-3')
+                                    div(class='charInfo col-6')
+                                        p= char.proficiencyBonus
+                                        hr(class='m-0')
+                                        p(class='charTitle text-left m-0') Proficiency Bonus
+                                    div(class='charInfo col-6')
+                                        p= char.insight
+                                        hr(class='m-0')
+                                        p(class='charTitle text-left m-0') Insight
+                                div(class='row mt-2')
+                                    div(class='col-12 input-set p-3 saving-throws')
+                                        p(class='m-0') Saving Throws
+                                        div(class='row')
+                                            div(class='col-6')
+                                                p(class='m-0')= char.strengthSave
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Strength
+                                            div(class='col-6')
+                                                p(class='m-0')= char.dexteritySave
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Dexterity
+                                            div(class='col-6')
+                                                p(class='m-0')= char.constitutionSave
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Constitution
+                                            div(class='col-6')
+                                                p(class='m-0')= char.intelligenceSave
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Intelligence
+                                            div(class='col-6')
+                                                p(class='m-0')= char.wisdomSave
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Wisdom
+                                            div(class='col-6')
+                                                p(class='m-0')= char.charismaSave
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Charisma
+                                div(class='row mt-2')
+                                    div(class='col-12 input-set p-3 saving-throws')
+                                        p(class='m-0') Skills
+                                        div(class='row')
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillAcrobatics
+                                                    span(class='faded text-right skill')  (Wis)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Acrobatics
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillAnimalHandling
+                                                    span(class='faded text-right skill')  (Wis)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Animal Handeling
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillArcana
+                                                    span(class='faded text-right skill')  (Int)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Arcana
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillAthletics
+                                                    span(class='faded text-right skill')  (Str)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Athletics
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillDeception
+                                                    span(class='faded text-right skill')  (Cha)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Deception
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillHistory
+                                                    span(class='faded text-right skill')  (Int)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') History
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillInsight
+                                                    span(class='faded text-right skill')  (Wis)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Insight
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillIntimidation
+                                                    span(class='faded text-right skill')  (Cha)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Intimidation
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillInvestigation
+                                                    span(class='faded text-right skill')  (Int)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Investigation
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillMedicine
+                                                    span(class='faded text-right skill')  (Wis)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Medicine
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillNature
+                                                    span(class='faded text-right skill')  (Int)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Nature
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillPerception
+                                                    span(class='faded text-right skill')  (Wis)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Perception
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillPerformance
+                                                    span(class='faded text-right skill')  (Cha)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Performance
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillPersuasion
+                                                    span(class='faded text-right skill')  (Cha)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Persuasion
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillReligion
+                                                    span(class='faded text-right skill')  (Int)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Religion
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillSleightOfHand
+                                                    span(class='faded text-right skill')  (Dex)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Sleight of Hand
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillStealth
+                                                    span(class='faded text-right skill')  (Dex)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Stealth
+                                            div(class='col-6')
+                                                p(class='m-0')= char.skillSurvival
+                                                    span(class='faded text-right skill')  (Wis)
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Survival
+                        
+                                                
+                            div(class='col-12 col-lg-6 p-0 pl-lg-3 mt-2 mt-lg-0 text-left')   
+                                div(class='input-set p-4 w-100')  
+                                    div(class='row')
+                                        div(class='row w-100 mx-auto')
+                                            div(class='col-4')
+                                                p(class='m-0')= char.armourClass
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Armour Class
+                                            div(class='col-4')
+                                                p(class='m-0')= char.initiative
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Initiative
+                                            div(class='col-4')
+                                                p(class='m-0')= char.speed
+                                                hr(class='m-0')
+                                                p(class='charTitle text-left') Speed
+                                    div(class='row mt-2')
+                                        div(class='col-12')
+                                            p(class='m-0')= char.hitPoints
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') Current Hit Points
+                                        
+                                    div(class='row mt-2')
+                                        div(class='col-6')
+                                            p(class='m-0')= char.maxHitPoints
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') Max Hit Points
+                                        div(class='col-6')
+                                            p(class='m-0')= char.temporaryHitPoints
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') Temporary Hit Points
+                                    div(class='row mt-2')
+                                        div(class='col-4')
+                                            p(class='m-0')= char.hitDice
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') Hit Dice
+                                        div(class='col-4')
+                                            p(class='m-0')= char.totalHitDice
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') Total Hit Dice
+                                        div(class='col-4')
+                                            p(class='m-0')= char.deathsaveFailures
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') Death Saves
+                                div(class='input-set p-4 w-100 mt-2')
+                                    div(class='row')
+                                        div(class=' col-12 charInfo')
+                                            p(class='m-0') Attacks and Spell:
+                                            div(class='charInfoText')
+                                                | !{char.attacks}
+                                div(class='input-set p-4 w-100 mt-2')
+                                    div(class='row')
+                                        div(class=' col-12 charInfo')
+                                            p(class='m-0') Equipment:
+                                            div(class='charInfoText')
+                                                | !{char.equipment}
+                                    div(class='row mt-2')
+                                        div(class='col-2 currency')
+                                            p(class='m-0')= char.cp
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') CP
+                                        div(class='col-2 currency')
+                                            p(class='m-0')= char.sp
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') SP
+                                        div(class='col-2 currency')
+                                            p(class='m-0')= char.ep
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') EP
+                                        div(class='col-2 currency')
+                                            p(class='m-0')= char.gp
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') GP
+                                        div(class='col-2 currency')
+                                            p(class='m-0')= char.pp
+                                            hr(class='m-0')
+                                            p(class='charTitle text-left') PP
+
+                            div(class='col-12 px-0 mt-2 text-left')
+                                div(class='input-set p-4 w-100 mt-2')
+                                    div(class='charInfo')
+                                        p(class='m-0') Personality:
+                                        div(class='charInfoText')
+                                            | !{char.personality}
+                                div(class='input-set p-4 w-100 mt-2')
+                                    div(class='charInfo')
+                                        p(class='m-0') Ideals:
+                                        div(class='charInfoText')
+                                            | !{char.ideals}
+                                div(class='input-set p-4 w-100 mt-2')
+                                    div(class='charInfo')
+                                        p(class='m-0') Bonds:
+                                        div(class='charInfoText')
+                                            | !{char.bonds}
+                                div(class='input-set p-4 w-100 mt-2')
+                                    div(class='charInfo')
+                                        p(class='m-0') Flaws:
+                                        div(class='charInfoText')
+                                            | !{char.flaws}
                 div(class='row mx-auto mt-3')
                     div(class='col-12')
                         p(class='m-0') Notes:
