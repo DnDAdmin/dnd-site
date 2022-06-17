@@ -1,11 +1,11 @@
 extends ../layout
 
 block head
-  title= title + 'Character'
+  title= `${title}${char.name}`
 
 block content
-    div(class='row mt-5')
-        div(class='col-12')
+    div(class='row mt-1 mt-md-5 mb-2')
+        div(class='col-12 p-0')
             div(class='siteCont')
                 if isOwner || user.permissions.includes('admin') || user.permissions.includes('super')
                     div(class='row mx-auto text-right')

@@ -108,11 +108,11 @@ block content
                                 div(class='col-9')
                                     div(class='formItem mt-0 w-100')
                                         p(class='formLabel') Character Name:
-                                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex='1')
+                                        input#name(class='formTextInput' type='text' data-req='true' name='name' value=fields.name tabindex=1)
                                 div(class='col-3 mt-auto')
                                     div(class='input-item input-back')
                                         label(class='small-label mr-4') Level
-                                        input(class='formNumInput small-input' type='number' value=0 name='level')
+                                        input(class='formNumInput small-input' type='number' value=0 name='level' tabindex=2)
                             div(class='formItem w-100')
                                 p(class='formLabel') Race:  
                                     a(href='https://www.wargamer.com/dnd/races' target='_blank' data-tip='View Info on Races' style='color: white;')
@@ -120,7 +120,7 @@ block content
                                             path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                             path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                                 //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
-                                select#race(name='race' class='formSelInput')
+                                select#race(name='race' class='formSelInput' tabindex=3)
                                     if fields.race
                                         for race in races.pureBlood
                                             if race == fields.race
@@ -140,7 +140,7 @@ block content
                                                     path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                                     path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                                         //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
-                                        select#class(name='clas' class='formSelInput' onchange='unCheckBox()')
+                                        select#class(name='clas' class='formSelInput' onchange='unCheckBox()' tabindex=4)
                                             if fields.class
                                                 for clas in classes.baseClasses
                                                     if clas.name == fields.class
@@ -172,7 +172,7 @@ block content
                                             path(d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z")
                                             path(d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z")
                                 //- input#background(class='formTextInput' type='text' name='background' value=fields.background tabindex='5')
-                                select#background(name='background' class='formSelInput' cursor='pointer')
+                                select#background(name='background' class='formSelInput' cursor='pointer' tabindex=5)
                                     if fields.background
                                         for back in backgrounds.options
                                             if back == fields.background
@@ -186,7 +186,7 @@ block content
                             div(class='formItem w-100')
                                 p(class='formLabel') Alignment:
                                 //- input#alignment(class='formTextInput' type='text' name='alignment' value=fields.alignment tabindex='6')
-                                select#alignment(name='alignment' class='formSelInput' cursor='pointer')
+                                select#alignment(name='alignment' class='formSelInput' cursor='pointer' tabindex=6)
                                     if fields.alignment
                                         for align in alignments.options
                                             if align == fields.alignment
@@ -208,7 +208,7 @@ block content
                         div(class='input-set p-2')
                             div(class='row w-100 mx-auto mt-2 input-box')
                                 label(class='formLabel w-100 mb-0 text-center' for='strength') Strength
-                                input#strengthAtt(class='attribute' type='number' name='strengthAtt' value=0)
+                                input#strengthAtt(class='attribute' type='number' name='strengthAtt' value=0 tabindex=7)
                                 div(class='col-12 p-0')
                                     div(class='w-100')
                                         span(class='point-cost')
@@ -219,7 +219,7 @@ block content
                                             div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
                             div(class='row w-100 mx-auto mt-2 input-box')
                                 label(class='formLabel w-100 mb-0 text-center' for='strength') Dexterity
-                                input#dexterityAtt(class='attribute' type='number' name='dexterityAtt' value=0)
+                                input#dexterityAtt(class='attribute' type='number' name='dexterityAtt' value=0 tabindex=8)
                                 div(class='col-12 p-0')
                                     div(class='w-100')
                                         span(class='point-cost')
@@ -230,7 +230,7 @@ block content
                                             div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
                             div(class='row w-100 mx-auto mt-2 input-box')
                                 label(class='formLabel w-100 mb-0 text-center' for='strength') Constitution
-                                input#constitutionAtt(class='attribute' type='number' name='constitutionAtt' value=0)
+                                input#constitutionAtt(class='attribute' type='number' name='constitutionAtt' value=0 tabindex=9)
                                 div(class='col-12 p-0')
                                     div(class='w-100')
                                         span(class='point-cost')
@@ -241,7 +241,7 @@ block content
                                             div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
                             div(class='row w-100 mx-auto mt-2 input-box')
                                 label(class='formLabel w-100 mb-0 text-center' for='strength') Intelligence
-                                input#intelligenceAtt(class='attribute' type='number' name='intelligenceAtt' value=0)
+                                input#intelligenceAtt(class='attribute' type='number' name='intelligenceAtt' value=0 tabindex=10)
                                 div(class='col-12 p-0')
                                     div(class='w-100')
                                         span(class='point-cost')
@@ -252,7 +252,7 @@ block content
                                             div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
                             div(class='row w-100 mx-auto mt-2 input-box')
                                 label(class='formLabel w-100 mb-0 text-center' for='strength') Wisdom
-                                input#wisdomAtt(class='attribute' type='number' name='wisdomAtt' value=0)
+                                input#wisdomAtt(class='attribute' type='number' name='wisdomAtt' value=0 tabindex=11)
                                 div(class='col-12 p-0')
                                     div(class='w-100')
                                         span(class='point-cost')
@@ -263,7 +263,7 @@ block content
                                             div(class='col-3 px-0 countBut plus' onclick='checkPoints(this, true); countAttribute(this)') + 
                             div(class='row w-100 mx-auto mt-2 input-box')
                                 label(class='formLabel w-100 mb-0 text-center' for='strength') Charisma
-                                input#charismaAtt(class='attribute' type='number' name='charismaAtt' value=0)
+                                input#charismaAtt(class='attribute' type='number' name='charismaAtt' value=0 tabindex=12)
                                 div(class='col-12 p-0')
                                     div(class='w-100')
                                         span(class='point-cost')
@@ -441,13 +441,13 @@ block content
                             div(class='col-12 input-set pb-3 mt-3')
                                 div(class='formItem')
                                     p(class='formLabel') Attacks and Spells:
-                                    div(data-name='attacks' data-placeHolder="What can your character do?" data-tab=8 class='richEdit')
+                                    div(data-name='attacks' data-placeHolder="What can your character do?" class='richEdit')
                                     input#attacks(style='display: none;' data-req='true' name='attacks' type='text' value=fields.attacks)
                         div(class='row input-set mt-3 pb-3')
                             div(class='col-12 pb-3 ')
                                 div(class='formItem')
                                     p(class='formLabel') Equipment:
-                                    div(data-name='equipment' data-placeHolder="What does your character have in those impossible pockets?" data-tab=8 class='richEdit')
+                                    div(data-name='equipment' data-placeHolder="What does your character have in those impossible pockets?" class='richEdit')
                                     input#equipment(style='display: none;' data-req='true' name='equipment' type='text' value=fields.equipment)
                             div(class='col-2 pr-0')
                                 div(class='input-item input-back')
@@ -477,7 +477,7 @@ block content
                     div(class='col-12')
                         div(class='formItem')
                             p(class='formLabel') Character History:
-                            div(data-name='history' data-placeHolder="Tell us of your journey." data-tab=8 class='richEdit')
+                            div(data-name='history' data-placeHolder="Tell us of your journey." class='richEdit')
                             input#history(style='display: none;' data-req='true' name='history' type='text' value=fields.history)
                     div(class='col-md-6')
                         div(class='formItem')
@@ -541,12 +541,10 @@ block content
 
         });
 
-        var form = document.querySelector('charForm')
+        var form = document.querySelector('#charForm')
         form.addEventListener('submit', e => {
             e.preventDefault();
         });
-        
-        document.getElementById('editor-container').children[0].tabIndex = 8;
 
         
         function shiftNum(field, inc) {

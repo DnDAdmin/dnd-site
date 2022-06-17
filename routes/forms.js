@@ -28,9 +28,9 @@ router.post('/contact', async function(req, res, next) {
     form.parse(req, async function (err, fields, files) {
         var mailOptions = {
             from: `${fields.name} - Via Site <admin@mysteryandmischief.com>`,
-            to: 'admin@mysteryandmischief.com',
+            to: 'dndgroupsuper@mysteryandmischief.com',
             subject: 'Message From ' + fields.name,
-            html : `<div style="background-color: #aaa; padding: 12px; border-radius: 8px;">
+            html : `<div>
                     <p><strong>From:</strong> 
                         ${fields.name} (${fields.email})
                     </p>

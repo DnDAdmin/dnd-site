@@ -57,7 +57,7 @@
     z-index: -1;
   }
   #body {
-    padding-bottom: 180px;
+    padding-bottom: 150px;
   }
   #contentContainer {
     min-height:100%;
@@ -574,7 +574,7 @@
   }
   #footerLinks {
     position: relative;
-    top: -35px;
+    top: 5px;
     font-size: 8pt;
     white-space: nowrap;
   }
@@ -1797,6 +1797,9 @@
   }
   /* medium screen */
   @media (min-width: 768px) {
+    #body {
+      padding-bottom: 180px;
+    }
     .toggleInfoBut {
       height: 15px;
       width: 15px;
