@@ -582,7 +582,7 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
 
     // res.redirect('/users/newcharacter/shop/char=' + charId + '/user=' + req.params.id)
     
-    res.redirect('/users/dashboard/user=' + req.params.id)
+    res.redirect('/users/character=' + character._id)
 
     // // res.send([fields, files])
 
@@ -658,12 +658,15 @@ router.get('/character=:id', authUser(), async function(req, res, next) {
     isOwner = true
   }
 
+  let iframe = req.query.iframe ? true : false
+
   res.render('users/character', {
     title: mainHeader,
     char: char,
     isOwner: isOwner,
     owner: owner,
-    user: req.session.user
+    user: req.session.user,
+    headers: iframe
   })
 
 })
@@ -799,7 +802,7 @@ router.get('/allcharacters', authUser(), async function(req, res, next) {
 router.get('/gamesession/user=:id', authUser(), ops.verifyGame(), async function(req, res, next) {
   var user = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
   var gameSession = await ops.findItem(req.db.db('dndgroup'), 'game_sessions', {active: true})
-  var characters = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {user: ObjectId(req.params.id)})
+  var characters = await ops.findMany(req.db.db('dndgroup'), 'characters_players', {owner: ObjectId(req.params.id)})
   var quest = await ops.findItem(req.db.db('dndgroup'), 'game_quests', {_id: ObjectId(gameSession.quest)})
   var users = await ops.findMany(req.db.db('dndgroup'), 'users', {invite: null})
   

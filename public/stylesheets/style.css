@@ -1700,6 +1700,11 @@
     font-size: 9pt;
   }
 
+  .char-iframe {
+    width: 100%;
+    min-height: 30rem;
+  }
+
 /* ---VVV--- SHOP ---VVV--- */
   .shopItem {
     position: relative;
