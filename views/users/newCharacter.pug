@@ -81,7 +81,7 @@ block head
         
 
 block content
-    div(class='row mt-1 mt-md-5')
+    div(class='row mt-2 mt-md-5')
         form#charForm(class='col-12 p-0 mx-auto' name='newChar' action='/users/newcharacter/user=' + thisUser._id method="POST" enctype="multipart/form-data")
             div(class='siteCont')
                 h2(class='text-center') New Character
@@ -102,7 +102,7 @@ block content
                                     path(d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z")
                             p#fileName File
 
-                    div(class='col-md-6 col-lg-8')
+                    div(class='col-md-6 col-lg-8 mt-2 mt-md-0')
                         div(class='input-set p-3 pt-0')
                             div(class='row')
                                 div(class='col-9')
@@ -513,8 +513,8 @@ block content
                         div(class='buttonText')
                             img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
                             p#saveText Save
-            div(class='mt-2')
-                ul#errorText(class='w-100 px-3 mx-auto errorText' style='display: none;')
+            div
+                ul#errorText(class='w-100 px-3 mt-2 mx-auto errorText' style='display: none;')
                     
         
       

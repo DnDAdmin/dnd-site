@@ -4,7 +4,7 @@ block head
   title= `${title}${char.name}`
 
 block content
-    div(class='row mt-1 mt-md-5 mb-2')
+    div(class='row mt-2 mt-md-5')
         div(class='col-12 p-0')
             div(class='siteCont')
                 if isOwner || user.permissions.includes('admin') || user.permissions.includes('super')
@@ -70,71 +70,77 @@ block content
                                 div(class='charTitle text-left')
                                     p() Experience Points
                         
-                        div(class='row mx-md-1 mt-4')
+                        div(class='row mx-auto mx-md-1 mt-4 mr-2')
                             div(class='col-12 col-md-2 col-lg-1 text-center')
                                 div(class='row')
-                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
-                                        div(class='col-12 charInfoNumCont')
-                                            div(class='charInfoNum')
-                                                p(class='m-0')
-                                                    if char.strengthAtt > -1
-                                                        | +
-                                                    = char.strengthAtt
-                                                span(class='small-label')= char.strength 
-                                        p(class='charTitle num') Strength
+                                    div(class='col-4 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='input-set pt-1 mt-2 mt-md-0')
+                                            div(class='col-12 charInfoNumCont')
+                                                div(class='charInfoNum')
+                                                    p(class='m-0')
+                                                        if char.strengthAtt > -1
+                                                            | +
+                                                        = char.strengthAtt
+                                                    span(class='small-label')= char.strength 
+                                            p(class='charTitle num') Strength
 
-                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
-                                        div(class='col-12 charInfoNumCont')
-                                            div(class='charInfoNum')
-                                                p(class='m-0')
-                                                    if char.dexterityAtt > -1
-                                                        | +
-                                                    = char.dexterityAtt
-                                                span(class='small-label')= char.dexterity 
-                                        p(class='charTitle num') Dexterity
+                                    div(class='col-4 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='input-set pt-1 mt-2')
+                                            div(class='col-12 charInfoNumCont')
+                                                div(class='charInfoNum')
+                                                    p(class='m-0')
+                                                        if char.dexterityAtt > -1
+                                                            | +
+                                                        = char.dexterityAtt
+                                                    span(class='small-label')= char.dexterity 
+                                            p(class='charTitle num') Dexterity
                                     
-                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
-                                        div(class='col-12 charInfoNumCont')
-                                            div(class='charInfoNum')
-                                                p(class='m-0')
-                                                    if char.constitutionAtt > -1
-                                                        | +
-                                                    = char.constitutionAtt
-                                                span(class='small-label')= char.constitution 
-                                        p(class='charTitle num') Constitution
+                                    div(class='col-4 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='input-set pt-1 mt-2')
+                                            div(class='col-12 charInfoNumCont')
+                                                div(class='charInfoNum')
+                                                    p(class='m-0')
+                                                        if char.constitutionAtt > -1
+                                                            | +
+                                                        = char.constitutionAtt
+                                                    span(class='small-label')= char.constitution 
+                                            p(class='charTitle num') Constitution
 
-                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
-                                        div(class='col-12 charInfoNumCont')
-                                            div(class='charInfoNum')
-                                                p(class='m-0')
-                                                    if char.intelligenceAtt > -1
-                                                        | +
-                                                    = char.intelligenceAtt
-                                                span(class='small-label')= char.intelligence 
-                                        p(class='charTitle num') Intelligence
+                                    div(class='col-4 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='input-set pt-1 mt-2')
+                                            div(class='col-12 charInfoNumCont')
+                                                div(class='charInfoNum')
+                                                    p(class='m-0')
+                                                        if char.intelligenceAtt > -1
+                                                            | +
+                                                        = char.intelligenceAtt
+                                                    span(class='small-label')= char.intelligence 
+                                            p(class='charTitle num') Intelligence
 
-                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
-                                        div(class='col-12 charInfoNumCont')
-                                            div(class='charInfoNum')
-                                                p(class='m-0')
-                                                    if char.wisdomAtt > -1
-                                                        | +
-                                                    = char.wisdomAtt
-                                                span(class='small-label')= char.wisdom 
-                                        p(class='charTitle num') Wisdom
+                                    div(class='col-4 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='input-set pt-1 mt-2')
+                                            div(class='col-12 charInfoNumCont')
+                                                div(class='charInfoNum')
+                                                    p(class='m-0')
+                                                        if char.wisdomAtt > -1
+                                                            | +
+                                                        = char.wisdomAtt
+                                                    span(class='small-label')= char.wisdom 
+                                            p(class='charTitle num') Wisdom
 
-                                    div(class='col-3 col-md-12 p-0 px-2 px-md-0')
-                                        div(class='col-12 charInfoNumCont')
-                                            div(class='charInfoNum')
-                                                p(class='m-0')
-                                                    if char.charismaAtt > -1
-                                                        | +
-                                                    = char.charismaAtt
-                                                span(class='small-label')= char.charisma 
-                                        p(class='charTitle num') Charisma
+                                    div(class='col-4 col-md-12 p-0 px-2 px-md-0')
+                                        div(class='input-set pt-1 mt-2')
+                                            div(class='col-12 charInfoNumCont')
+                                                div(class='charInfoNum')
+                                                    p(class='m-0')
+                                                        if char.charismaAtt > -1
+                                                            | +
+                                                        = char.charismaAtt
+                                                    span(class='small-label')= char.charisma 
+                                            p(class='charTitle num') Charisma
                                 hr(class='d-md-none')
                             
-                            div(class='col-12 col-md-10 col-lg-5 col-xl-5 pl-md-5 text-left')
+                            div(class='col-12 col-md-10 col-lg-5 col-xl-5 pl-md-4 text-left')
                                 div(class='row input-set p-3')
                                     div(class='charInfo col-6')
                                         p= char.proficiencyBonus
@@ -268,7 +274,7 @@ block content
                                                 p(class='charTitle text-left') Survival
                         
                                                 
-                            div(class='col-12 col-lg-6 p-0 pl-lg-3 mt-2 mt-lg-0 text-left')   
+                            div(class='col-12 col-lg-6 p-0 pl-lg-2 mt-2 mt-lg-0 text-left')   
                                 div(class='input-set p-4 w-100')  
                                     div(class='row')
                                         div(class='row w-100 mx-auto')

@@ -57,7 +57,7 @@
     z-index: -1;
   }
   #body {
-    padding-bottom: 150px;
+    padding-bottom: 160px;
   }
   #contentContainer {
     min-height:100%;
@@ -1658,14 +1658,25 @@
     left: 50%;
     transform: translateX(-50%);
     margin-top: 1px;
+    font-size: 10pt;
   }
   .charInfoNumCont {
     position: relative;
-    border: 1px solid white;
     border-radius: 50%;
-    margin-top: 8px;
     width: 100%;
     padding-top: 100%;
+    background-color: #333;
+  }
+  .charInfoNumCont::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    bottom: 6px;
+    right: 6px;
+    border: 1px solid white;
+    border-radius: 50%;
   }
   .charInfoNum {
     position: absolute;
@@ -1797,9 +1808,6 @@
   }
   /* medium screen */
   @media (min-width: 768px) {
-    #body {
-      padding-bottom: 180px;
-    }
     .toggleInfoBut {
       height: 15px;
       width: 15px;
@@ -1951,6 +1959,15 @@
 }
 /* ^^^ Contact form human checker */
 
+
+@media (min-width: 768px) {
+  #body {
+    padding-bottom: 180px;
+  }
+  .charTitle.num {
+    font-size: 7.5pt;
+  }
+}
    
 
 /* Used to help visualize layout while coding */
