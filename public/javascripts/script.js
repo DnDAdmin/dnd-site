@@ -246,6 +246,14 @@ var toolbarOptions = [
     ['link', 'image']
 ];
 
+// Displays loading animation on button click;
+function loader(but) {
+    const gif = document.getElementById('loadingGif')
+    const text = but.children[0].children[1]
+
+    text.style.display = 'none'
+    gif.style.display = 'block'
+}
 
 const editors = document.getElementsByClassName('richEdit')
 loadRichEdits(editors)

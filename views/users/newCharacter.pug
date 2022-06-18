@@ -509,7 +509,7 @@ block content
                             input#notes(style='display: none;' name='notes' type='text' value=fields.notes)
             
                 div(class='formItem text-right my-4' )
-                    button#formButton(class='buttonMain button great col-12 col-md-3' onclick='updateInput()')
+                    button#formButton(type='submit' form='charForm' value='Submit' class='buttonMain button great col-12 col-md-3' onclick='loader(this); updateInput(); submitForm("charForm")')
                         div(class='buttonText')
                             img#loadingGif(class='loadingGif' style='display: none;' src='/images/loading.gif')
                             p#saveText Save
@@ -546,6 +546,11 @@ block content
             e.preventDefault();
         });
 
+        function submitForm(id) {
+            const form = document.getElementById(id)
+            form.submit()
+        }
+
         
         function shiftNum(field, inc) {
             let valText = field.parentNode.children[1]
@@ -562,12 +567,14 @@ block content
         }
 
         function countAttribute(button) {
-            const att = document.getElementById(`${button.parentNode.getAttribute('data-att')}Att`)
+            const att = document.getElementById(button.parentNode.getAttribute('data-att') + 'Att')
+            //- const att = document.getElementById(`${button.parentNode.getAttribute('data-att')}Att`)
             const val = button.parentNode.parentNode.children[1].value
 
             let math = (val - 10) / 2
 
-            Number.isInteger(math) ? math > 0 ? att.value = `+${math}` : att.value = math : null
+            Number.isInteger(math) ? att.value = math : null
+            //- Number.isInteger(math) ? math > 0 ? att.value = `+${math}` : att.value = math : null
 
             //- console.log(math)
 
