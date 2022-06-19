@@ -122,15 +122,15 @@ block content
                                 //- input#race(class='formTextInput' type='text' name='race' value=fields.race tabindex='2')
                                 select#race(name='race' class='formSelInput' tabindex=3)
                                     if fields.race
-                                        for race in races.pureBlood
-                                            if race == fields.race
-                                                option(selected value=race)= race
+                                        for race in races
+                                            if race.name == fields.race
+                                                option(selected value=race.name)= race.name
                                             else
-                                                option(value=race)= race
+                                                option(value=race.name)= race.name
                                     else
                                         option(selected disabled) --- Select Race ---
-                                        for race in races.pureBlood
-                                            option(value=race)= race
+                                        for race in races
+                                            option(value=race.name)= race.name
                             div(class='w-100')
                                 div(class='row mx-auto')
                                     div(class='formItem col-8 col-lg-10 pl-0')
@@ -142,14 +142,14 @@ block content
                                         //- input#class(class='formTextInput' type='text' name='class' value=fields.class tabindex='3')
                                         select#class(name='clas' class='formSelInput' onchange='unCheckBox()' tabindex=4)
                                             if fields.class
-                                                for clas in classes.baseClasses
+                                                for clas in classes
                                                     if clas.name == fields.class
                                                         option(selected value=clas.name)= clas.name
                                                     else
                                                         option(value=clas.name)= clas.name
                                             else
                                                 option(selected disabled value=null) --- Select Class ---
-                                                for clas in classes.baseClasses
+                                                for clas in classes
                                                     option(value=clas.name)= clas.name
                                     div(class='formItem col-4 col-lg-2 text-center')
                                         label(class='') Subclass?
@@ -160,7 +160,7 @@ block content
                                 p(class='formLabel') Subclass:
                                 select#subClass(name='subClass' class='formSelInput')
                                     option(selected disabled value=null) --- Select Subclass ---
-                                    for clas in classes.baseClasses
+                                    for clas in homeClasses.baseClasses
                                         if clas.subClasses
                                             for sub in clas.subClasses
                                                 option(value=sub data-class=clas.name disabled style='display: none;')= sub

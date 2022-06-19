@@ -2,6 +2,7 @@ var aws = require('aws-sdk')
 var fs = require('fs');
 const {ObjectId} = require('mongodb');
 const hash = require('password-hash')
+const http = require('https')
 
 function authUser(access) {
     return async (req, res, next) => {
@@ -76,6 +77,20 @@ function authUser(access) {
         }     
     }
 }
+
+function getApiData(url) {
+    return new Promise(resolve => {
+      http.get(url, (resp) => {
+        let info = ""
+        resp.on('data', (data) => {
+          info += data.toString()
+        })
+        resp.on('end', () => {
+          resolve(JSON.parse(info))
+        })
+      })
+    })
+  }
 
  function verifyGame() {
     return async (req, res, next) => {
@@ -248,4 +263,4 @@ function deleteFile(user, bucket, key) {
     })
 }
 
-module.exports = {getRandom, addToDatabase, updateItem, findItem, findMany, getCollection, deleteItem, uploadFile, downloadFile, deleteFile, authUser, verifyGame }
+module.exports = {getApiData, getRandom, addToDatabase, updateItem, findItem, findMany, getCollection, deleteItem, uploadFile, downloadFile, deleteFile, authUser, verifyGame }

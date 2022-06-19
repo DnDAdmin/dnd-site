@@ -508,11 +508,15 @@ router.post('/newpass/user=:id', authUser('userId'), async function(req, res, ne
 
 // New user character form
 router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res, next) {
-  var thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
-  var races = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'races'})
-  var classes = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'classes'})
-  var backgrounds = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'backgrounds'})
-  var alignments = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'alignments'})
+  let thisUser = await ops.findItem(req.db.db('dndgroup'), 'users', {_id: ObjectId(req.params.id)})
+  // let races = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'races'})
+  let homeClasses = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'classes'})
+  let backgrounds = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'backgrounds'})
+  let alignments = await ops.findItem(req.db.db('dndgroup'), 'game_data', {name: 'alignments'})
+
+
+  let classes = await ops.getApiData('https://www.dnd5eapi.co/api/classes/')
+  let races = await ops.getApiData('https://www.dnd5eapi.co/api/races/')
 
   var fields = {}
   if(req.session.fields) {
@@ -523,8 +527,9 @@ router.get('/newcharacter/user=:id', authUser('userId'), async function(req, res
   res.render('users/newCharacter', {
     title: mainHeader,
     fields: fields,
-    races: races,
-    classes: classes,
+    races: races.results,
+    classes: classes.results,
+    homeClasses: homeClasses,
     backgrounds: backgrounds,
     alignments: alignments,
     thisUser: thisUser,

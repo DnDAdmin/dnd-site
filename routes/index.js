@@ -16,9 +16,11 @@ router.get('/', async function(req, res, next) {
     return 0;
   });
 
+  const event = new Date(events[0].date) > new Date(Date.now()) ? events[0] : null
+
   res.render('index', {
     title: mainHeader,
-    event: events[0],
+    event: event,
     user: req.session.user
   });
 });
