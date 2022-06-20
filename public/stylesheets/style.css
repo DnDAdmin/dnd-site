@@ -1076,7 +1076,7 @@
     .countVal {
         position: relative;
         width: 100%;
-        height: 2rem;
+        height: 100%;
         border: 1px solid white;
         text-align: center;
         color: white;
@@ -1085,11 +1085,15 @@
         overflow:hidden;
     }
     .countNum {
-        margin: 0;
-        padding-top: 2px;
-        color: white;
-        cursor: text;
-        transition: .25s;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      margin: 0;
+      
+      color: white;
+      cursor: text;
+      transition: .25s;
     }
     .countNum:focus {
       background-color: white;
@@ -1098,21 +1102,36 @@
       transition: .25s;
   }
     .countBut {
-        padding-top: 2px;
         cursor: pointer;
         transition: .25s;
-        
-    }
-    .countBut.plus {
-        border-left: 1px solid white;
-        
-    }
-    .countBut.min {
         border-right: 1px solid white;
     }
+    .countBut::after {
+      content: "-";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .countBut.plus {
+      border-right: none;
+      border-left: 1px solid white;
+      position: absolute;
+      right: 0;
+      height: 100%;
+    }
+    .countBut.plus::after {
+      content: "+"
+    }
+    
     .countBut:hover {
         background-color: #0C3B5D;
         transition: .25s;
+    }
+    .myNumInput {
+      position: relative;
+      height: 100%;
+      width: 100%;
     }
   
   .itemID {
@@ -1902,7 +1921,12 @@
 .small-label {
   font-size: 8pt;
   margin: 0;
-  line-height: 0;
+  line-height: .6;
+  height: fit-content;
+  padding: .6rem 0 0 1.25rem;
+}
+.small-label span {
+  line-height: 1.1;
 }
 .small-input {
   position: absolute;
@@ -1968,6 +1992,42 @@
     font-size: 7.5pt;
   }
 }
+
+/* My Heights */
+.h-1 {
+  height: 1rem !important;
+}
+.h-1_5 {
+  height: 1.5rem !important;
+}
+.h-2 {
+  height: 2rem !important;
+}
+.h-3 {
+  height: 3rem !important;
+}
+.h-4 {
+  height: 4rem !important;
+}
+.h-5 {
+  height: 5rem !important;
+}
+.h-6 {
+  height: 6rem !important;
+}
+.h-7 {
+  height: 7rem !important;
+}
+.h-8 {
+  height: 8rem !important;
+}
+.h-9 {
+  height: 9rem !important;
+}
+.h-10 {
+  height: 10rem !important;
+}
+
    
 
 /* Used to help visualize layout while coding */

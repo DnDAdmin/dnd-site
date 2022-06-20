@@ -549,14 +549,14 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
     fields.owner = user._id
     
     if(files.artWork.size > 0) {
-      var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
-      var oldpath = fs.readFileSync(files.artWork.filepath)
-      var data = await ops.uploadFile(s3User, 'dnd-character-images', fields._id + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
-      if(data) {
-          console.log('Character image uploaded.')
-          fields.artWork = data.Location
-          fields.artWorkKey = data.Key
-      }
+      // var s3User = await ops.findItem(req.db.db('dndgroup'), 'aws-access', {name: 'dndgroup-user-1'})
+      // var oldpath = fs.readFileSync(files.artWork.filepath)
+      // var data = await ops.uploadFile(s3User, 'dnd-character-images', fields._id + '-artWork' + path.extname(files.artWork.originalFilename.toString()), oldpath, 'public-read')
+      // if(data) {
+      //     console.log('Character image uploaded.')
+      //     fields.artWork = data.Location
+      //     fields.artWorkKey = data.Key
+      // }
     }
 
     let sorted = sortObj(fields)
@@ -580,16 +580,18 @@ router.post('/newcharacter/user=:id', authUser('userId'), async function(req, re
 
     // res.send(character)    
 
-    await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [character])
+    //  -----
+    // await ops.addToDatabase(req.db.db('dndgroup'), 'characters_players', [character])
 
-    req.session.message = 'Character Created!'
-    req.session.sub = true
+    // req.session.message = 'Character Created!'
+    // req.session.sub = true
+    // -----
 
     // res.redirect('/users/newcharacter/shop/char=' + charId + '/user=' + req.params.id)
     
-    res.redirect('/users/character=' + character._id)
+    // res.redirect('/users/character=' + character._id)
 
-    // // res.send([fields, files])
+    res.send(character)
 
   })
 

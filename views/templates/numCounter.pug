@@ -1,0 +1,7 @@
+div(class='myNumInput')
+    span(class='point-cost')
+    input(id=name class='formTextInput countable' max=max min=min value=value type='number' name=name)
+    div(class='countVal row mx-auto' data-att=name)
+        div(class='col-3 px-0 countBut min' onclick=clickM)
+        div(class='col-6 px-0 text-center countNum')= value
+        div(class='col-3 px-0 countBut plus' onclick=clickP)

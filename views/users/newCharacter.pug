@@ -297,45 +297,79 @@ block content
                         div(class='row mt-3')
                             div(class='col-12 ')
                                 div(class='input-set p-3')
+                                    -let value = 0
+                                    -let min=0
+                                    -let clickM = 'shiftNum(this, false);'
+                                    -let clickP = 'shiftNum(this, true);'
                                     p(class='formLabel text-center mb-2') Saving Throws
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Strength
-                                        input(class='formNumInput small-input' type='number' value=0 name='strengthSave')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Dexterity
-                                        input(class='formNumInput small-input' type='number' value=0 name='dexteritySave')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Constitution
-                                        input(class='formNumInput small-input' type='number' value=0 name='constitutionSave')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Intelligence
-                                        input(class='formNumInput small-input' type='number' value=0 name='intelligenceSave')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Wisdom
-                                        input(class='formNumInput small-input' type='number' value=0 name='wisdomSave')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Charisma
-                                        input(class='formNumInput small-input' type='number' value=0 name='charismaSave')
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label col-4') Strength
+                                            div(class='h-1_5 col-8')
+                                                -let name = 'strengthSave'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label col-4') Dexterity
+                                            div(class='h-1_5 col-8')
+                                                -name = 'dexteritySave'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label col-4') Constitution
+                                            div(class='h-1_5 col-8')
+                                                -name = 'constitutionSave'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label col-4') Intelligence
+                                            div(class='h-1_5 col-8')
+                                                -name = 'intelligenceSave'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label col-4') Wisdom
+                                            div(class='h-1_5 col-8')
+                                                -name = 'wisdomSave'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label col-4') Charisma
+                                            div(class='h-1_5 col-8')
+                                                -name = 'charismaSave'
+                                                include ../templates/numCounter.pug
                         div(class='row mt-3')
                             div(class='col-12 ')
                                 div(class='input-set p-3')
                                     p(class='formLabel text-center mb-2') Skills
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Acrobatics
-                                            span(class='faded')  (Dex)
-                                        input(class='formNumInput small-input' type='number' value=0 name='skillAcrobatics')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Animal Handeling
-                                            span(class='faded')  (Wis)
-                                        input(class='formNumInput small-input' type='number' value=0 name='skillAnimalHandeling')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Arcana
-                                            span(class='faded')  (Int)
-                                        input(class='formNumInput small-input' type='number' value=0 name='skillArcana')
-                                    div(class='input-item input-back')
-                                        label(class='small-label mr-4') Athletics
-                                            span(class='faded')  (Str)
-                                        input(class='formNumInput small-input' type='number' value=0 name='skillAthletics')
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label pt-1 col-6') Acrobatics
+                                                span(class='faded')  (Dex)
+                                            div(class='h-1_5 col-6')
+                                                -name = 'skillAcrobatics'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label pt-1 col-6') Animal Handeling
+                                                span(class='faded')  (Wis)
+                                            div(class='h-1_5 col-6')
+                                                -name = 'skillAnimalHandeling'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label pt-1 col-6') Arcana
+                                                span(class='faded')  (Int)
+                                            div(class='h-1_5 col-6')
+                                                -name = 'skillArcana'
+                                                include ../templates/numCounter.pug
+                                    div(class='input-item input-back p-0')
+                                        div(class='row p-1 position-relative')
+                                            label(class='small-label pt-1 col-6') Athletics
+                                                span(class='faded')  (Str)
+                                            div(class='h-1_5 col-6')
+                                                -name = 'skillAthletics'
+                                                include ../templates/numCounter.pug
                                     div(class='input-item input-back')
                                         label(class='small-label mr-4') Deception
                                             span(class='faded')  (Cha)
@@ -564,6 +598,7 @@ block content
 
             input.value = val
             valText.innerHTML = val
+            
         }
 
         function countAttribute(button) {
